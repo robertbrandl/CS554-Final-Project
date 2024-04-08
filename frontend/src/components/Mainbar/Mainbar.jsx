@@ -1,30 +1,34 @@
 import React, {useContext} from 'react';
-import "./Navbar.css";
+import "./Mainbar.css";
 import { Link } from "react-router-dom";
-import {doSignOut} from '../../firebase/FirebaseFunctions';
 import {AuthContext} from '../../firebase/Auth';
-export const Navbar = () => {
+export const Mainbar = () => {
   const {currentUser} = useContext(AuthContext);
   return <div>{currentUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>;
 };
 const NavigationAuth = () => {
   return (
-    <nav className="navbar">
+    <nav className="mainbar">
       <ul>
         <li>
-          <Link to="/">
-            Home
+          <Link to="/songsearch">
+            Browse Songs
           </Link>
         </li>
         <li>
-          <Link to="/account">
-            Account
+          <Link to="/allplaylists">
+            View All Playlists
           </Link>
         </li>
         <li>
-        <button className='button' type='button' onClick={doSignOut}>
-          Sign Out
-        </button>
+          <Link to="/followedplaylists">
+            View Playlists By Your Followed Accounts
+          </Link>
+        </li>
+        <li>
+          <Link to="/statistics">
+            Your Statistics
+          </Link>
         </li>
       </ul>
     </nav>
@@ -32,21 +36,16 @@ const NavigationAuth = () => {
 };
 const NavigationNonAuth = () => {
   return (
-    <nav className="navbar">
+    <nav className="mainbar">
       <ul>
-        <li>
-          <Link to="/">
-            Home
+      <li>
+          <Link to="/songsearch">
+            Browse Songs
           </Link>
         </li>
         <li>
-          <Link to="/login">
-            Login
-          </Link>
-        </li>
-        <li>
-          <Link to="/signup">
-            Create an Account
+          <Link to="/allplaylists">
+            View All Playlists
           </Link>
         </li>
       </ul>

@@ -1,0 +1,35 @@
+.mainbar {
+  background-color: #ffffff;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+}
+
+.mainbar ul {
+  list-style-type: none;
+  background-color: #ffffff;
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.mainbar li {
+  display: inline;
+  background-color: #314a31;
+  font-size: large;
+}
+
+.mainbar a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.mainbar a:hover {
+  color: #a6a6a6;
+  text-decoration: underline;
+  padding: 5px 10px;
+  position: relative;
+}
