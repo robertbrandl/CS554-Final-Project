@@ -3,15 +3,16 @@ import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 import {AuthContext} from '../../firebase/Auth';
+import axios from "axios";
 //import SocialSignIn from './SocialSignIn';
 export const Signup = () => {
   const {currentUser} = useContext(AuthContext);
-  const [pwMatch, setPwMatch] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
+    const {displayName, email, passwordOne, passwordTwo, profileImage} = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
-      setPwMatch('Passwords do not match');
+      setErrorMessage('Passwords do not match');
       return false;
     }
 
@@ -21,8 +22,13 @@ export const Signup = () => {
         passwordOne.value,
         displayName.value
       );
+      const response = await axios.post('/api/users/register', {
+        displayName: displayName.value,
+        email: email.value,
+      });
+      setErrorMessage('');
     } catch (error) {
-      alert(error);
+      setErrorMessage(error.message);
     }
   };
 
@@ -33,7 +39,7 @@ export const Signup = () => {
   return (
     <div className='card'>
       <h1>Sign up</h1>
-      {pwMatch && <h4 className='error'>{pwMatch}</h4>}
+      {errorMessage && <h4 className='error'>{errorMessage}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
           <label>
@@ -87,6 +93,19 @@ export const Signup = () => {
               type='password'
               placeholder='Confirm Password'
               autoComplete='off'
+              required
+            />
+          </label>
+        </div>
+        <div className='form-group'>
+          <label>
+            Profile Image:
+            <br />
+            <input
+              className='form-control'
+              name='profileImage'
+              type='file'
+              accept='image/*'
               required
             />
           </label>
