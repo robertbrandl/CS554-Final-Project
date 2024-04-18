@@ -1,4 +1,5 @@
 import {ObjectId} from 'mongodb';
+import * as validation from '../validation.js';
 import {users} from '../config/mongoCollections.js';
 const registerUser = async (
     name,
@@ -18,6 +19,7 @@ const registerUser = async (
     return {insertedUser: true};
 }
 const getAccount = async (id) => {
+    let mid = validation.checkString(id);
     const userCollection = await users();
 }
 export default {

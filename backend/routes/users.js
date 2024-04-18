@@ -4,7 +4,22 @@ import {userData} from '../data/index.js';
 router
   .route('/register')
   .post(async (req, res) => {
-    return res.status(200)
+    const createUserData = req.body;
+    if (!createUserData || Object.keys(createUserData).length === 0) {
+      return res
+        .status(400)
+        .json({error: "Error: Must enter data for the fields"})
+    }
+    let name = createUserData.displayName;
+    let email = createUserData.email;
+    let image = createUserData.image;
+    let result = undefined;
+    try{
+        result = await userData.registerUser(name, email, image);
+      }catch(e){
+        return res.status(400).json({error: "Error: " + e});
+      }
+    return res.status(200).json(result);
 })
 router
   .route('/account')

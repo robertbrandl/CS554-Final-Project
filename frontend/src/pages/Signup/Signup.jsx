@@ -25,7 +25,7 @@ export const Signup = () => {
       const response = await axios.post('/api/users/register', {
         displayName: displayName.value,
         email: email.value,
-        image: profileImage
+        image: profileImage.value
       });
       setErrorMessage('');
     } catch (error) {
