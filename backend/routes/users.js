@@ -13,9 +13,10 @@ router
     let name = createUserData.displayName;
     let email = createUserData.email;
     let image = createUserData.image;
+    let publicPlaylist = createUserData.public;
     let result = undefined;
     try{
-        result = await userData.registerUser(name, email, image);
+        result = await userData.registerUser(name, email, image, publicPlaylist);
       }catch(e){
         return res.status(400).json({error: "Error: " + e});
       }
@@ -24,6 +25,13 @@ router
 router
   .route('/account')
   .get(async (req, res) => {
-    return res.status(200)
+    const email = req.query.email;
+    let result = undefined;
+    try{
+        result = await userData.getAccount(email);
+    }catch(e){
+        return res.status(400).json({error: "Error: " + e});
+    }
+    return res.status(200).json(result);
 })
 export default router;
