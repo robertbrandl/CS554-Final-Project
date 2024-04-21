@@ -4,7 +4,7 @@ import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 import {AuthContext} from '../../firebase/Auth';
 import axios from "axios";
-//import SocialSignIn from './SocialSignIn';
+import SocialSignIn from '../Login/SocialSignIn';
 export const Signup = () => {
   const {currentUser} = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,7 +30,8 @@ export const Signup = () => {
         displayName: displayName.value,
         email: email.value,
         image: profileImage.files[0],
-        public: publicPlaylists.checked
+        public: publicPlaylists.checked,
+        accountType: "email"
       });
       setErrorMessage('');
     } catch (error) {
@@ -45,6 +46,7 @@ export const Signup = () => {
   return (
     <div className='card'>
       <h1>Sign up</h1>
+      <SocialSignIn />
       {errorMessage && <h4 className='error'>{errorMessage}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>

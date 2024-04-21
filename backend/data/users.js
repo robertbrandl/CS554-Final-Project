@@ -5,16 +5,20 @@ const registerUser = async (
     name,
     emailAddress,
     profileImg,
-    publicPlaylist
+    publicPlaylist,
+    type
 ) => {
+    const userCollection = await users();
+    const user = await userCollection.findOne({emailAddress: emailAddress});
+    if (user !== null) throw 'User exists already';
     let newUser = {
         name: name,
         emailAddress: emailAddress,
         profileImg: profileImg,
         publicPlaylist: publicPlaylist,//true if playlists/user is public (can be followed and playlists in main list)
+        accountType: type,
         playlists: []
     }
-    const userCollection = await users();
     const insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw 'Could not add user';
@@ -28,7 +32,15 @@ const getAccount = async (email) => {
     user._id = user._id.toString();
     return user;
 }
+const userExist = async (email) => {
+    let em = validation.checkString(email);
+    const userCollection = await users();
+    const user = await userCollection.findOne({emailAddress: em});
+    if (user === null) false;
+    return true;
+}
 export default {
     registerUser,
-    getAccount
+    getAccount, 
+    userExist
 }

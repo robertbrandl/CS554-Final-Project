@@ -14,9 +14,10 @@ router
     let email = createUserData.email;
     let image = createUserData.image;
     let publicPlaylist = createUserData.public;
+    let type = createUserData.accountType
     let result = undefined;
     try{
-        result = await userData.registerUser(name, email, image, publicPlaylist);
+        result = await userData.registerUser(name, email, image, publicPlaylist, type);
       }catch(e){
         return res.status(400).json({error: "Error: " + e});
       }
@@ -34,4 +35,11 @@ router
     }
     return res.status(200).json(result);
 })
+router
+  .route('/userexist')
+  .get(async (req, res) => {
+    const email = req.query.email;
+    const result = await userData.getAccount(email);
+    return res.status(200).json(result);
+  })
 export default router;
