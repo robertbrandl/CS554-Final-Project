@@ -36,7 +36,7 @@ const userExist = async (email) => {
     let em = validation.checkString(email);
     const userCollection = await users();
     const user = await userCollection.findOne({emailAddress: em});
-    if (user === null) false;
+    if (user === null) return false;
     return true;
 }
 export default {

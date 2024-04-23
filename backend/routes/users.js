@@ -39,7 +39,7 @@ router
   .route('/userexist')
   .get(async (req, res) => {
     const email = req.query.email;
-    const result = await userData.getAccount(email);
+    const result = await userData.userExist(email);
     return res.status(200).json(result);
   })
 export default router;
