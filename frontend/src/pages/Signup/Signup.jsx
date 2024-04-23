@@ -29,7 +29,7 @@ export const Signup = () => {
       const response = await axios.post('/api/users/register', {
         displayName: displayName.value,
         email: email.value,
-        image: profileImage.files[0],
+        image: URL.createObjectURL(profileImage.files[0]),
         public: publicPlaylists.checked,
         accountType: "email"
       });
