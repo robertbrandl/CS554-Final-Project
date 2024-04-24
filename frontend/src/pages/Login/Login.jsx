@@ -1,6 +1,6 @@
 import "./Login.css";
 import React, {useContext} from 'react';
-//import SocialSignIn from './SocialSignIn';
+import SocialSignIn from './SocialSignIn';
 import {Navigate} from 'react-router-dom';
 import {AuthContext} from '../../firebase/Auth';
 import {
@@ -40,6 +40,7 @@ export const Login = () => {
     <div>
       <div className='card'>
         <h1>Log-In</h1>
+        <SocialSignIn />
         <form className='form' onSubmit={handleLogin}>
           <div className='form-group'>
             <label>

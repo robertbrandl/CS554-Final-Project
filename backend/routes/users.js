@@ -13,6 +13,7 @@ router
     let name = createUserData.displayName;
     let email = createUserData.email;
     let image = createUserData.image;
+    console.log(image)
     let publicPlaylist = createUserData.public;
     let type = createUserData.accountType
     let result = undefined;

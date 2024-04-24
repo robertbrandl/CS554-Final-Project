@@ -1,6 +1,7 @@
 import {ObjectId} from 'mongodb';
 import * as validation from '../validation.js';
 import {users} from '../config/mongoCollections.js';
+import gm from "gm";
 const registerUser = async (
     name,
     emailAddress,
@@ -38,6 +39,25 @@ const userExist = async (email) => {
     const user = await userCollection.findOne({emailAddress: em});
     if (user === null) return false;
     return true;
+}
+async function resizeImage(imageData) {
+    return new Promise((resolve, reject) => {
+        // Specify the desired dimensions for the resized image
+        const width = 100; // Specify your desired width
+        const height = 100; // Specify your desired height
+
+        // Resize the image using GraphicsMagick
+        gm(imageData)
+            .resize(width, height)
+            .toBuffer('PNG', (err, buffer) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    // Resolve with the resized image buffer
+                    resolve(buffer);
+                }
+            });
+    });
 }
 export default {
     registerUser,
