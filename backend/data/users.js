@@ -1,7 +1,7 @@
 import {ObjectId} from 'mongodb';
 import * as validation from '../validation.js';
 import {users} from '../config/mongoCollections.js';
-import gm from "gm";
+import gm from 'gm';
 const registerUser = async (
     name,
     emailAddress,
@@ -12,6 +12,7 @@ const registerUser = async (
     const userCollection = await users();
     const user = await userCollection.findOne({emailAddress: emailAddress});
     if (user !== null) throw 'User exists already';
+
     let newUser = {
         name: name,
         emailAddress: emailAddress,
@@ -40,25 +41,7 @@ const userExist = async (email) => {
     if (user === null) return false;
     return true;
 }
-async function resizeImage(imageData) {
-    return new Promise((resolve, reject) => {
-        // Specify the desired dimensions for the resized image
-        const width = 100; // Specify your desired width
-        const height = 100; // Specify your desired height
 
-        // Resize the image using GraphicsMagick
-        gm(imageData)
-            .resize(width, height)
-            .toBuffer('PNG', (err, buffer) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    // Resolve with the resized image buffer
-                    resolve(buffer);
-                }
-            });
-    });
-}
 export default {
     registerUser,
     getAccount, 
