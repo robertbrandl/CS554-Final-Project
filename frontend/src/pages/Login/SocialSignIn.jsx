@@ -65,7 +65,7 @@ const SocialSignIn = () => {
             email: user.email,
             image: user.photoURL,
             public: false,
-            accountType: "google",
+            accountType: "microsoft",
           });
         }
       }
@@ -98,7 +98,7 @@ const SocialSignIn = () => {
             email: user.email,
             image: user.photoURL,
             public: false,
-            accountType: "google",
+            accountType: "github",
           });
         }
       }
