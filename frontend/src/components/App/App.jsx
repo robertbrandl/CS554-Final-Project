@@ -12,10 +12,13 @@ import { FollowedPlaylists } from "../../pages/FollowedPlaylists/FollowedPlaylis
 import { Navbar } from "../Navbar/Navbar";
 import { Mainbar } from "../Mainbar/Mainbar";
 import { AuthProvider } from "../../firebase/Auth";
+import { SingleSong } from "../../pages/SingleSong/SingleSong";
+import { SinglePlaylist } from "../../pages/SinglePlaylist/SinglePlaylist";
+import { SpotifyAuth } from "../../pages/Login/SpotifyAuth";
 
 function App() {
   return (
-      <AuthProvider>
+    <AuthProvider>
       <Navbar />
       <Mainbar />
       <Routes>
@@ -26,10 +29,17 @@ function App() {
         <Route exact path="/account" element={<UserAccount />} />
         <Route exact path="/statistics" element={<UserStats />} />
         <Route exact path="/allplaylists" element={<GenPlaylists />} />
-        <Route exact path="/followedplaylists" element={<FollowedPlaylists />} />
+        <Route
+          exact
+          path="/followedplaylists"
+          element={<FollowedPlaylists />}
+        />
+        <Route exact path="/spotifyauth" element={<SpotifyAuth />} />
+        <Route exact path="/song/:id" element={<SingleSong />} />
+        <Route exact path="/playlist/:id" element={<SinglePlaylist />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      </AuthProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,46 +1,47 @@
 import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signOut,
-    updateProfile,
-    signInWithEmailAndPassword,
-    updatePassword,
-    signInWithPopup,
-    GoogleAuthProvider,
-    sendPasswordResetEmail,
-    EmailAuthProvider,
-    reauthenticateWithCredential,
-    OAuthProvider,
-    GithubAuthProvider
-  } from 'firebase/auth';
-  
-  async function doCreateUserWithEmailAndPassword(email, password, displayName) {
-    const auth = getAuth();
-    await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(auth.currentUser, {displayName: displayName});
-  }
-  
-  async function doChangePassword(email, oldPassword, newPassword) {
-    const auth = getAuth();
-    let credential = EmailAuthProvider.credential(email, oldPassword);
-    console.log(credential);
-    await reauthenticateWithCredential(auth.currentUser, credential);
-  
-    await updatePassword(auth.currentUser, newPassword);
-    await doSignOut();
-  }
-  
-  async function doSignInWithEmailAndPassword(email, password) {
-    let auth = getAuth();
-    await signInWithEmailAndPassword(auth, email, password);
-  }
-  
-  async function doGoogleSignIn() {
-    let auth = getAuth();
-    let socialProvider = new GoogleAuthProvider();
-    let user = undefined;
-    let errorMessage = undefined;
-    await signInWithPopup(auth, socialProvider).then((result) => {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  signInWithEmailAndPassword,
+  updatePassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  OAuthProvider,
+  GithubAuthProvider,
+} from "firebase/auth";
+
+async function doCreateUserWithEmailAndPassword(email, password, displayName) {
+  const auth = getAuth();
+  await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(auth.currentUser, { displayName: displayName });
+}
+
+async function doChangePassword(email, oldPassword, newPassword) {
+  const auth = getAuth();
+  let credential = EmailAuthProvider.credential(email, oldPassword);
+  console.log(credential);
+  await reauthenticateWithCredential(auth.currentUser, credential);
+
+  await updatePassword(auth.currentUser, newPassword);
+  await doSignOut();
+}
+
+async function doSignInWithEmailAndPassword(email, password) {
+  let auth = getAuth();
+  await signInWithEmailAndPassword(auth, email, password);
+}
+
+async function doGoogleSignIn() {
+  let auth = getAuth();
+  let socialProvider = new GoogleAuthProvider();
+  let user = undefined;
+  let errorMessage = undefined;
+  await signInWithPopup(auth, socialProvider)
+    .then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
@@ -48,7 +49,8 @@ import {
       user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       errorMessage = error.message;
@@ -58,18 +60,18 @@ import {
       const credential = GoogleAuthProvider.credentialFromError(error);
       // ...
     });
-    if (!user){
-      return errorMessage;
-    }
-    return user;
+  if (!user) {
+    return errorMessage;
   }
-  
-  async function doMicrosoftSignIn(){
-    const provider = new OAuthProvider('microsoft.com');
-    const auth = getAuth();
-    let user = undefined;
-    let errorMessage = undefined;
-    await signInWithPopup(auth, provider)
+  return user;
+}
+
+async function doMicrosoftSignIn() {
+  const provider = new OAuthProvider("microsoft.com");
+  const auth = getAuth();
+  let user = undefined;
+  let errorMessage = undefined;
+  await signInWithPopup(auth, provider)
     .then((result) => {
       // User is signed in.
       // IdP data available in result.additionalUserInfo.profile.
@@ -81,63 +83,63 @@ import {
       user = result.additionalUserInfo.profile;
     })
     .catch((error) => {
-      errorMessage = error.message
+      errorMessage = error.message;
     });
-    console.log(user)
-    console.log(errorMessage)
-    if (!user){
-      return errorMessage;
-    }
-    return user;
+  console.log(user);
+  console.log(errorMessage);
+  if (!user) {
+    return errorMessage;
+  }
+  return user;
+}
+async function doGithubSignIn() {
+  let auth = getAuth();
+  let provider = new GithubAuthProvider();
+  let user = undefined;
+  let errorMessage = undefined;
+  await signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
 
+      // The signed-in user info.
+      user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GithubAuthProvider.credentialFromError(error);
+      // ...
+    });
+  if (!user) {
+    return errorMessage;
   }
-  async function doGithubSignIn(){
-      let auth = getAuth();
-      let provider = new GithubAuthProvider();
-      let user = undefined;
-      let errorMessage = undefined;
-      await signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-        const credential = GithubAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+  return user;
+}
+async function doPasswordReset(email) {
+  let auth = getAuth();
+  await sendPasswordResetEmail(auth, email);
+}
 
-        // The signed-in user info.
-        user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GithubAuthProvider.credentialFromError(error);
-        // ...
-      });
-      if (!user){
-        return errorMessage;
-      }
-      return user;
-  }
-  async function doPasswordReset(email) {
-    let auth = getAuth();
-    await sendPasswordResetEmail(auth, email);
-  }
-  
-  async function doSignOut() {
-    let auth = getAuth();
-    await signOut(auth);
-  }
-  
-  export {
-    doCreateUserWithEmailAndPassword,
-    doGoogleSignIn,
-    doSignInWithEmailAndPassword,
-    doPasswordReset,
-    doSignOut,
-    doChangePassword,
-    doMicrosoftSignIn,
-    doGithubSignIn
-  };
+async function doSignOut() {
+  let auth = getAuth();
+  await signOut(auth);
+}
+
+export {
+  doCreateUserWithEmailAndPassword,
+  doGoogleSignIn,
+  doSignInWithEmailAndPassword,
+  doPasswordReset,
+  doSignOut,
+  doChangePassword,
+  doMicrosoftSignIn,
+  doGithubSignIn,
+};

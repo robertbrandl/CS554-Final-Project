@@ -1,18 +1,19 @@
 import "./Login.css";
-import React, {useContext} from 'react';
-import SocialSignIn from './SocialSignIn';
-import {Navigate} from 'react-router-dom';
-import {AuthContext} from '../../firebase/Auth';
+import { useContext } from "react";
+import SocialSignIn from "./SocialSignIn";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../../firebase/Auth";
 import {
   doSignInWithEmailAndPassword,
-  doPasswordReset
-} from '../../firebase/FirebaseFunctions';
+  doPasswordReset,
+} from "../../firebase/FirebaseFunctions";
+
 export const Login = () => {
   console.log(AuthContext);
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const handleLogin = async (event) => {
     event.preventDefault();
-    let {email, password} = event.target.elements;
+    let { email, password } = event.target.elements;
 
     try {
       await doSignInWithEmailAndPassword(email.value, password.value);
@@ -23,59 +24,59 @@ export const Login = () => {
 
   const passwordReset = (event) => {
     event.preventDefault();
-    let email = document.getElementById('email').value;
+    let email = document.getElementById("email").value;
     if (email) {
       doPasswordReset(email);
-      alert('Password reset email was sent');
+      alert("Password reset email was sent");
     } else {
       alert(
-        'Please enter an email address below before you click the forgot password link'
+        "Please enter an email address below before you click the forgot password link"
       );
     }
   };
   if (currentUser) {
-    return <Navigate to='/' />;
+    return <Navigate to="/spotifyauth" />;
   }
   return (
     <div>
-      <div className='card'>
+      <div className="card">
         <h1>Log-In</h1>
         <SocialSignIn />
-        <form className='form' onSubmit={handleLogin}>
-          <div className='form-group'>
+        <form className="form" onSubmit={handleLogin}>
+          <div className="form-group">
             <label>
               Email Address:
               <br />
               <input
-                name='email'
-                id='email'
-                type='email'
-                placeholder='Email'
+                name="email"
+                id="email"
+                type="email"
+                placeholder="Email"
                 required
                 autoFocus={true}
               />
             </label>
           </div>
           <br />
-          <div className='form-group'>
+          <div className="form-group">
             <label>
               Password:
               <br />
               <input
-                name='password'
-                type='password'
-                placeholder='Password'
-                autoComplete='off'
+                name="password"
+                type="password"
+                placeholder="Password"
+                autoComplete="off"
                 required
               />
             </label>
           </div>
 
-          <button className='button' type='submit'>
+          <button className="button" type="submit">
             Log in
           </button>
 
-          <button className='forgotPassword' onClick={passwordReset}>
+          <button className="forgotPassword" onClick={passwordReset}>
             Forgot Password
           </button>
         </form>
@@ -84,5 +85,4 @@ export const Login = () => {
       </div>
     </div>
   );
-}
-
+};
