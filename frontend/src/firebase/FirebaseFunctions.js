@@ -10,8 +10,8 @@ import {
   sendPasswordResetEmail,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  OAuthProvider,
   GithubAuthProvider,
+  FacebookAuthProvider
 } from "firebase/auth";
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
@@ -65,28 +65,35 @@ async function doGoogleSignIn() {
   }
   return user;
 }
-
-async function doMicrosoftSignIn() {
-  const provider = new OAuthProvider("microsoft.com");
-  const auth = getAuth();
+async function doFacebookSignIn() {
+  let auth = getAuth();
+  const provider = new FacebookAuthProvider();
   let user = undefined;
   let errorMessage = undefined;
   await signInWithPopup(auth, provider)
-    .then((result) => {
-      // User is signed in.
-      // IdP data available in result.additionalUserInfo.profile.
+  .then((result) => {
+    // The signed-in user info.
+    user = result.user;
 
-      // Get the OAuth access token and ID Token
-      const credential = OAuthProvider.credentialFromResult(result);
-      const accessToken = credential.accessToken;
-      const idToken = credential.idToken;
-      user = result.additionalUserInfo.profile;
-    })
-    .catch((error) => {
-      errorMessage = error.message;
-    });
-  console.log(user);
-  console.log(errorMessage);
+    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    const credential = FacebookAuthProvider.credentialFromResult(result);
+    const accessToken = credential.accessToken;
+
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = FacebookAuthProvider.credentialFromError(error);
+
+    // ...
+  });
+  console.log(user)
   if (!user) {
     return errorMessage;
   }
@@ -140,6 +147,6 @@ export {
   doPasswordReset,
   doSignOut,
   doChangePassword,
-  doMicrosoftSignIn,
+  doFacebookSignIn,
   doGithubSignIn,
 };

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import {
   doGoogleSignIn,
-  doMicrosoftSignIn,
   doGithubSignIn,
+  doFacebookSignIn
 } from "../../firebase/FirebaseFunctions";
 import axios from "axios";
 
@@ -44,14 +44,14 @@ const SocialSignIn = () => {
       }
     }
   };
-  const microsoftSignOn = async () => {
+
+  const facebookSignOn = async () => {
     try {
-      let user = await doMicrosoftSignIn();
+      let user = await doFacebookSignIn();
       if (typeof user === "string") {
         throw user;
       } else {
         //check for if user exists
-        console.log(user);
         const exist = await axios.get("/api/users/userexist", {
           params: {
             email: user.email,
@@ -65,8 +65,10 @@ const SocialSignIn = () => {
             email: user.email,
             image: user.photoURL,
             public: false,
-            accountType: "microsoft",
+            accountType: "facebook",
           });
+
+          window.location.href = AUTH_URL;
         }
       }
     } catch (error) {
@@ -77,6 +79,7 @@ const SocialSignIn = () => {
       }
     }
   };
+  
   const githubSignOn = async () => {
     try {
       let user = await doGithubSignIn();
@@ -119,9 +122,9 @@ const SocialSignIn = () => {
         src="/imgs/btn_google_signin.png"
       />
       <img
-        onClick={() => microsoftSignOn()}
-        alt="microsoft signin"
-        src="/imgs/btn_microsoft_signin.png"
+        onClick={() => facebookSignOn()}
+        alt="facebook signin"
+        src="/imgs/btn_facebook_signin.png"
       />
       <img
         onClick={() => githubSignOn()}
