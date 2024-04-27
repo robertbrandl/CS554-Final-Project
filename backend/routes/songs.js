@@ -4,5 +4,9 @@ import axios from "axios";
 
 //route to get a single song route based on its id
 router.route("/song/:id").get(async (req, res) => {
-  const data = axios.get(`https://api.spotify.com/v1/tracks/${req.params.id}`);
+  const data = await axios.get(`https://api.deezer.com/track/${req.params.id}`);
+  console.log(data.data);
+  return res.status(200).json(data.data);
 });
+
+export default router;
