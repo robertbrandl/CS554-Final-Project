@@ -2,7 +2,7 @@ import "./SinglePlaylist.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; 
 import axios from "axios";
-export const SinglePlaylist = ({ id }) => {
+export const SinglePlaylist = () => {
   const [playlistData, setPlaylistData] = useState(null);
   const [error, setError] = useState('');
   const { id } = useParams(); 

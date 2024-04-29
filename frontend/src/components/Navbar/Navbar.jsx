@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { doSignOut } from "../../firebase/FirebaseFunctions";
 import { AuthContext } from "../../firebase/Auth";
 export const Navbar = () => {
@@ -8,6 +8,11 @@ export const Navbar = () => {
   return <div>{currentUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>;
 };
 const NavigationAuth = () => {
+  const navigate = useNavigate();
+  const signout = () =>{
+    doSignOut();
+    navigate("/")
+  }
   return (
     <nav className="navbar">
       <ul>
@@ -18,7 +23,7 @@ const NavigationAuth = () => {
           <Link to="/account">Account</Link>
         </li>
         <li>
-          <button className="button" type="button" onClick={doSignOut}>
+          <button className="button" type="button" onClick={signout}>
             Sign Out
           </button>
         </li>
