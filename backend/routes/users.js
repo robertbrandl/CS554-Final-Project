@@ -1,7 +1,10 @@
 import { Router } from "express";
 const router = Router();
 import { userData } from "../data/index.js";
+import { createClient } from 'redis';
 import SpotifyWebApi from "spotify-web-api-node";
+const client = createClient();
+client.connect().then(() => {});
 
 router.route("/register").post(async (req, res) => {
   const createUserData = req.body;
@@ -28,22 +31,45 @@ router.route("/register").post(async (req, res) => {
   } catch (e) {
     return res.status(400).json({ error: "Error: " + e });
   }
+  await client.del(`userexist/${email}`);
   return res.status(200).json(result);
 });
+
 router.route("/account").get(async (req, res) => {
   const email = req.query.email;
-  let result = undefined;
-  try {
-    result = await userData.getAccount(email);
-  } catch (e) {
-    return res.status(400).json({ error: "Error: " + e });
+  let exists = await client.exists(`account/${email}`);
+  if (exists) {
+    let result = await client.get(`account/${email}`);
+    return res.status(200).json(JSON.parse(result));
   }
-  return res.status(200).json(result);
+  else{
+    let result = undefined;
+    try {
+      result = await userData.getAccount(email);
+    } catch (e) {
+      return res.status(400).json({ error: "Error: " + e });
+    }
+    await client.SETEX(`account/${email}`, 3600, JSON.stringify(result));
+    return res.status(200).json(result);
+  }
 });
+
 router.route("/userexist").get(async (req, res) => {
   const email = req.query.email;
-  const result = await userData.userExist(email);
-  return res.status(200).json(result);
+  let exists = await client.exists(`userexist/${email}`);
+  if (exists) {
+    let result = await client.get(`userexist/${email}`);
+    return res.status(200).json(JSON.parse(result));
+  }
+  else{
+    try{
+      const result = await userData.userExist(email);
+      await client.SETEX(`userexist/${email}`, 3600, JSON.stringify(result));
+      return res.status(200).json(result);
+    }catch(e){
+      return res.status(400).json({ error: "Error: " + e });
+    }
+  }
 });
 
 router.route("/spotifyAuth").post(async (req, res) => {
