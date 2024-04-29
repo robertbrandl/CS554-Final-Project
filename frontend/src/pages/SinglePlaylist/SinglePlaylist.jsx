@@ -1,13 +1,26 @@
 import "./SinglePlaylist.css";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; 
 import axios from "axios";
 export const SinglePlaylist = ({ id }) => {
   const [playlistData, setPlaylistData] = useState(null);
+  const [error, setError] = useState('');
+  const { id } = useParams(); 
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/Playlist/${id}`)
-      .then((res) => setPlaylistData(res.data));
+    setError('');
+    async function fetchData() {
+      try{
+        const data = await axios.get(`/api/playlists/playlist/${id}`);
+        setPlaylistData(data)
+      }catch(e){
+        setError(e.message);
+      }
+    }
+    fetchData()
   }, [id]);
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
   return <div>SinglePlaylist</div>;
 };
