@@ -1,5 +1,5 @@
 import "./Login.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SocialSignIn from "./SocialSignIn";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
@@ -11,14 +11,19 @@ import {
 export const Login = () => {
   console.log(AuthContext);
   const { currentUser } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [sentEmail, setSentEmail] = useState('');
   const handleLogin = async (event) => {
     event.preventDefault();
     let { email, password } = event.target.elements;
 
     try {
       await doSignInWithEmailAndPassword(email.value, password.value);
+      setErrorMessage('');
+      setSentEmail('');
     } catch (error) {
-      alert(error);
+      setErrorMessage(error.message);
+      setSentEmail('');
     }
   };
 
@@ -27,11 +32,13 @@ export const Login = () => {
     let email = document.getElementById("email").value;
     if (email) {
       doPasswordReset(email);
-      alert("Password reset email was sent");
+      setSentEmail("If you have an account, an email was sent to it! If you need to reset your password for a social provider, click the links above!");
+      setErrorMessage('');
     } else {
-      alert(
+      setErrorMessage(
         "Please enter an email address below before you click the forgot password link"
       );
+      setSentEmail('');
     }
   };
   if (currentUser) {
@@ -42,6 +49,8 @@ export const Login = () => {
       <div className="card">
         <h1>Log-In</h1>
         <SocialSignIn />
+        {errorMessage && <h4 className='error'>{errorMessage}</h4>}
+        {sentEmail && <h4 >{sentEmail}</h4>}
         <form className="form" onSubmit={handleLogin}>
           <div className="form-group">
             <label>
