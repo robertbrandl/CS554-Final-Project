@@ -13,17 +13,21 @@ export const Login = () => {
   const { currentUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
   const [sentEmail, setSentEmail] = useState('');
+  const [loading, setLoading] = useState(true);
   const handleLogin = async (event) => {
     event.preventDefault();
     let { email, password } = event.target.elements;
 
     try {
+      setLoading(true);
       await doSignInWithEmailAndPassword(email.value, password.value);
       setErrorMessage('');
       setSentEmail('');
+      setLoading(false);
     } catch (error) {
       setErrorMessage(error.message);
       setSentEmail('');
+      setLoading(true);
     }
   };
 
@@ -43,6 +47,9 @@ export const Login = () => {
   };
   if (currentUser) {
     return <Navigate to="/spotifyauth" />;
+  }
+  if (loading){
+    return <div>Loading...</div>
   }
   return (
     <div>

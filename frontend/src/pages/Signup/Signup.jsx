@@ -8,6 +8,7 @@ import SocialSignIn from '../Login/SocialSignIn';
 export const Signup = () => {
   const {currentUser} = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(true);
   const handleSignUp = async (e) => {
     e.preventDefault();
     const {displayName, email, passwordOne, passwordTwo, profileImage, publicPlaylists} = e.target.elements;
@@ -15,8 +16,8 @@ export const Signup = () => {
       setErrorMessage('Passwords do not match');
       return false;
     }
-
     try {
+      setLoading(true);
       await doCreateUserWithEmailAndPassword(
         email.value,
         passwordOne.value,
@@ -34,13 +35,19 @@ export const Signup = () => {
         accountType: "email"
       });
       setErrorMessage('');
+      setLoading(false);
     } catch (error) {
       setErrorMessage(error.message);
+      setLoading(false);
     }
   };
 
   if (currentUser) {
     return <Navigate to='/home' />;
+  }
+
+  if (loading){
+    return <div>Loading...</div>
   }
 
   return (

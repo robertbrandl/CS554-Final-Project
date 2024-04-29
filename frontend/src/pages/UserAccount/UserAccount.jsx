@@ -29,6 +29,7 @@ export const UserAccount = () => {
         setLoading(false);
       } catch (e) {
         setErrorMessage(e.message);
+        setLoading(false);
       }
     }
     fetchData();
