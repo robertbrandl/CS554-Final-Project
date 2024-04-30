@@ -1,0 +1,13 @@
+.preview{
+    margin-top: -80px;
+    color: aqua;
+}
+
+.explicit{
+    color: red;
+}
+
+.artist-image{
+    width: 120px;
+    border-radius: 50%;
+}
