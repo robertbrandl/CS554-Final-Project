@@ -8,7 +8,7 @@ import SocialSignIn from '../Login/SocialSignIn';
 export const Signup = () => {
   const {currentUser} = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const handleSignUp = async (e) => {
     e.preventDefault();
     const {displayName, email, passwordOne, passwordTwo, profileImage, publicPlaylists} = e.target.elements;

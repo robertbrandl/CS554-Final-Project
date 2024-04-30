@@ -13,7 +13,7 @@ export const Login = () => {
   const { currentUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
   const [sentEmail, setSentEmail] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (event) => {
     event.preventDefault();
     let { email, password } = event.target.elements;

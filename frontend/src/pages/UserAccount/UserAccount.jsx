@@ -8,14 +8,14 @@ import {
 import axios from "axios";
 export const UserAccount = () => {
   const {currentUser} = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [sentEmail, setSentEmail] = useState('');
   const [data, setData] = useState({})
   console.log(currentUser)
   useEffect(() => {
-    setLoading(true);
     async function fetchData() {
+      setLoading(true);
       try {
         const {data} = await axios.get('/api/users/account', {
           params: {
@@ -32,7 +32,9 @@ export const UserAccount = () => {
         setLoading(false);
       }
     }
+    if (currentUser){
     fetchData();
+    }
   }, []);
 
   const passwordReset = (event) => {
@@ -55,6 +57,9 @@ export const UserAccount = () => {
   }
   else if (errorMessage){
     return <div>Error: {errorMessage}</div>
+  }
+  if (!currentUser){
+    return <div>You must be logged in to access this page!</div>
   }
   return (
     <div className='card'>
