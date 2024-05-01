@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "firebase": "^10.9.0",

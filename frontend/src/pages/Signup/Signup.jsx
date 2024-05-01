@@ -51,17 +51,17 @@ export const Signup = () => {
   }
 
   return (
-    <div className='card'>
-      <h1>Sign up</h1>
+    <div className="login">
+      <h4>Sign up</h4>
       <SocialSignIn />
       {errorMessage && <h4 className='error'>{errorMessage}</h4>}
       <form onSubmit={handleSignUp}>
-        <div className='form-group'>
+        <div className='text_area'>
           <label>
             Name:
             <br />
             <input
-              className='form-control'
+              className="text_input"
               required
               name='displayName'
               type='text'
@@ -70,12 +70,12 @@ export const Signup = () => {
             />
           </label>
         </div>
-        <div className='form-group'>
+        <div className='text_area'>
           <label>
             Email:
             <br />
             <input
-              className='form-control'
+              className="text_input"
               required
               name='email'
               type='email'
@@ -83,12 +83,12 @@ export const Signup = () => {
             />
           </label>
         </div>
-        <div className='form-group'>
+        <div className='text_area'>
           <label>
             Password:
             <br />
             <input
-              className='form-control'
+              className="text_input"
               id='passwordOne'
               name='passwordOne'
               type='password'
@@ -98,16 +98,16 @@ export const Signup = () => {
             />
           </label>
         </div>
-        <div className='form-group'>
+        <div className='text_area'>
           <label>
             Confirm Password:
             <br />
             <input
-              className='form-control'
               name='passwordTwo'
               type='password'
               placeholder='Confirm Password'
               autoComplete='off'
+              className="text_input"
               required
             />
           </label>
@@ -136,7 +136,7 @@ export const Signup = () => {
           </label>
         </div>
         <button
-          className='button'
+          className='btn'
           id='submitButton'
           name='submitButton'
           type='submit'
