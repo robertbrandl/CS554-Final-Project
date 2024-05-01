@@ -7,6 +7,7 @@ import {
   doSignInWithEmailAndPassword,
   doPasswordReset,
 } from "../../firebase/FirebaseFunctions";
+import { Card,Typography, TextField} from "@mui/material";
 
 export const Login = () => {
   console.log(AuthContext);
@@ -27,7 +28,7 @@ export const Login = () => {
     } catch (error) {
       setErrorMessage(error.message);
       setSentEmail('');
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -52,53 +53,40 @@ export const Login = () => {
     return <div>Loading...</div>
   }
   return (
-    <div>
-      <div className="card">
-        <h1>Log-In</h1>
+    <div className="login">
+        <h4>Log-In</h4>
         <SocialSignIn />
-        {errorMessage && <h4 className='error'>{errorMessage}</h4>}
-        {sentEmail && <h4 >{sentEmail}</h4>}
-        <form className="form" onSubmit={handleLogin}>
-          <div className="form-group">
-            <label>
-              Email Address:
-              <br />
-              <input
-                name="email"
-                id="email"
-                type="email"
-                placeholder="Email"
-                required
-                autoFocus={true}
-              />
-            </label>
-          </div>
-          <br />
-          <div className="form-group">
-            <label>
-              Password:
-              <br />
-              <input
-                name="password"
-                type="password"
-                placeholder="Password"
-                autoComplete="off"
-                required
-              />
-            </label>
-          </div>
-
-          <button className="button" type="submit">
-            Log in
-          </button>
-
-          <button className="forgotPassword" onClick={passwordReset}>
-            Forgot Password
-          </button>
-        </form>
-
+        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
+        {sentEmail && <Typography>{sentEmail}</Typography>}
         <br />
+        <form onSubmit={handleLogin}>
+          <div className="text_area">
+          <input
+            name="email"
+            id="email"
+            type="email"
+            label="Email Address"
+            placeholder="Email"
+            className="text_input"
+            required
+            autoFocus
+          />
+          </div>
+          <div className="text_area">
+            <input
+              name="password"
+              type="password"
+              label="Password"
+              placeholder="Password"
+              autoComplete="off"
+              className="text_input"
+              required
+            />
+          </div>
+          <button type="submit" className="btn">Log in</button>
+          <br />
+          <button onClick={passwordReset} className="btn">Forgot Password?</button>
+        </form>
       </div>
-    </div>
   );
 };
