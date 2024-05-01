@@ -1,13 +1,59 @@
-.preview{
+.single-song .preview{
     margin-top: -80px;
     color: aqua;
 }
 
-.explicit{
+.single-song .explicit{
     color: red;
 }
 
-.artist-image{
+.single-song .artist-image{
     width: 120px;
     border-radius: 50%;
+}
+
+.single-song{
+    padding: 10px;
+    text-align: left;
+    
+}
+
+.single-song .add-to-playlist{
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 5px;
+    float:right;
+ 
+}
+
+.single-song .add-to-playlist:hover{
+  background-color: rgb(219, 219, 219);  
+  cursor: pointer;
+}
+
+.existing-playlist{
+    background-color: white;
+    margin-top: -135px;
+    float: right;
+
+}
+
+.playlist-list{
+    list-style-type: none;
+    font-size: 20px;
+    border: 2px solid black;
+   
+   
+}
+
+.single-playlist-add{
+    padding: 5px;
+    margin: 0px;
+    font-size: 18px;
+    width: 100%;
+    border: none;
+}
+
+.single-playlist-add:hover{
+   background-color: rgb(223, 223, 223);
 }

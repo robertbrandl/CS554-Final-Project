@@ -1,26 +1,26 @@
 
-body{
+.login{
     background: linear-gradient(135deg, #1B8AF1, #B58DED);
     height: 100vh;
     width: 100%;
     text-align: center;
 }
 
-h4{
+.login h4{
     font-family: 'Segoe UI', bold;
     font-size: 35px;
     margin-top: 4rem;
     margin-bottom: 2rem;
 }
 
-form{
+.login form{
     display: inline-block;
     align-items: center;
     height: 290px;
     width: 350px;
     margin-bottom: 170px;
 }
-.text_area{
+.login .text_area{
     align-content: center;
     border-radius: 22px;
     margin-bottom: 35px;
@@ -29,7 +29,7 @@ form{
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.text_input{
+.login .text_input{
     margin-top: 1.2rem;
     font-family: 'Montserrat regular';
     font-size: 20px;
@@ -37,7 +37,7 @@ form{
     width: 80%;
 }
 
-.btn{
+.login .btn{
     margin-top: 28px;
     width: 165px;
     height: 60px;

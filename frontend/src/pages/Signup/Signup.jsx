@@ -51,7 +51,7 @@ export const Signup = () => {
   }
 
   return (
-    <div className="login">
+    <div className="signup">
       <h4>Sign up</h4>
       <SocialSignIn />
       {errorMessage && <h4 className='error'>{errorMessage}</h4>}
