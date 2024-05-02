@@ -28,7 +28,7 @@ export const SingleSong = () => {
   const [songData, setSongData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {

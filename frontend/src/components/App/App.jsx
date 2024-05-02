@@ -14,7 +14,6 @@ import { Mainbar } from "../Mainbar/Mainbar";
 import { AuthProvider } from "../../firebase/Auth";
 import { SingleSong } from "../../pages/SingleSong/SingleSong";
 import { SinglePlaylist } from "../../pages/SinglePlaylist/SinglePlaylist";
-import { SpotifyAuth } from "../../pages/Login/SpotifyAuth";
 
 function App() {
   return (
@@ -34,7 +33,6 @@ function App() {
           path="/followedplaylists"
           element={<FollowedPlaylists />}
         />
-        <Route exact path="/spotifyauth" element={<SpotifyAuth />} />
         <Route exact path="/song/:id" element={<SingleSong />} />
         <Route exact path="/playlist/:id" element={<SinglePlaylist />} />
         <Route path="*" element={<NotFound />} />
