@@ -7,7 +7,7 @@ import {
   doSignInWithEmailAndPassword,
   doPasswordReset,
 } from "../../firebase/FirebaseFunctions";
-import { Card,Typography, TextField} from "@mui/material";
+import {Typography} from "@mui/material";
 
 export const Login = () => {
   console.log(AuthContext);
@@ -47,7 +47,7 @@ export const Login = () => {
     }
   };
   if (currentUser) {
-    return <Navigate to="/spotifyauth" />;
+    return <Navigate to="/" />;
   }
   if (loading){
     return <div>Loading...</div>

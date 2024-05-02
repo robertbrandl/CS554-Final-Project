@@ -5,6 +5,7 @@ import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions
 import {AuthContext} from '../../firebase/Auth';
 import axios from "axios";
 import SocialSignIn from '../Login/SocialSignIn';
+import {Typography} from "@mui/material";
 export const Signup = () => {
   const {currentUser} = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
@@ -43,7 +44,7 @@ export const Signup = () => {
   };
 
   if (currentUser) {
-    return <Navigate to='/home' />;
+    return <Navigate to='/' />;
   }
 
   if (loading){
@@ -54,7 +55,7 @@ export const Signup = () => {
     <div className="signup">
       <h4>Sign up</h4>
       <SocialSignIn />
-      {errorMessage && <h4 className='error'>{errorMessage}</h4>}
+      {errorMessage && <Typography color="error">{errorMessage}</Typography>}
       <form onSubmit={handleSignUp}>
         <div className='text_area'>
             <br />
