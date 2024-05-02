@@ -2,12 +2,10 @@ import { useState } from "react";
 import {
   doGoogleSignIn,
   doGithubSignIn,
-  doFacebookSignIn
+  doFacebookSignIn,
 } from "../../firebase/FirebaseFunctions";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
-
-const AUTH_URL = `https://accounts.spotify.com/authorize?client_id=ecc83a6641e049bf952e546ede620995&response_type=code&redirect_uri=http://localhost:5173&scope=streaming%20user-read-email%20user-read-private`;
+import { useNavigate } from "react-router-dom";
 
 const SocialSignIn = () => {
   const navigate = useNavigate();
@@ -35,9 +33,9 @@ const SocialSignIn = () => {
             accountType: "google",
           });
 
-          window.location.href = AUTH_URL;
+          window.location.href = "/";
         }
-        navigate("/")
+        navigate("/");
       }
     } catch (error) {
       if (typeof error == "string") {
@@ -71,9 +69,9 @@ const SocialSignIn = () => {
             accountType: "facebook",
           });
 
-          window.location.href = AUTH_URL;
+          window.location.href = "/";
         }
-        navigate("/")
+        navigate("/");
       }
     } catch (error) {
       if (typeof error == "string") {
@@ -83,7 +81,7 @@ const SocialSignIn = () => {
       }
     }
   };
-  
+
   const githubSignOn = async () => {
     try {
       let user = await doGithubSignIn();
@@ -108,7 +106,7 @@ const SocialSignIn = () => {
             accountType: "github",
           });
         }
-        navigate("/")
+        navigate("/");
       }
     } catch (error) {
       if (typeof error == "string") {
