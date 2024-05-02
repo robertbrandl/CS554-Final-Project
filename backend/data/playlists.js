@@ -36,14 +36,7 @@ const getAllPlaylists = async () => {
   return allPlaylists;
 };
 
-const createPlaylist = async (
-  title,
-  userId,
-  userName,
-  albumCover,
-  dateCreated,
-  genre
-) => {
+const createPlaylist = async (title, userId, userName, albumCover, genre) => {
   const playlistCollection = await playlists();
   const userCollection = await users();
 
@@ -53,7 +46,7 @@ const createPlaylist = async (
     userId: userId.trim(),
     userName: userName.trim(),
     albumCover: albumCover,
-    dateCreated: dateCreated,
+    dateCreated: new Date(),
     genre: genre.trim(),
     songIds: [],
   };
@@ -156,11 +149,17 @@ const deletePlaylist = async (playlistId) => {
   }
 };
 //tester
-// try {
-//   await deletePlaylist("6632baf48003b868b4883550");
-// } catch (e) {
-//   console.log(e);
-// }
+try {
+  await createPlaylist(
+    "My Playlist",
+    "662814901e7dca64ab67edf4",
+    "Rivaldo DSilva",
+    "linktoAlbumCover",
+    "POP"
+  );
+} catch (e) {
+  console.log(e);
+}
 
 export default {
   getPlaylist,
