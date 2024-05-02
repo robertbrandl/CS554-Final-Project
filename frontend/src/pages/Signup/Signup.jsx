@@ -57,8 +57,6 @@ export const Signup = () => {
       {errorMessage && <h4 className='error'>{errorMessage}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='text_area'>
-          <label>
-            Name:
             <br />
             <input
               className="text_input"
@@ -68,11 +66,8 @@ export const Signup = () => {
               placeholder='Name'
               autoFocus={true}
             />
-          </label>
         </div>
         <div className='text_area'>
-          <label>
-            Email:
             <br />
             <input
               className="text_input"
@@ -81,11 +76,8 @@ export const Signup = () => {
               type='email'
               placeholder='Email'
             />
-          </label>
         </div>
         <div className='text_area'>
-          <label>
-            Password:
             <br />
             <input
               className="text_input"
@@ -96,11 +88,8 @@ export const Signup = () => {
               autoComplete='off'
               required
             />
-          </label>
         </div>
         <div className='text_area'>
-          <label>
-            Confirm Password:
             <br />
             <input
               name='passwordTwo'
@@ -110,11 +99,11 @@ export const Signup = () => {
               className="text_input"
               required
             />
-          </label>
         </div>
+        <br />
         <div className='form-group'>
           <label>
-            Profile Image:
+            Add a Profile Image:
             <br />
             <input
               className='form-control'
@@ -125,9 +114,10 @@ export const Signup = () => {
             />
           </label>
         </div>
+        <br />
         <div className='form-group'>
           <label>
-            Check the box if you would like to make your playlists public:
+            Check the box if you would like to make your playlists public:  
             <input
               className='form-check-input'
               name='publicPlaylists'
