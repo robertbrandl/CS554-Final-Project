@@ -14,29 +14,6 @@ const registerUser = async (
     const userCollection = await users();
     const user = await userCollection.findOne({emailAddress: emailAddress});
     if (user !== null) throw 'User exists already';
-    // Convert the Blob to a buffer
-    // Define the URL of the image
-const imageUrl = 'https://graph.facebook.com/972859617758177/picture';
-
-// Define the local file path to save the downloaded image
-const localImagePath = 'temp-profile-img.jpg';
-
-// Download the image from the URL
-request(imageUrl)
-  .pipe(fs.createWriteStream(localImagePath))
-  .on('close', () => {
-    // Once the image is downloaded, resize it using GraphicsMagick or ImageMagick
-    gm(localImagePath)
-      .options({imageMagick: true}) // Enable ImageMagick mode
-      .resize(200, 200)
-      .write('resized-profile-img.jpg', (err) => {
-        if (err) {
-          console.error('Error:', err);
-        } else {
-          console.log('Image resized successfully.');
-        }
-      });
-  });
 
     let newUser = {
         name: name,
@@ -45,7 +22,8 @@ request(imageUrl)
         publicPlaylist: publicPlaylist,//true if playlists/user is public (can be followed and playlists in main list)
         accountType: type,
         playlists: [],
-        followedUsers: []
+        followedUsers: [],
+        savedPlaylists: []
     }
     const insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
