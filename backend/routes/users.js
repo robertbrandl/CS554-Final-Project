@@ -70,4 +70,46 @@ router.route("/userexist").get(async (req, res) => {
   }
 });
 
+router.route("/follow").patch(async (req, res) => {
+  const followData = req.body;
+  if (!followData || Object.keys(followData).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Error: Must press the follow button" });
+  }
+  let email = followData.email;
+  let id =  followData.followId;
+  let result = undefined;
+  try {
+    result = await userData.followUser(
+      email, id
+    );
+  } catch (e) {
+    return res.status(400).json({ error: "Error: " + e });
+  }
+  await client.del(`account/${email}`);
+  return res.status(200).json(result);
+})
+
+router.route("/unfollow").patch(async (req, res) => {
+  const followData = req.body;
+  if (!followData || Object.keys(followData).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Error: Must press the follow button" });
+  }
+  let email = followData.email;
+  let id =  followData.unfollowId;
+  let result = undefined;
+  try {
+    result = await userData.followUser(
+      email, id
+    );
+  } catch (e) {
+    return res.status(400).json({ error: "Error: " + e });
+  }
+  await client.del(`account/${email}`);
+  return res.status(200).json(result);
+})
+
 export default router;
