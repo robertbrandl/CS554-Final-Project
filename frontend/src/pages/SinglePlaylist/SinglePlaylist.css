@@ -1,0 +1,60 @@
+.album-cover {
+  width: 250px;
+  float: left;
+  padding: 20px;
+}
+
+.album-title {
+  padding-top: 155px;
+  font-size: 60px;
+  text-align: left;
+  color: white;
+}
+
+.album-userName {
+  text-align: left;
+  margin-left: 5px;
+  color: white;
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid white;
+  color: white;
+  font-weight: bold;
+}
+
+.header-info {
+  flex: 1;
+}
+.songs-container {
+  padding-top: 60px;
+  padding-right: 100px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 17px;
+  padding: 30px;
+}
+
+.song-row {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  transition: background-color 0.3s ease;
+}
+a {
+  text-decoration: none;
+}
+
+.song-row:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+}
+
+.song-info {
+  flex: 1;
+}

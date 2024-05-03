@@ -44,8 +44,8 @@ const getAllPlaylistSongs = async (playlistId) => {
       // Set the Redis cache
       await client.set("songId".concat(songId), JSON.stringify(songData));
       console.log("SongId", songId, "is set in cache");
+      songsArray.push(songData);
     }
-    songsArray.push(songData);
   }
 
   playlistFound.songsArray = songsArray;
@@ -149,14 +149,20 @@ const DeleteSongsInPlaylist = async (songIds, playlistId) => {
   }
 };
 //tester
-// try {
-//   await addSongToPlaylist("3135554", "6632cad7465962dac74ff5ca");
-//   await DeleteSongsInPlaylist(
-//     ["3135556", "3135554"],
-//     "6632cad7465962dac74ff5ca"
-//   );
-//   await getAllPlaylistSongs("6632cad7465962dac74ff5ca");
-//   await addSongToPlaylist("3135554", "6632cad7465962dac74ff5ca");
-// } catch (e) {
-//   console.log(e);
-// }
+try {
+  // await addSongToPlaylist("3135556", "66342a069a741a742f0ad39f");
+  //   await DeleteSongsInPlaylist(
+  //     ["3135556", "3135554"],
+  //     "6632cad7465962dac74ff5ca"
+  //   );
+  await getAllPlaylistSongs("66342a069a741a742f0ad39f");
+  //   await addSongToPlaylist("3135554", "6632cad7465962dac74ff5ca");
+} catch (e) {
+  console.log(e);
+}
+
+export default {
+  getAllPlaylistSongs,
+  addSongToPlaylist,
+  DeleteSongsInPlaylist,
+};
