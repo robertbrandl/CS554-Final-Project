@@ -53,6 +53,17 @@ router.route("/account").get(async (req, res) => {
   }
 });
 
+router.route("/profile").get(async (req, res) => {
+  const id = req.query.userId;
+  let result = undefined;
+    try {
+      result = await userData.getUserById(id);
+    } catch (e) {
+      return res.status(e.code).json({ error: "Error: " + e.error });
+    }
+    return res.status(200).json(result);
+});
+
 router.route("/userexist").get(async (req, res) => {
   const email = req.query.email;
   let exists = await client.exists(`userexist/${email}`);
@@ -102,7 +113,7 @@ router.route("/unfollow").patch(async (req, res) => {
   let id =  followData.unfollowId;
   let result = undefined;
   try {
-    result = await userData.followUser(
+    result = await userData.unfollowUser(
       email, id
     );
   } catch (e) {

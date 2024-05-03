@@ -68,6 +68,22 @@ const getAccount = async (email) => {
     user._id = user._id.toString();
     return user;
 }
+const getUserById = async (userId) => {
+    let id = undefined;
+    try {
+        id = validation.checkString(userId);
+    } catch (e) {
+        throw { code: 400, error: e };
+    }
+    if (!ObjectId.isValid(id)) {
+        throw { code: 400, error: "Invalid user ID format" };
+    }
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)});
+    if (user === null) throw { code: 404, error:'No user account with that id'};
+    user._id = user._id.toString();
+    return user;
+}
 const followUser = async (email, userToFollowId) => {
     const userCollection = await users();
     const updateResult = await userCollection.updateOne(
@@ -97,11 +113,11 @@ const userExist = async (email) => {
     if (user === null) return false;
     return true;
 }
-
 export default {
     registerUser,
     getAccount, 
     userExist,
     followUser,
-    unfollowUser
+    unfollowUser,
+    getUserById
 }

@@ -1,6 +1,5 @@
 import "./UserAccount.css";
 import React, {useContext, useState, useEffect} from 'react';
-import {Navigate, useParams} from 'react-router-dom';
 import {AuthContext} from '../../firebase/Auth';
 import {
   doPasswordReset,
@@ -13,8 +12,6 @@ export const UserAccount = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [sentEmail, setSentEmail] = useState('');
   const [data, setData] = useState({})
-  const [isFollowing, setIsFollowing] = useState(false);
-  //const { id } = useParams();
   console.log(currentUser)
   useEffect(() => {
     async function fetchData() {
@@ -25,6 +22,9 @@ export const UserAccount = () => {
             email: currentUser.email
           }
         });
+        let followed = data.followedUsers;
+        let playlists = data.playlists;
+        let savedPlaylists = data.savedPlaylists;
         setData(data);
         console.log(data)
         console.log(data.profileImg)
@@ -54,23 +54,6 @@ export const UserAccount = () => {
       setSentEmail('');
     }
   };
-  const handleFollow = async () => {
-    setLoading(true);
-    setIsFollowing(!isFollowing);
-    if (isFollowing){
-      const response = await axios.patch('/api/users/follow', {
-        email: currentUser.email,
-        followId: id
-      });
-    }
-    else{
-      const response = await axios.patch('/api/users/unfollow', {
-        email: currentUser.email,
-        unfollowId: id
-      });
-    }
-    setLoading(false);
-  };
   
   if (loading){
     return <div>Loading...</div>
@@ -95,11 +78,6 @@ export const UserAccount = () => {
         <img src={data.profileImg} alt="Profile Image" />
       </div>
       {data.publicPlaylist ? <>Your playlists and account is public!</> : <>Your playlists and account is private. This means you cannot be followed by other users.</>}
-      {currentUser && data.publicPlaylist && data.emailAddress !== currentUser.email && (
-        <button onClick={handleFollow}>
-          {isFollowing ? 'Unfollow' : 'Follow'}
-        </button>
-      )}
     </div>
   );
 }
