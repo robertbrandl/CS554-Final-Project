@@ -14,7 +14,9 @@ import { Mainbar } from "../Mainbar/Mainbar";
 import { AuthProvider } from "../../firebase/Auth";
 import { SingleSong } from "../../pages/SingleSong/SingleSong";
 import { SinglePlaylist } from "../../pages/SinglePlaylist/SinglePlaylist";
+import {PublicUser} from "../../pages/PublicUser/PublicUser";
 import { MyPlaylists } from "../../pages/MyPlaylists/MyPlaylists";
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
         <Route exact path="/account" element={<UserAccount />} />
         <Route exact path="/statistics" element={<UserStats />} />
         <Route exact path="/allplaylists" element={<GenPlaylists />} />
+        <Route exact path="/user/:id" element={<PublicUser />} />
         <Route
           exact
           path="/followedplaylists"

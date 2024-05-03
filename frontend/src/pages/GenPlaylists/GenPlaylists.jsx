@@ -11,7 +11,7 @@ export const GenPlaylists = () => {
   const [error, setError] = useState('');
   useEffect(() => {
     async function fetchData() {
-      setLoading(true);
+      //setLoading(true);
       try{
         const {data} = await axios.get(`/api/playlists/searchbyname`, {params: {
           name: searchTerm
@@ -23,7 +23,7 @@ export const GenPlaylists = () => {
       }catch(e){
         setError(e.message);
       }
-      setLoading(false);
+      //setLoading(false);
     }
     fetchData();
   }, [searchTerm])
@@ -73,6 +73,7 @@ export const GenPlaylists = () => {
             name='searchTerm'
             value={searchTerm}
             onChange={handleChange}
+            autoFocus
           />
         </label>
       </form>

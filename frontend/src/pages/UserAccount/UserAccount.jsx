@@ -1,11 +1,11 @@
 import "./UserAccount.css";
 import React, {useContext, useState, useEffect} from 'react';
-import {Navigate} from 'react-router-dom';
 import {AuthContext} from '../../firebase/Auth';
 import {
   doPasswordReset,
 } from "../../firebase/FirebaseFunctions";
 import axios from "axios";
+
 export const UserAccount = () => {
   const {currentUser} = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
@@ -22,6 +22,9 @@ export const UserAccount = () => {
             email: currentUser.email
           }
         });
+        let followed = data.followedUsers;
+        let playlists = data.playlists;
+        let savedPlaylists = data.savedPlaylists;
         setData(data);
         console.log(data)
         console.log(data.profileImg)
