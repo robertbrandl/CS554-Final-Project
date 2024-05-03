@@ -1,7 +1,8 @@
 import "./SingleSong.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../firebase/Auth";
 export const PlaylistList = () => {
   return (
     <div className="existing-playlist">
@@ -29,6 +30,7 @@ export const SingleSong = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [visible, setVisible] = useState(false);
+  const { currentUser } = useContext(AuthContext);
   const { id } = useParams();
 
   useEffect(() => {
@@ -36,8 +38,12 @@ export const SingleSong = () => {
       setLoading(true);
       try {
         const data = await axios.get(`http://localhost:3000/songs/song/${id}`);
-        console.log("data =", data);
-        setSongData(data.data);
+        console.log("data =", data.data);
+        if (data && data.data && !data.data.error){
+          setSongData(data.data);
+        }else{
+          setSongData(null);
+        }
 
         setErrorMessage("");
       } catch (e) {
@@ -64,18 +70,18 @@ export const SingleSong = () => {
     <>
       <div className="single-song">
         {songData.title && <h1>{songData.title}</h1>}
-        <button
+        {currentUser && <button
           className="add-to-playlist"
           onClick={() => {
             setVisible((prev) => !prev);
           }}
         >
           Add To Playlist
-        </button>
+        </button>}
 
-        {songData.artist.name && <h2>By : {songData.artist.name}</h2>}
+        {songData.artist && songData.artist.name && <h2>By : {songData.artist.name}</h2>}
 
-        {songData.artist.picture_medium && (
+        {songData.artist && songData.artist.picture_medium && (
           <img
             src={songData.artist.picture_medium}
             alt={songData.artist.picture_medium}
@@ -88,7 +94,7 @@ export const SingleSong = () => {
         )}
         {visible && <PlaylistList />}
 
-        {songData.album.cover_medium && (
+        {songData.album && songData.album.cover_medium && (
           <img
             src={songData.album.cover_medium}
             alt={songData.album.cover_medium}
