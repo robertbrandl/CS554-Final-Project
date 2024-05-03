@@ -15,7 +15,7 @@ const getPlaylist = async (playlistId) => {
   const playlistCollection = await playlists();
   let playlist = undefined;
   try {
-    playlist = await playlistCollection.findOne({ _id: ObjectId(id) });
+    playlist = await playlistCollection.findOne({ _id: new ObjectId(id) });
   } catch (e) {
     throw { code: 500, error: "Internal Server Error" };
   }
@@ -34,6 +34,22 @@ const getAllPlaylists = async () => {
   }
   await synchronizeData();
   return allPlaylists;
+};
+
+const getUsersPlaylists = async (userId) => {
+  console.log("in getUsersPlaylists DF");
+  console.log(userId);
+  const playlistCollection = await playlists();
+  let userPlaylists = undefined;
+  try {
+    userPlaylists = await playlistCollection
+      .find({ userId: new ObjectId(userId) })
+      .toArray();
+  } catch (e) {
+    throw e.message || e;
+  }
+
+  return userPlaylists;
 };
 
 const createPlaylist = async (title, userId, userName, albumCover, genre) => {
@@ -67,6 +83,11 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
     validation.stringValidation(newPlaylist.genre);
 
     createNewPlaylist = await playlistCollection.insertOne(newPlaylist);
+    // Push the created playlistId into the user's songIds array
+    await userCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $push: { songIds: createNewPlaylist.insertedId } }
+    );
   } catch (e) {
     throw e.message || e;
   }
@@ -122,8 +143,9 @@ const updatePlaylist = async (playlistId, updates) => {
   }
 };
 
-const deletePlaylist = async (playlistId) => {
+const deletePlaylist = async (playlistId, userId) => {
   const playlistCollection = await playlists();
+  const userCollection = await users();
   try {
     const playlistFound = await playlistCollection.findOne({
       _id: new ObjectId(playlistId),
@@ -134,6 +156,11 @@ const deletePlaylist = async (playlistId) => {
     }
     console.log("playlist found");
 
+    if (String(playlistFound.userId) !== userId) {
+      throw { code: 403, error: `Unauthorized to delete this playlist` };
+    }
+    console.log("User Authorized to delete this playlist");
+
     const deletedPlaylist = await playlistCollection.deleteOne({
       _id: new ObjectId(playlistId),
     });
@@ -143,6 +170,12 @@ const deletePlaylist = async (playlistId) => {
     }
 
     console.log("playlist deleted");
+
+    // Pull the created playlistId into the user's songIds array
+    await userCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { songIds: new ObjectId(playlistFound._id) } }
+    );
     return deletedPlaylist;
   } catch (e) {
     throw e.message || e;
@@ -150,13 +183,14 @@ const deletePlaylist = async (playlistId) => {
 };
 //tester
 try {
-  await createPlaylist(
-    "My Playlist",
-    "662814901e7dca64ab67edf4",
-    "Rivaldo DSilva",
-    "linktoAlbumCover",
-    "POP"
-  );
+  // await createPlaylist(
+  //   "TRys",
+  //   "662814901e7dca64ab67edf4",
+  //   "Rivaldo DSilva",
+  //   "linktoAlbumCover",
+  //   "POP"
+  // );
+  // await deletePlaylist("6634266ade6bd088d7978944", "662814901e7dca64ab67edf4");
 } catch (e) {
   console.log(e);
 }
@@ -167,4 +201,5 @@ export default {
   createPlaylist,
   updatePlaylist,
   deletePlaylist,
+  getUsersPlaylists,
 };

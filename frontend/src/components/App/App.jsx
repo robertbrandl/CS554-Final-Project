@@ -15,6 +15,8 @@ import { AuthProvider } from "../../firebase/Auth";
 import { SingleSong } from "../../pages/SingleSong/SingleSong";
 import { SinglePlaylist } from "../../pages/SinglePlaylist/SinglePlaylist";
 import {PublicUser} from "../../pages/PublicUser/PublicUser";
+import { MyPlaylists } from "../../pages/MyPlaylists/MyPlaylists";
+
 
 function App() {
   return (
@@ -35,6 +37,7 @@ function App() {
           path="/followedplaylists"
           element={<FollowedPlaylists />}
         />
+        <Route exact path="/myplaylists" element={<MyPlaylists />} />
         <Route exact path="/song/:id" element={<SingleSong />} />
         <Route exact path="/playlist/:id" element={<SinglePlaylist />} />
         <Route path="*" element={<NotFound />} />

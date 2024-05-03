@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
+import React, { useContext } from "react";
 import "./Mainbar.css";
 import { Link } from "react-router-dom";
-import {AuthContext} from '../../firebase/Auth';
+import { AuthContext } from "../../firebase/Auth";
 export const Mainbar = () => {
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   return <div>{currentUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>;
 };
 const NavigationAuth = () => {
@@ -11,14 +11,10 @@ const NavigationAuth = () => {
     <nav className="mainbar">
       <ul>
         <li>
-          <Link to="/songsearch">
-            Browse Songs
-          </Link>
+          <Link to="/songsearch">Browse Songs</Link>
         </li>
         <li>
-          <Link to="/allplaylists">
-            View All Playlists
-          </Link>
+          <Link to="/allplaylists">View All Playlists</Link>
         </li>
         <li>
           <Link to="/followedplaylists">
@@ -26,9 +22,10 @@ const NavigationAuth = () => {
           </Link>
         </li>
         <li>
-          <Link to="/statistics">
-            Your Statistics
-          </Link>
+          <Link to="/myplaylists">View Your Playlists</Link>
+        </li>
+        <li>
+          <Link to="/statistics">Your Statistics</Link>
         </li>
       </ul>
     </nav>
@@ -38,15 +35,11 @@ const NavigationNonAuth = () => {
   return (
     <nav className="mainbar">
       <ul>
-      <li>
-          <Link to="/songsearch">
-            Browse Songs
-          </Link>
+        <li>
+          <Link to="/songsearch">Browse Songs</Link>
         </li>
         <li>
-          <Link to="/allplaylists">
-            View All Playlists
-          </Link>
+          <Link to="/allplaylists">View All Playlists</Link>
         </li>
       </ul>
     </nav>
