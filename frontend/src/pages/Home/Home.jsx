@@ -29,9 +29,8 @@ export const Home = () => {
       <h2>Get Started</h2>
       <p>
         Ready to dive in? Start exploring PlaylistHub by navigating through our
-        various pages using the navigation bar or links provided. Sign up to
-        unlock additional features such as saving playlists and accessing
-        personalized statistics.
+        various pages using the navigation bar. Sign up to unlock additional 
+        features such as saving playlists and accessing personalized statistics.
       </p>
     </div>
   );
