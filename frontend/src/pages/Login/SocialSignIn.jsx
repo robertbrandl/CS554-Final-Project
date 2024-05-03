@@ -41,7 +41,7 @@ const SocialSignIn = () => {
       if (typeof error == "string") {
         setErrorMessage(error);
       } else {
-        setErrorMessage(error.message);
+        setErrorMessage(error.response.data.error);
       }
     }
   };
@@ -77,7 +77,7 @@ const SocialSignIn = () => {
       if (typeof error == "string") {
         setErrorMessage(error);
       } else {
-        setErrorMessage(error.message);
+        setErrorMessage(error.response.data.error);
       }
     }
   };
@@ -112,7 +112,7 @@ const SocialSignIn = () => {
       if (typeof error == "string") {
         setErrorMessage(error);
       } else {
-        setErrorMessage(error.message);
+        setErrorMessage(error.response.data.error);
       }
     }
   };

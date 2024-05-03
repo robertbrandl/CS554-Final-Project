@@ -31,7 +31,7 @@ export const UserAccount = () => {
         setErrorMessage('');
         setLoading(false);
       } catch (e) {
-        setErrorMessage(e.message);
+        setErrorMessage(e.response.data.error);
         setLoading(false);
       }
     }
@@ -59,7 +59,7 @@ export const UserAccount = () => {
     return <div>Loading...</div>
   }
   else if (errorMessage){
-    return <div>Error: {errorMessage}</div>
+    return <div>{errorMessage}</div>
   }
   if (!currentUser){
     return <div>You must be logged in to access this page!</div>

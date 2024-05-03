@@ -38,14 +38,14 @@ export const PublicUser = () => {
         setErrorMessage('');
         setLoading(false);
       } catch (e) {
-        setErrorMessage(e.message);
+        setErrorMessage(e.response.data.error);
         setLoading(false);
       }
     }
     if (currentUser){
     fetchData();
     }
-  }, []);
+  }, [id]);
 
   const handleFollow = async () => {
     setLoading(true);
@@ -70,7 +70,7 @@ export const PublicUser = () => {
     return <div>Loading...</div>
   }
   else if (errorMessage){
-    return <div>Error: {errorMessage}</div>
+    return <div>{errorMessage}</div>
   }
   if (!currentUser){
     return <div>You must be logged in to access this page!</div>

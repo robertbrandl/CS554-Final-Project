@@ -40,7 +40,7 @@ export const Signup = () => {
       setErrorMessage('');
       setLoading(false);
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage(error.response.data.error);
       setLoading(false);
     }
   };
