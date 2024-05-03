@@ -1,0 +1,62 @@
+.song-search-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.song-search-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.song-search-page input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.song-search-page button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.song-search-page button:hover {
+    background-color: #0056b3;
+}
+
+.song-search-page ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.song-search-page li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.song-search-page li div {
+    display: flex;
+    align-items: center;
+}
+
+.song-search-page li h3 {
+    margin: 0;
+}
+
+.song-search-page li p {
+    margin: 5px;
+}
+
+.song-search-page li button {
+    margin-left: auto;
+}
