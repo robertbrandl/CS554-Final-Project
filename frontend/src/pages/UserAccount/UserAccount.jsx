@@ -65,19 +65,19 @@ export const UserAccount = () => {
     return <div>You must be logged in to access this page!</div>
   }
   return (
-    <div className='card'>
+    <div className='account'>
       <h1>Your Account</h1>
-      <p>Name: {data.name}</p>
+      <h4>Name: {data.name}</h4>
       <p>Email: {data.emailAddress}</p>
       {sentEmail && <h4 >{sentEmail}</h4>}
       {data.accountType === "email" &&
-      <button className="forgotPassword" onClick={passwordReset}>
+      <button className="btn" onClick={passwordReset}>
         Reset Password
       </button>}
       <div>
         <img src={data.profileImg} alt="Profile Image" />
       </div>
-      {data.publicPlaylist ? <>Your playlists and account is public!</> : <>Your playlists and account is private. This means you cannot be followed by other users.</>}
+      {data.publicPlaylist ? <p>Your playlists and account is public!</p> : <p>Your playlists and account is private. This means you cannot be followed by other users.</p>}
     </div>
   );
 }

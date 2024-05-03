@@ -1,0 +1,23 @@
+.account .btn{
+    margin-top: 28px;
+    width: 150px;
+    height: 50px;
+    border-radius: 30px;
+    background: #B58DED;
+    border: none;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    color: #FFFFFF;
+    box-shadow: 0 4px 8px 0 rgba(181, 141, 237, 0.7), 0 6px 20px 0 rgba(181, 141, 237, 0.9);
+    cursor: pointer;
+    margin-bottom: 2rem;
+}
+.account h4{
+    font-size: 25px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.account p{
+    font-size: 20px;
+    margin-top: 2rem;
+}
