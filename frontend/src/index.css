@@ -27,23 +27,16 @@ li {
   display: block;
   text-decoration: none;
   color: rgb(255, 255, 255);
+  background-color: rgba(161, 161, 161, 0.33);
   padding: 10px;
   text-align: left;
   border: 1px solid white;
-  background-image: linear-gradient(
-    to right,
-    black 40%,
-    rgb(246, 246, 246) 90%
-  );
+  transition: background-color 0.3s ease;
   border-radius: 5px;
 }
 
 .linker:hover {
-  background-image: linear-gradient(
-    to right,
-    rgb(62, 62, 62) 40%,
-    rgb(223, 223, 223) 90%
-  );
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .genre {

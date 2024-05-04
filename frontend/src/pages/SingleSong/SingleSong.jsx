@@ -39,9 +39,9 @@ export const SingleSong = () => {
       try {
         const data = await axios.get(`http://localhost:3000/songs/song/${id}`);
         console.log("data =", data.data);
-        if (data && data.data && !data.data.error){
+        if (data && data.data && !data.data.error) {
           setSongData(data.data);
-        }else{
+        } else {
           setSongData(null);
         }
 
@@ -69,51 +69,67 @@ export const SingleSong = () => {
   return (
     <>
       <div className="single-song">
-        {songData.title && <h1>{songData.title}</h1>}
-        {currentUser && <button
-          className="add-to-playlist"
-          onClick={() => {
-            setVisible((prev) => !prev);
-          }}
-        >
-          Add To Playlist
-        </button>}
+        <div className="left-stuff">
+          {songData.album && songData.album.cover_medium && (
+            <img
+              src={songData.album.cover_medium}
+              alt={songData.album.cover_medium}
+            />
+          )}
 
-        {songData.artist && songData.artist.name && <h2>By : {songData.artist.name}</h2>}
+          {songData.preview && (
+            <video controls={true} className="preview">
+              <source src={songData.preview} type="audio/mpeg" />
+            </video>
+          )}
+          {songData.title && songData.artist && (
+            <h1 className="song-title">{songData.title}</h1>
+          )}
+          {songData.artist && songData.duration && songData.artist.name && (
+            <h1 className="album-artist">
+              <span>{songData.artist.name}</span> .{" "}
+              <span>{secondsToMinutes(songData.duration)}</span>
+            </h1>
+          )}
 
-        {songData.artist && songData.artist.picture_medium && (
-          <img
-            src={songData.artist.picture_medium}
-            alt={songData.artist.picture_medium}
-            className="artist-image"
-          />
-        )}
+          {songData.artist && songData.artist.picture_medium && (
+            <img
+              src={songData.artist.picture_medium}
+              alt={songData.artist.picture_medium}
+              className="artist-image"
+            />
+          )}
+          {songData.artist && songData.artist.name && (
+            <h1 className="artist-name">Artist: {songData.artist.name}</h1>
+          )}
+          {songData.album && (
+            <h2 className="album-name">Album : {songData.album.title}</h2>
+          )}
+          {songData.explicit_lyrics ? (
+            <h3 className="explicit">Explicit</h3>
+          ) : (
+            <h3 className="album-name">Non-Explicit</h3>
+          )}
+        </div>
 
-        {songData.release_date && (
-          <h2>Release Date: {songData.release_date}</h2>
-        )}
-        {visible && <PlaylistList />}
-
-        {songData.album && songData.album.cover_medium && (
-          <img
-            src={songData.album.cover_medium}
-            alt={songData.album.cover_medium}
-          />
-        )}
-        {songData.duration && (
-          <h3>Duration : {secondsToMinutes(songData.duration)}</h3>
-        )}
-        {songData.explicit_lyrics ? (
-          <h3 className="explicit">Explicit</h3>
-        ) : (
-          <h3>Non-Explicit</h3>
-        )}
-        {songData.preview && (
-          <video controls={true} className="preview">
-            <source src={songData.preview} type="audio/mpeg" />
-          </video>
-        )}
-        {songData.album && <h2>Album : {songData.album.title}</h2>}
+        <div className="right-stuff">
+          {songData.release_date && (
+            <h2 className="release-date">
+              Release Date: {songData.release_date}
+            </h2>
+          )}
+          {currentUser && (
+            <button
+              className="add-to-playlist"
+              onClick={() => {
+                setVisible((prev) => !prev);
+              }}
+            >
+              Add To Playlist
+            </button>
+          )}
+          {visible && <PlaylistList />}
+        </div>
       </div>
     </>
   );
