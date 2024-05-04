@@ -41,7 +41,7 @@ export const UserAccount = () => {
     if (currentUser){
     fetchData();
     }
-  }, []);
+  }, [isPublic]);
 
   const passwordReset = (event) => {
     event.preventDefault();
@@ -61,9 +61,14 @@ export const UserAccount = () => {
     setLoading(true);
     console.log(isPublic)
     if (isPublic === false){
+      try{
       const response = await axios.patch('/api/users/setpublic', {
         email: currentUser.email
       });
+      }catch(e){
+        console.log(e)
+        setErrorMessage(e.message);
+      }
     }
     else{
       const response = await axios.patch('/api/users/setprivate', {

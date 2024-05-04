@@ -109,10 +109,11 @@ const setUserPrivate = async (email) => {
         if (updateResult.modifiedCount !== 1) {
             throw { code: 500, error: 'Failed to set user as public' };
         }
-        await userCollection.updateMany(
-            { followedUsers: user._id },
-            { $pull: { followedUsers: user._id } }
+        const res = await userCollection.updateMany(
+            { followedUsers: { $in: [user._id.toString()] } },
+            { $pull: { followedUsers: user._id.toString() } }
         );
+        console.log(res);
         return updateResult;
     } catch (error) {
         console.error('Error setting user as public:', error);
@@ -125,5 +126,7 @@ export default {
     userExist,
     followUser,
     unfollowUser,
-    getUserById
+    getUserById,
+    setUserPublic,
+    setUserPrivate
 }

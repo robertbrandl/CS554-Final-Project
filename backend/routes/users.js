@@ -127,6 +127,7 @@ router.route("/setpublic").patch(async (req, res) => {
       .status(400)
       .json({ error: "Error: Must press the set public button" });
   }
+  console.log("hi")
   let email = publicData.email;
   let result = undefined;
   try {
@@ -134,6 +135,7 @@ router.route("/setpublic").patch(async (req, res) => {
       email
     );
   } catch (e) {
+    console.log(e)
     return res.status(e.code).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
@@ -156,6 +158,11 @@ router.route("/setprivate").patch(async (req, res) => {
     return res.status(400).json({ error: "Error: " + e });
   }
   await client.del(`account/${email}`);
+  const keys = await client.keys("account*"); 
+  !!keys.length && client.unlink(keys); 
+  const newKeys = await client.keys("account*");
+  console.log(keys);
+  console.log(newKeys);
   return res.status(200).json(result);
 })
 export default router;
