@@ -36,6 +36,23 @@ router.route("/allplaylists").get(async (req, res) => {
     }
   }
 });
+router.route("/followedplaylists").get(async (req, res) => {
+  const { email } = req.query;
+  let exists = await client.exists(`followedplaylists/${email}`);
+    if (exists) {
+        let result = await client.get(`followedplaylists/${email}`);
+        return res.status(200).json(JSON.parse(result));
+    }
+    else{
+        try{
+            const data = await playlistData.getFollowingPlaylists(email);
+            await client.SETEX(`followedplaylists/${email}`, 3600, JSON.stringify(data));
+            return res.status(200).json(data);
+        }catch(e){
+            return res.status(500).json({error: e});
+        }
+    }
+});
 router.route("/searchbyname").get(async (req, res) => {
   try {
     const data = await searchData(req.query.name);

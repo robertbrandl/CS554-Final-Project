@@ -35,6 +35,34 @@ const getAllPlaylists = async () => {
   await synchronizeData();
   return allPlaylists;
 };
+const getFollowingPlaylists = async(
+  userEmail
+) =>{
+  let em = validation.checkString(userEmail);
+  const userCollection = await users();
+  const user = await userCollection.findOne({emailAddress: em});
+  if (user === null) throw 'No user account with that email';
+  let allPlaylists = [];
+
+  try{
+    if(user.followedUser && user.followedUser.length > 0){
+
+      //get users that are followed by user
+      const followedUsers = await db.users.find({_id: {$in: user.followedUser}});
+      if (followedUsers && followedUsers.length > 0) {
+
+      //get playlists of those followed ids
+      const playlistCollection = await playlists();
+      const followedPlaylists = await playlistCollection.find({userId: {$in: followedUsers.map(user => user._id)}});
+      allPlaylists = await followedPlaylists.toArray();
+    }}
+
+  }catch(e){
+      throw e.message || e;
+  }
+  await synchronizeData();
+  return allPlaylists;
+}
 
 const getUsersPlaylists = async (userId) => {
   console.log("in getUsersPlaylists DF");
@@ -198,6 +226,7 @@ try {
 export default {
   getPlaylist,
   getAllPlaylists,
+  getFollowingPlaylists,
   createPlaylist,
   updatePlaylist,
   deletePlaylist,
