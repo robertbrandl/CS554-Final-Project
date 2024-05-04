@@ -13,5 +13,17 @@ Discover, create, and share music playlists with friends. Whether you're searchi
 - To run our project, you must have NodeJS, Elasticsearch, Redis, and GraphicsMagick installed.
 
 # Installation
-
+To run our code:
+enter or cd into the `CS554-Final-Project` directory
+### Backend
+1. Open a node command prompt or terminal as an ADMIN/with elevated permissions (if using Windows, search Node.js command prompt and run as administrator; for Linux/Unix, run as sudo)
+2. cd to the `backend` directory
+3. run the command 'npm seed'
+4. run the command 'npm i'
+5. run the command 'npm start' and the server will be running on localhost:3000
+### Frontend
+1. Open a new node command prompt or terminal
+2. cd to the `frontend` directory
+3. run the command 'npm i'
+4. run the command 'npm run dev' and the application will be running on localhost:5173, navigate there!!!
 # Seed Profiles
