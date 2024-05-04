@@ -47,6 +47,13 @@ export const GenPlaylists = () => {
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  }
 
   if (loading){
     return <div>Loading...</div>
@@ -78,7 +85,25 @@ export const GenPlaylists = () => {
         </label>
       </form>
       {playlistData && playlistData.length > 0 ? 
-      playlistData.map((e) =><div>{e.name}</div>) : <div>No playlists found</div>}
+      playlistData.map((playlist) => (
+        <li key={playlist._id}>
+          <Link
+            className="linker"
+            to={`/playlist/${playlist._id}`}
+          >
+            <span>{playlist.title}</span>
+            <span className="created-by">
+              Created By: {playlist.userName}
+            </span>
+
+            <span className="genre">
+              {formatDate(playlist.dateCreated)}
+            </span>
+            <span className="genre">Genre: {playlist.genre}</span>
+          </Link>
+        </li>
+      ))
+      : <div>No playlists found</div>}
     </div>
   );
 }
