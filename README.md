@@ -18,8 +18,8 @@ enter or cd into the `CS554-Final-Project` directory
 ### Backend
 1. Open a node command prompt or terminal as an ADMIN/with elevated permissions (if using Windows, search Node.js command prompt and run as administrator; for Linux/Unix, run as sudo)
 2. cd to the `backend` directory
-3. run the command 'npm seed'
-4. run the command 'npm i'
+3. run the command 'npm i'
+4. run the command 'npm run seed'
 5. run the command 'npm start' and the server will be running on localhost:3000
 ### Frontend
 1. Open a new node command prompt or terminal
