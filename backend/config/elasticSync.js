@@ -5,6 +5,7 @@ import { mongoConfig } from "./settings.js";
 let collectionName = "playlists";
 const esOptions = { node: 'http://localhost:9200' };
 let indexName = "playlist_ind";
+let followedIndex = "followedPlaylist_ind";
 async function synchronizeData() {
     try {
       // Connect to MongoDB
@@ -35,6 +36,23 @@ async function synchronizeData() {
       console.error('Error synchronizing data:', error);
     }
   }
+async function indexArray(array) {
+    try {
+        const esClient = new Client(esOptions);
+        // Iterate over each object in the array
+        await Promise.all(array.map(async (obj) => {
+            // Index the object into Elasticsearch
+            await esClient.index({
+                index: followedIndex,
+                body: obj
+            });
+        }));
+
+        console.log('Array indexed successfully into Elasticsearch!');
+    } catch (error) {
+        console.error('Error indexing array into Elasticsearch:', error);
+    }
+}
 async function printAllData() {
     try {
       const esClient = new Client(esOptions);
@@ -74,4 +92,24 @@ async function searchData(query) {
       console.error('Error searching data:', error);
     }
   }
-export { synchronizeData, printAllData, searchData };
+async function searchFollowed(query) {
+    try {
+      const esClient = new Client(esOptions);
+  
+      const response = await esClient.search({
+        index: followedIndex,
+        body: {
+            query: {
+              wildcard: {
+                name: `*${query}*`
+              }
+            }
+          }
+      });
+  
+      return response.hits.hits;
+    } catch (error) {
+      console.error('Error searching data:', error);
+    }
+  }
+export { synchronizeData, printAllData, searchData, indexArray, searchFollowed };

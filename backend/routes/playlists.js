@@ -3,7 +3,7 @@ const router = Router();
 import { playlistData, songsData } from "../data/index.js";
 
 import { userData } from "../data/index.js";
-import { searchData } from "../config/elasticSync.js";
+import { searchData, searchFollowed } from "../config/elasticSync.js";
 import { createClient } from "redis";
 const client = createClient();
 client.connect().then(() => {});
@@ -55,12 +55,20 @@ router.route("/followedplaylists").get(async (req, res) => {
 });
 router.route("/searchbyname").get(async (req, res) => {
   try {
-    const data = await searchData(req.query.name);
+    const data = await searchFollowed(req.query.name);
     return res.status(200).json(data);
   } catch (e) {
     return res.status(500).json({ error: e });
   }
 });
+router.route("/searchfollowedbyname").get(async (req, res) => {
+    try {
+      const data = await searchData(req.query.name);
+      return res.status(200).json(data);
+    } catch (e) {
+      return res.status(500).json({ error: e });
+    }
+  });
 
 router.route("/myplaylists").get(async (req, res) => {
   try {

@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import * as validation from "../validation.js";
 import { playlists, users } from "../config/mongoCollections.js";
-import { synchronizeData } from "../config/elasticSync.js";
+import { indexArray, synchronizeData } from "../config/elasticSync.js";
 const getPlaylist = async (playlistId) => {
   let id = undefined;
   try {
@@ -60,7 +60,7 @@ const getFollowingPlaylists = async(
   }catch(e){
       throw e.message || e;
   }
-  await synchronizeData();
+  await indexArray(allPlaylists);
   return allPlaylists;
 }
 

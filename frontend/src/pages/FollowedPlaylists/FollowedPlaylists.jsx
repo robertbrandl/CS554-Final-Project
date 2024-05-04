@@ -12,7 +12,7 @@ export const FollowedPlaylists = () => {
   useEffect(() => {
     async function fetchData() {
       try{
-        const {data} = await axios.get(`/api/playlists/searchbyname`, {params: {
+        const {data} = await axios.get(`/api/playlists/searchfollowedbyname`, {params: {
           name: searchTerm
       }});
         let pdata = []

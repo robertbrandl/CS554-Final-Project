@@ -33,7 +33,7 @@
 }
 .mainbar {
   background-color: #ffffff;
-  padding: 10px;
+  padding: 5px;
   border-bottom: 1px solid #333;
 }
 
@@ -49,7 +49,7 @@
 
 .mainbar li {
   display: inline;
-  background-color: #314a31;
+  background-color: #638BEF;
   font-size: large;
 }
 
@@ -65,4 +65,27 @@
   text-decoration: underline;
   padding: 5px 10px;
   position: relative;
+}
+.navbar .playlist-hub {
+  font-size: 24px;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(135deg, #B58DED, #1B8AF1);
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+.navbar .playlist-hub:hover {
+  color: #2E86AB; 
+}
+.navbar .btn{
+  width: 105px;
+  height: 30px;
+  border-radius: 30px;
+  background: #B58DED;
+  border: none;
+  font-family: 'Montserrat';
+  font-size: 18px;
+  color: #FFFFFF;
+  cursor: pointer;
 }

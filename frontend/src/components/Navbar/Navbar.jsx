@@ -18,13 +18,13 @@ const NavigationAuth = () => {
     <nav className="navbar">
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/" className="playlist-hub">PlaylistHub</Link>
         </li>
         <li>
           <Link to="/account">Account</Link>
         </li>
         <li>
-          <button className="button" type="button" onClick={signout}>
+          <button className="btn" type="button" onClick={signout}>
             Sign Out
           </button>
         </li>
