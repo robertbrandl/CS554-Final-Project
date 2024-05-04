@@ -15,13 +15,18 @@ const NavigationAuth = () => {
   }
   return (
     <>
+    <nav className="title">
+    <ul>
+      <li>
+        <Link to="/" className="playlist-hub">PlaylistHub</Link>
+      </li>
+    </ul></nav>
     <nav className="navbar">
       <ul>
         <li>
-          <Link to="/" className="playlist-hub">PlaylistHub</Link>
-        </li>
-        <li>
-          <Link to="/account">Account</Link>
+        <button className="btn" onClick={() => navigate("/account")}>
+          Account
+        </button>
         </li>
         <li>
           <button className="btn" type="button" onClick={signout}>
@@ -55,18 +60,26 @@ const NavigationAuth = () => {
   );
 };
 const NavigationNonAuth = () => {
+  const navigate = useNavigate();
   return (
     <>
+    <nav className="title">
+    <ul>
+      <li>
+        <Link to="/" className="playlist-hub">PlaylistHub</Link>
+      </li>
+    </ul></nav>
     <nav className="navbar">
       <ul>
         <li>
-          <Link to="/">Home</Link>
+        <button className="btn" onClick={() => navigate("/login")}>
+          Login
+        </button>
         </li>
         <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/signup">Create an Account</Link>
+        <button className="btn" onClick={() => navigate("/signup")}>
+          Signup
+        </button>
         </li>
       </ul>
     </nav>

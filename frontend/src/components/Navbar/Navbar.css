@@ -1,16 +1,15 @@
-.navbar {
+.title{
   background-color: #333;
-  padding: 10px;
+  padding: 0.5px
 }
 
 .navbar ul {
   list-style-type: none;
   background-color: #333;
-  padding-top: 10px;
   padding-bottom: 10px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
 }
 
 .navbar li {
@@ -66,8 +65,8 @@
   padding: 5px 10px;
   position: relative;
 }
-.navbar .playlist-hub {
-  font-size: 24px;
+.title .playlist-hub {
+  font-size: 32px;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -75,7 +74,7 @@
   font-weight: bold;
   letter-spacing: 1.5px;
 }
-.navbar .playlist-hub:hover {
+.title .playlist-hub:hover {
   color: #2E86AB; 
 }
 .navbar .btn{
