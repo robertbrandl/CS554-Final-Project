@@ -15,7 +15,10 @@ export const FollowedPlaylists = () => {
         const {data} = await axios.get(`/api/playlists/searchbyname`, {params: {
           name: searchTerm
       }});
-        let pdata = data.map((e) => e._source);
+        let pdata = []
+        if(data && data.length > 0){
+          pdata = data.map((e) => e._source);
+        }
         console.log(pdata)
         setPlaylistData(pdata)
         setError("");
