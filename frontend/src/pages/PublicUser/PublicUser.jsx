@@ -34,7 +34,6 @@ export const PublicUser = () => {
         let playlists = data.playlists;
         setData(data);
         console.log(data)
-        console.log(data.profileImg)
         setErrorMessage('');
         setLoading(false);
       } catch (e) {
@@ -80,9 +79,6 @@ export const PublicUser = () => {
       <h1>User Profile</h1>
       <p>Name: {data.name}</p>
       <p>Email: {data.emailAddress} {data.publicPlaylist}</p>
-      <div>
-        <img src={data.profileImg} alt="Profile Image" />
-      </div>
       {currentUser && data.publicPlaylist && data.emailAddress !== currentUser.email && (
         <button onClick={handleFollow}>
           {isFollowing ? 'Unfollow' : 'Follow'}

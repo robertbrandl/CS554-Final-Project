@@ -28,7 +28,6 @@ const SocialSignIn = () => {
           const response = await axios.post("/api/users/register", {
             displayName: user.displayName,
             email: user.email,
-            image: user.photoURL,
             public: false,
             accountType: "google",
           });
@@ -64,7 +63,6 @@ const SocialSignIn = () => {
           const response = await axios.post("/api/users/register", {
             displayName: user.displayName,
             email: user.email,
-            image: user.photoURL,
             public: false,
             accountType: "facebook",
           });
@@ -101,7 +99,6 @@ const SocialSignIn = () => {
           const response = await axios.post("/api/users/register", {
             displayName: user.displayName,
             email: user.email,
-            image: user.photoURL,
             public: false,
             accountType: "github",
           });

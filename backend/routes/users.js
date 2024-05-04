@@ -15,7 +15,6 @@ router.route("/register").post(async (req, res) => {
   }
   let name = createUserData.displayName;
   let email = createUserData.email;
-  let image = createUserData.image;
   console.log(createUserData);
   let publicPlaylist = createUserData.public;
   let type = createUserData.accountType;
@@ -24,7 +23,6 @@ router.route("/register").post(async (req, res) => {
     result = await userData.registerUser(
       name,
       email,
-      image,
       publicPlaylist,
       type
     );

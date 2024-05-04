@@ -12,7 +12,7 @@ export const Signup = () => {
   const [loading, setLoading] = useState(false);
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const {displayName, email, passwordOne, passwordTwo, profileImage, publicPlaylists} = e.target.elements;
+    const {displayName, email, passwordOne, passwordTwo, publicPlaylists} = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
       setErrorMessage('Passwords do not match');
       return false;
@@ -26,13 +26,11 @@ export const Signup = () => {
       );
       console.log(displayName.value)
       console.log(email.value)
-      console.log(profileImage.files[0])
       console.log(publicPlaylists.checked)
       try{
       const response = await axios.post('/api/users/register', {
         displayName: displayName.value,
         email: email.value,
-        image: URL.createObjectURL(profileImage.files[0]),
         public: publicPlaylists.checked,
         accountType: "email"
       });
@@ -109,19 +107,6 @@ export const Signup = () => {
             />
         </div>
         <br />
-        <div className='form-group'>
-          <label>
-            Add a Profile Image:
-            <br />
-            <input
-              className='form-control'
-              name='profileImage'
-              type='file'
-              accept='image/*'
-              required
-            />
-          </label>
-        </div>
         <br />
         <div className='form-group'>
           <label>

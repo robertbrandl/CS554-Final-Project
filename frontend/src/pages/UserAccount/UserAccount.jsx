@@ -27,7 +27,6 @@ export const UserAccount = () => {
         let savedPlaylists = data.savedPlaylists;
         setData(data);
         console.log(data)
-        console.log(data.profileImg)
         setErrorMessage('');
         setLoading(false);
       } catch (e) {
@@ -74,9 +73,6 @@ export const UserAccount = () => {
       <button className="btn" onClick={passwordReset}>
         Reset Password
       </button>}
-      <div>
-        <img src={data.profileImg} alt="Profile Image" className="profile" />
-      </div>
       {data.publicPlaylist ? <p>Your playlists and account is public!</p> : <p>Your playlists and account is private. This means you cannot be followed by other users.</p>}
     </div>
   );

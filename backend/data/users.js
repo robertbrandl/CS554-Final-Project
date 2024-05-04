@@ -4,19 +4,16 @@ import {users} from '../config/mongoCollections.js';
 const registerUser = async (
     name,
     emailAddress,
-    profileImg,
     publicPlaylist,
     type
 ) => {
     const userCollection = await users();
     const user = await userCollection.findOne({emailAddress: emailAddress});
     if (user !== null) throw 'User exists already';
-    console.log(profileImg)
 
     let newUser = {
         name: name,
         emailAddress: emailAddress,
-        profileImg: profileImg,
         publicPlaylist: publicPlaylist,//true if playlists/user is public (can be followed and playlists in main list)
         accountType: type,
         playlists: [],
