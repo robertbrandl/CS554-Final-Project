@@ -14,6 +14,7 @@ const NavigationAuth = () => {
     navigate("/")
   }
   return (
+    <>
     <nav className="navbar">
       <ul>
         <li>
@@ -29,10 +30,33 @@ const NavigationAuth = () => {
         </li>
       </ul>
     </nav>
+    <nav className="mainbar">
+    <ul>
+      <li>
+        <Link to="/songsearch">Browse Songs</Link>
+      </li>
+      <li>
+        <Link to="/allplaylists">View All Playlists</Link>
+      </li>
+      <li>
+        <Link to="/followedplaylists">
+          View Playlists By Your Followed Accounts
+        </Link>
+      </li>
+      <li>
+        <Link to="/myplaylists">View Your Playlists</Link>
+      </li>
+      <li>
+        <Link to="/statistics">Your Statistics</Link>
+      </li>
+    </ul>
+    </nav>
+    </>
   );
 };
 const NavigationNonAuth = () => {
   return (
+    <>
     <nav className="navbar">
       <ul>
         <li>
@@ -46,5 +70,16 @@ const NavigationNonAuth = () => {
         </li>
       </ul>
     </nav>
+    <nav className="mainbar">
+    <ul>
+      <li>
+        <Link to="/songsearch">Browse Songs</Link>
+      </li>
+      <li>
+        <Link to="/allplaylists">View All Playlists</Link>
+      </li>
+    </ul>
+  </nav>
+  </>
   );
 };

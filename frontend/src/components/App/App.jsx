@@ -10,7 +10,6 @@ import { UserStats } from "../../pages/UserStats/UserStats";
 import { GenPlaylists } from "../../pages/GenPlaylists/GenPlaylists";
 import { FollowedPlaylists } from "../../pages/FollowedPlaylists/FollowedPlaylists";
 import { Navbar } from "../Navbar/Navbar";
-import { Mainbar } from "../Mainbar/Mainbar";
 import { AuthProvider } from "../../firebase/Auth";
 import { SingleSong } from "../../pages/SingleSong/SingleSong";
 import { SinglePlaylist } from "../../pages/SinglePlaylist/SinglePlaylist";
@@ -22,7 +21,6 @@ function App() {
   return (
     <AuthProvider>
       <Navbar />
-      <Mainbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
