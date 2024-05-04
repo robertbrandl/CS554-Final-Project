@@ -105,7 +105,7 @@ router.route("/unfollow").patch(async (req, res) => {
   if (!followData || Object.keys(followData).length === 0) {
     return res
       .status(400)
-      .json({ error: "Error: Must press the follow button" });
+      .json({ error: "Error: Must press the unfollow button" });
   }
   let email = followData.email;
   let id =  followData.unfollowId;
@@ -120,5 +120,42 @@ router.route("/unfollow").patch(async (req, res) => {
   await client.del(`account/${email}`);
   return res.status(200).json(result);
 })
-
+router.route("/setpublic").patch(async (req, res) => {
+  const publicData = req.body;
+  if (!publicData || Object.keys(publicData).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Error: Must press the set public button" });
+  }
+  let email = publicData.email;
+  let result = undefined;
+  try {
+    result = await userData.setUserPublic(
+      email
+    );
+  } catch (e) {
+    return res.status(e.code).json({ error: "Error: " + e.error });
+  }
+  await client.del(`account/${email}`);
+  return res.status(200).json(result);
+})
+router.route("/setprivate").patch(async (req, res) => {
+  const publicData = req.body;
+  if (!publicData || Object.keys(publicData).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Error: Must press the set public button" });
+  }
+  let email = publicData.email;
+  let result = undefined;
+  try {
+    result = await userData.setUserPrivate(
+      email
+    );
+  } catch (e) {
+    return res.status(400).json({ error: "Error: " + e });
+  }
+  await client.del(`account/${email}`);
+  return res.status(200).json(result);
+})
 export default router;

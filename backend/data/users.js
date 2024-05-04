@@ -79,6 +79,46 @@ const userExist = async (email) => {
     if (user === null) return false;
     return true;
 }
+const setUserPublic = async (email) => {
+    try {
+        const userCollection = await users();
+        const updateResult = await userCollection.updateOne(
+            { emailAddress: email },
+            { $set: { publicPlaylist: true } }
+        );
+        if (updateResult.modifiedCount !== 1) {
+            throw { code: 500, error: 'Failed to set user as public' };
+        }
+        return updateResult;
+    } catch (error) {
+        console.error('Error setting user as public:', error);
+        throw { code: 500, error: 'Error setting user as public' };
+    }
+}
+const setUserPrivate = async (email) => {
+    try {
+        const userCollection = await users();
+        const user = await userCollection.findOne({ emailAddress: email });
+        if (!user) {
+            throw { code: 404, message: 'User not found' };
+        }
+        const updateResult = await userCollection.updateOne(
+            { emailAddress: email },
+            { $set: { publicPlaylist: false } }
+        );
+        if (updateResult.modifiedCount !== 1) {
+            throw { code: 500, error: 'Failed to set user as public' };
+        }
+        await userCollection.updateMany(
+            { followedUsers: user._id },
+            { $pull: { followedUsers: user._id } }
+        );
+        return updateResult;
+    } catch (error) {
+        console.error('Error setting user as public:', error);
+        throw { code: 500, error: 'Error setting user as public' };
+    }
+}
 export default {
     registerUser,
     getAccount, 

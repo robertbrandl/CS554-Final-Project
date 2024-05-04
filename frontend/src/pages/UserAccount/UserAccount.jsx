@@ -11,6 +11,7 @@ export const UserAccount = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [sentEmail, setSentEmail] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
   const [data, setData] = useState({})
   console.log(currentUser)
   useEffect(() => {
@@ -25,6 +26,9 @@ export const UserAccount = () => {
         let followed = data.followedUsers;
         let playlists = data.playlists;
         let savedPlaylists = data.savedPlaylists;
+        if (data.publicPlaylist){
+          setIsPublic(true);
+        }
         setData(data);
         console.log(data)
         setErrorMessage('');
@@ -53,6 +57,22 @@ export const UserAccount = () => {
       setSentEmail('');
     }
   };
+  const handlePublic = async () => {
+    setLoading(true);
+    console.log(isPublic)
+    if (isPublic === false){
+      const response = await axios.patch('/api/users/setpublic', {
+        email: currentUser.email
+      });
+    }
+    else{
+      const response = await axios.patch('/api/users/setprivate', {
+        email: currentUser.email
+      });
+    }
+    setIsPublic(!isPublic);
+    setLoading(false);
+  };
   
   if (loading){
     return <div>Loading...</div>
@@ -73,7 +93,10 @@ export const UserAccount = () => {
       <button className="btn" onClick={passwordReset}>
         Reset Password
       </button>}
-      {data.publicPlaylist ? <p>Your playlists and account is public!</p> : <p>Your playlists and account is private. This means you cannot be followed by other users.</p>}
+      {data.publicPlaylist ? <p>Your playlists and account is public and you can be followed by anyone!</p> : <p>Your playlists and account is private. This means you cannot be followed by other users.</p>}
+      <button onClick={handlePublic} className="btn">
+          {isPublic ? 'Make Account Private' : 'Make Account Public'}
+      </button>
     </div>
   );
 }
