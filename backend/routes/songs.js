@@ -3,6 +3,9 @@ const router = Router();
 import axios from "axios";
 import redis from "redis";
 const client = redis.createClient();
+import gm from "gm";
+import fs from "fs";
+import request from "request"
 client.connect();
 //route to get a single song route based on its id
 router.route("/song/:id").get(async (req, res) => {
@@ -20,6 +23,18 @@ router.route("/song/:id").get(async (req, res) => {
     // Get the song data from the Deezer API
     const response = await axios.get(`https://api.deezer.com/track/${req.params.id}`);
     songData = response.data
+    console.log(songData)
+    // resize the album cover picture and artist picture for display!
+    if (songData.album && songData.album.cover_medium) {
+      const resizedImageBuffer = await resizeImage(songData.album.cover_medium, 150, 150);
+      const resizedImageBase64 = resizedImageBuffer.toString("base64");
+      songData.album.cover_medium = `data:image/jpeg;base64,${resizedImageBase64}`;
+    }
+    if (songData.artist && songData.artist.picture_medium) {
+      const resizedImageBuffer = await resizeImage(songData.artist.picture_medium, 120, 120);
+      const resizedImageBase64 = resizedImageBuffer.toString("base64");
+      songData.artist.picture_medium = `data:image/jpeg;base64,${resizedImageBase64}`;
+    }
 
     // Set the Redis cache
     await client.set("songId".concat(req.params.id), JSON.stringify(songData));
@@ -29,7 +44,28 @@ router.route("/song/:id").get(async (req, res) => {
     console.log(songData)
     return res.status(200).json(songData);
 });
+const resizeImage = async (imageUrl, width, height) => {
+  try {
+    console.log(imageUrl)
+    const response = request(imageUrl, { encoding: null });
 
+    return new Promise((resolve, reject) => {
+      gm(response)
+        .resize(width, height)
+        .toBuffer((err, buffer) => {
+          if (err) {
+            console.error('GraphicsMagick Error:', err);
+            reject(err);
+          } else {
+            resolve(buffer);
+          }
+        });
+    });
+  } catch (error) {
+    console.error('Fetch Error:', error);
+    throw error;
+  }
+};
 router.route("/search/:query").get(async (req, res) => {
 
   let foundSongs = await client.get("search-".concat(req.params.query));
@@ -46,7 +82,7 @@ router.route("/search/:query").get(async (req, res) => {
     await client.set("search-".concat(req.params.query), JSON.stringify(songData));
     console.log("Songs",req.params.query, "is set in cache");
   }
-  
+
     console.log(songData)
     return res.status(200).json(songData);
 });

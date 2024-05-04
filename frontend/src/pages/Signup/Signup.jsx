@@ -28,10 +28,11 @@ export const Signup = () => {
       console.log(email.value)
       console.log(profileImage.files[0])
       console.log(publicPlaylists.checked)
+      try{
       const response = await axios.post('/api/users/register', {
         displayName: displayName.value,
         email: email.value,
-        image: profileImage.files[0],
+        image: URL.createObjectURL(profileImage.files[0]),
         public: publicPlaylists.checked,
         accountType: "email"
       });
@@ -39,8 +40,12 @@ export const Signup = () => {
       console.log(currentUser)
       setErrorMessage('');
       setLoading(false);
+      }catch(e){
+        setErrorMessage(e.response.data.error);
+        setLoading(false);
+      }
     } catch (error) {
-      setErrorMessage(error.response.data.error);
+      setErrorMessage(error.message);
       setLoading(false);
     }
   };

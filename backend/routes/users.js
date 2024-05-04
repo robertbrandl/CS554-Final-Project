@@ -16,7 +16,7 @@ router.route("/register").post(async (req, res) => {
   let name = createUserData.displayName;
   let email = createUserData.email;
   let image = createUserData.image;
-  console.log(image);
+  console.log(createUserData);
   let publicPlaylist = createUserData.public;
   let type = createUserData.accountType;
   let result = undefined;

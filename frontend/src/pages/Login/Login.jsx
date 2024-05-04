@@ -26,7 +26,7 @@ export const Login = () => {
       setSentEmail("");
       setLoading(false);
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage(error.message)
       setSentEmail("");
       setLoading(false);
     }
