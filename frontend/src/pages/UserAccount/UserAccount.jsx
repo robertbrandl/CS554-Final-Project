@@ -24,7 +24,13 @@ export const UserAccount = () => {
             email: currentUser.email
           }
         });
-        let followed = data.followedUsers;
+        const {data: followedUsersProfs} = await axios.get('/api/users/getfollowedusers', {
+          params: {
+            followedIds: data.followedUsers
+          }
+        });
+        console.log(followedUsersProfs);
+        data.followedUsers = followedUsersProfs;
         let playlists = data.playlists;
         let savedPlaylists = data.savedPlaylists;
         if (data.publicPlaylist){
@@ -120,9 +126,11 @@ export const UserAccount = () => {
                   <Link
                     className="linker"
                     key={index}
-                    to={`/user/${user}`}
+                    to={`/user/${user._id}`}
                   >
-                    <span>{user}</span>
+                    <span>{user.name}</span>
+                    <br />
+                    <span>Number of Playlists: {user.playlists.length}</span>
                   </Link>
                 </li>
               ))

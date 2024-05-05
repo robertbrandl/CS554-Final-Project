@@ -27,10 +27,15 @@ const registerUser = async (
 }
 
 const getAccount = async (email) => {
-    let em = validation.checkString(email);
+    let em = undefined;
+    try{
+        em = validation.checkString(email);
+    }catch(e){
+        throw { code: 400, error: e};
+    }
     const userCollection = await users();
     const user = await userCollection.findOne({emailAddress: em});
-    if (user === null) throw 'No user account with that email';
+    if (user === null) throw { code: 404, error:'No user account with that id'};
     user._id = user._id.toString();
     return user;
 }
@@ -52,23 +57,27 @@ const getUserById = async (userId) => {
 }
 const followUser = async (email, userToFollowId) => {
     const userCollection = await users();
+    const user = await userCollection.findOne({emailAddress: em});
+    if (user === null)  throw { code: 404, error: 'User not found' };
     const updateResult = await userCollection.updateOne(
         { emailAddress: email },
         { $addToSet: { followedUsers: userToFollowId } } 
     );
     if (updateResult.modifiedCount !== 1) {
-        throw 'Failed to follow user';
+        throw { code: 500, error: 'Failed to follow user' };
     }
     return updateResult;
 };
 const unfollowUser = async (email, userToUnfollowId) => {
     const userCollection = await users();
+    const user = await userCollection.findOne({emailAddress: em});
+    if (user === null)  throw { code: 404, error: 'User not found' };
     const updateResult = await userCollection.updateOne(
         { emailAddress: email },
         { $pull: { followedUsers: userToUnfollowId } }
     );
     if (updateResult.modifiedCount !== 1) {
-        throw 'Failed to unfollow user';
+        throw { code: 500, error: 'Failed to unfollow user' };
     }
     return updateResult;
 };
@@ -120,6 +129,20 @@ const setUserPrivate = async (email) => {
         throw { code: 500, error: 'Error setting user as public' };
     }
 }
+const getFollowedUsers = async (followedIds) =>{
+    let ret = [];
+    const userCollection = await users();
+    for (let x of followedIds){
+        console.log(x);
+        const user = await userCollection.findOne({ _id: new ObjectId(x) });
+        if (!user) {
+            throw { code: 404, message: 'User not found' };
+        }
+        console.log(user);
+        ret.push(user);
+    }
+    return ret;
+}
 export default {
     registerUser,
     getAccount, 
@@ -128,5 +151,6 @@ export default {
     unfollowUser,
     getUserById,
     setUserPublic,
-    setUserPrivate
+    setUserPrivate,
+    getFollowedUsers
 }

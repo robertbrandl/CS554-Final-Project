@@ -44,7 +44,7 @@ router.route("/account").get(async (req, res) => {
     try {
       result = await userData.getAccount(email);
     } catch (e) {
-      return res.status(400).json({ error: "Error: " + e });
+      return res.status(e.code).json({ error: "Error: " + e.error });
     }
     await client.SETEX(`account/${email}`, 3600, JSON.stringify(result));
     return res.status(200).json(result);
@@ -74,7 +74,7 @@ router.route("/userexist").get(async (req, res) => {
       await client.SETEX(`userexist/${email}`, 3600, JSON.stringify(result));
       return res.status(200).json(result);
     } catch (e) {
-      return res.status(400).json({ error: "Error: " + e });
+      return res.status(500).json({ error: "Error: " + e });//this should always work, if not, must be mongo server error
     }
   }
 });
@@ -94,7 +94,7 @@ router.route("/follow").patch(async (req, res) => {
       email, id
     );
   } catch (e) {
-    return res.status(400).json({ error: "Error: " + e });
+    return res.status(e.code).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
   return res.status(200).json(result);
@@ -115,7 +115,7 @@ router.route("/unfollow").patch(async (req, res) => {
       email, id
     );
   } catch (e) {
-    return res.status(400).json({ error: "Error: " + e });
+    return res.status(e.code).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
   return res.status(200).json(result);
@@ -155,7 +155,7 @@ router.route("/setprivate").patch(async (req, res) => {
       email
     );
   } catch (e) {
-    return res.status(400).json({ error: "Error: " + e });
+    return res.status(e.code).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
   const keys = await client.keys("account*"); 
@@ -165,4 +165,15 @@ router.route("/setprivate").patch(async (req, res) => {
   console.log(newKeys);
   return res.status(200).json(result);
 })
+
+router.route("/getfollowedusers").get(async (req, res) => {
+  try {
+    const ids = req.query.followedIds;
+      const result = await userData.getFollowedUsers(ids);
+      return res.status(200).json(result);
+    } catch (e) {
+      console.log(e)
+      return res.status(e.code).json({ error: "Error: " + e.message});
+    }
+});
 export default router;

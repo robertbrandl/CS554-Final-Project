@@ -4,6 +4,7 @@ import session from "express-session";
 import configRoutes from "./routes/routeindex.js";
 import cors from "cors";
 import dotenv from "dotenv";
+import multer from 'multer';
 import {
   contentMiddleware,
   rateLimitMiddleware,
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(contentMiddleware.sqlDetectionMiddleware());
 
 // XSS Detection
-app.use(contentMiddleware.xssDetectionMiddleware());
+//app.use(contentMiddleware.xssDetectionMiddleware());
 
 // Rate limit for every IP, maximum of 20 requests in 1 sec
 app.use(rateLimitMiddleware(1000, 20));
