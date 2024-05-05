@@ -68,7 +68,7 @@ export const SinglePlaylist = () => {
           });
         console.log(loggedInUser)
         console.log(id)
-        if (loggedInUser.savedPlaylists.includes(id.toString())) {
+        if (loggedInUser.savedPlaylists && loggedInUser.savedPlaylists.includes(id.toString())) {
             setIsSaved(true);
         }
 
