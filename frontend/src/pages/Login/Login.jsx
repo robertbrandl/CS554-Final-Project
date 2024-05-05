@@ -26,7 +26,12 @@ export const Login = () => {
       setSentEmail("");
       setLoading(false);
     } catch (error) {
-      setErrorMessage(error.message)
+      if (error.message.includes("auth/invalid-credential")) {
+        setErrorMessage("The combination of username and password entered was incorrect.")
+      }
+      else{
+        setErrorMessage(error.message)
+      }
       setSentEmail("");
       setLoading(false);
     }

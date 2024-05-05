@@ -1,0 +1,46 @@
+.create-playlist h1 {
+  color: white;
+  padding: 20px;
+}
+
+.create-playlist-form {
+  color: white;
+  padding: 15px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-left: 450px;
+  margin-right: 450px;
+  font-size: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+.form-row {
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  display: inline-block;
+  width: 120px; /* Adjust the width as needed */
+  text-align: right;
+  margin-right: 10px;
+}
+
+.album-cover-label {
+  padding-left: 115px;
+}
+
+.create-playlist-form button {
+  color: white;
+  padding: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  background-color: rgba(223, 223, 223, 0);
+  border: 2px solid rgb(255, 255, 255);
+  margin-left: 80px;
+}
+
+.create-playlist-form button:hover {
+  background-color: rgba(222, 222, 222, 0.198);
+}

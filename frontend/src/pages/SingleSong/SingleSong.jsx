@@ -3,7 +3,29 @@ import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../firebase/Auth";
-export const PlaylistList = () => {
+import { AddToPlaylistButton } from "../../components/AddToPlaylistButton/AddToPlaylistButton";
+export const PlaylistList = ({ user }) => {
+  const [playlists, setPlaylists] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("user = ", user);
+      const email = user.email;
+      console.log("user.email = ", user.email);
+      const response = await axios.put(
+        "http://localhost:3000/playlists/myplaylists",
+        { email }
+      );
+      if (response.status === 200) {
+        // Update the playlists state with the received playlists
+        setPlaylists(response.data.playlists);
+        console.log("users playlist have been found");
+      } else {
+        console.error("Failed to fetch user playlists:", response.data.error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="existing-playlist">
       <ul className="playlist-list">
@@ -12,15 +34,13 @@ export const PlaylistList = () => {
             Create New Playlist +{" "}
           </button>
         </li>
-        <li>
-          <button className="single-playlist-add">Playlist 1 </button>{" "}
-        </li>
-        <li>
-          <button className="single-playlist-add">Playlist 2 </button>
-        </li>
-        <li>
-          <button className="single-playlist-add">Playlist 3</button>
-        </li>
+        {playlists.map((playlist, index) => {
+          return (
+            <li key={index}>
+              <button className="single-playlist-add">{playlist.title}</button>{" "}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -29,7 +49,6 @@ export const SingleSong = () => {
   const [songData, setSongData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [visible, setVisible] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const { id } = useParams();
 
@@ -118,17 +137,9 @@ export const SingleSong = () => {
               Release Date: {songData.release_date}
             </h2>
           )}
-          {currentUser && (
-            <button
-              className="add-to-playlist"
-              onClick={() => {
-                setVisible((prev) => !prev);
-              }}
-            >
-              Add To Playlist
-            </button>
-          )}
-          {visible && <PlaylistList />}
+
+          {/* add to playlist button  */}
+          <AddToPlaylistButton />
         </div>
       </div>
     </>

@@ -13,9 +13,9 @@ import { Navbar } from "../Navbar/Navbar";
 import { AuthProvider } from "../../firebase/Auth";
 import { SingleSong } from "../../pages/SingleSong/SingleSong";
 import { SinglePlaylist } from "../../pages/SinglePlaylist/SinglePlaylist";
-import {PublicUser} from "../../pages/PublicUser/PublicUser";
+import { PublicUser } from "../../pages/PublicUser/PublicUser";
 import { MyPlaylists } from "../../pages/MyPlaylists/MyPlaylists";
-
+import { CreatePlaylist } from "../../pages/CreatePlaylist/CreatePlaylist";
 
 function App() {
   return (
@@ -38,6 +38,11 @@ function App() {
         <Route exact path="/myplaylists" element={<MyPlaylists />} />
         <Route exact path="/song/:id" element={<SingleSong />} />
         <Route exact path="/playlist/:id" element={<SinglePlaylist />} />
+        <Route
+          exact
+          path="/playlist/createplaylist"
+          element={<CreatePlaylist />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
