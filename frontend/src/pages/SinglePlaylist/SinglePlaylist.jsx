@@ -1,8 +1,9 @@
 import "./SinglePlaylist.css";
 import albumImage from "../../assets/album.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import {AuthContext} from '../../firebase/Auth';
 export const SinglePlaylist = () => {
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -21,7 +22,27 @@ export const SinglePlaylist = () => {
   const [songsData, setSongsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const {currentUser} = useContext(AuthContext);
+  const [isSaved, setIsSaved] = useState(false);
   const { id } = useParams();
+  const handleSave = async () => {
+    setLoading(true);
+    console.log(isSaved)
+    if (isSaved === false){
+      const response = await axios.patch('/api/users/save', {
+        email: currentUser.email,
+        saveId: id
+      });
+    }
+    else{
+      const response = await axios.patch('/api/users/unsave', {
+        email: currentUser.email,
+        unsaveId: id
+      });
+    }
+    setIsSaved(!isSaved);
+    setLoading(false);
+  };
 
   useEffect(() => {
     setError("");
@@ -62,9 +83,9 @@ export const SinglePlaylist = () => {
           <h3 className="album-userName">
             Date Created: {formatDate(playlistData.dateCreated)}
           </h3>
-          {currentUser && data.publicPlaylist && data.emailAddress !== currentUser.email && (
-            <button onClick={handleFollow} className="btn">
-              {isFollowing ? 'Unfollow' : 'Follow'}
+          {currentUser &&  (
+            <button onClick={handleSave} className="btn">
+              {isSaved ? 'Unsave' : 'Save'}
             </button>
           )}
         </div>

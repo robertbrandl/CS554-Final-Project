@@ -81,6 +81,32 @@ const unfollowUser = async (email, userToUnfollowId) => {
     }
     return updateResult;
 };
+const savePlaylist = async (email, playlistId) => {
+    const userCollection = await users();
+    const user = await userCollection.findOne({emailAddress: em});
+    if (user === null)  throw { code: 404, error: 'User not found' };
+    const updateResult = await userCollection.updateOne(
+        { emailAddress: email },
+        { $addToSet: { savedPlaylists: playlistId } } 
+    );
+    if (updateResult.modifiedCount !== 1) {
+        throw { code: 500, error: 'Failed to save playlist' };
+    }
+    return updateResult;
+};
+const unsavePlaylist = async (email, playlistId) => {
+    const userCollection = await users();
+    const user = await userCollection.findOne({emailAddress: em});
+    if (user === null)  throw { code: 404, error: 'User not found' };
+    const updateResult = await userCollection.updateOne(
+        { emailAddress: email },
+        { $pull: { savedPlaylist: playlistId } }
+    );
+    if (updateResult.modifiedCount !== 1) {
+        throw { code: 500, error: 'Failed to unsave playlist' };
+    }
+    return updateResult;
+};
 const userExist = async (email) => {
     let em = validation.checkString(email);
     const userCollection = await users();
@@ -152,5 +178,7 @@ export default {
     getUserById,
     setUserPublic,
     setUserPrivate,
-    getFollowedUsers
+    getFollowedUsers,
+    savePlaylist,
+    unsavePlaylist
 }

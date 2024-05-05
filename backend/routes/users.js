@@ -121,6 +121,47 @@ router.route("/unfollow").patch(async (req, res) => {
   await client.del(`account/${email}`);
   return res.status(200).json(result);
 })
+router.route("/save").patch(async (req, res) => {
+  const saveData = req.body;
+  if (!saveData || Object.keys(saveData).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Error: Must press the save button" });
+  }
+  let email = xss(saveData.email);
+  let id =  xss(saveData.saveId);
+  let result = undefined;
+  try {
+    result = await userData.savePlaylist(
+      email, id
+    );
+  } catch (e) {
+    return res.status(e.code || 500).json({ error: "Error: " + e.error });
+  }
+  await client.del(`account/${email}`);
+  return res.status(200).json(result);
+})
+
+router.route("/unsave").patch(async (req, res) => {
+  const saveData = req.body;
+  if (!saveData || Object.keys(saveData).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Error: Must press the unsave button" });
+  }
+  let email = xss(saveData.email);
+  let id =  xss(saveData.unsaveId);
+  let result = undefined;
+  try {
+    result = await userData.unsavePlaylist(
+      email, id
+    );
+  } catch (e) {
+    return res.status(e.code || 500).json({ error: "Error: " + e.error });
+  }
+  await client.del(`account/${email}`);
+  return res.status(200).json(result);
+})
 router.route("/setpublic").patch(async (req, res) => {
   const publicData = req.body;
   if (!publicData || Object.keys(publicData).length === 0) {
