@@ -101,7 +101,7 @@ export const SinglePlaylist = () => {
           <h3 className="album-userName">
             Date Created: {formatDate(playlistData.dateCreated)}
           </h3>
-          {currentUser &&  (
+          {currentUser && playlistData.userName !== currentUser.displayName  && (
             <button onClick={handleSave} className="save-button">
               {isSaved ? 'Unsave Playlist' : 'Save Playlist'}
             </button>

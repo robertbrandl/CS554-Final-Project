@@ -125,5 +125,16 @@ router.route("/createplaylist").post(async (req, res) => {
     return res.status(500).json({ error: e });
   }
 });
-
+router.route("/getsavedplaylists").get(async (req, res) => {
+    try {
+      const ids = req.query.playlistIds;
+      for (let x of ids){
+        x = xss(x);
+      }
+        const result = await playlistData.getSavedPlaylists(ids);
+        return res.status(200).json(result);
+      } catch (e) {
+        return res.status(e.code || 400).json({ error: "Error: " + e.message});
+      }
+  });
 export default router;

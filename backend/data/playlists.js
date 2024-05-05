@@ -81,7 +81,20 @@ const getUsersPlaylists = async (userId) => {
 
   return userPlaylists;
 };
-
+const getSavedPlaylists = async (playlistIds) =>{
+    let ret = [];
+    const playlistCollection = await playlists();
+    for (let x of playlistIds){
+        console.log(x);
+        const playlist = await playlistCollection.findOne({ _id: new ObjectId(x) });
+        if (!playlist) {
+            throw { code: 404, message: 'Playlist not found' };
+        }
+        console.log(playlist);
+        ret.push(playlist);
+    }
+    return ret;
+}
 const createPlaylist = async (title, userId, userName, albumCover, genre) => {
   const playlistCollection = await playlists();
   const userCollection = await users();
@@ -206,6 +219,10 @@ const deletePlaylist = async (playlistId, userId) => {
       { _id: new ObjectId(userId) },
       { $pull: { songIds: new ObjectId(playlistFound._id) } }
     );
+    await userCollection.updateMany(
+        { savedPlaylists: { $in: [playlistId] } },
+        { $pull: { savedPlaylists: playlistId } }
+    );
     return deletedPlaylist;
   } catch (e) {
     throw e.message || e;
@@ -233,4 +250,5 @@ export default {
   updatePlaylist,
   deletePlaylist,
   getUsersPlaylists,
+  getSavedPlaylists
 };

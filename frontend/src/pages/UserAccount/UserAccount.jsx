@@ -24,6 +24,7 @@ export const UserAccount = () => {
             email: currentUser.email
           }
         });
+        if (data.followedUsers && data.followedUsers.length > 0){
         const {data: followedUsersProfs} = await axios.get('/api/users/getfollowedusers', {
           params: {
             followedIds: data.followedUsers
@@ -31,8 +32,17 @@ export const UserAccount = () => {
         });
         console.log(followedUsersProfs);
         data.followedUsers = followedUsersProfs;
-        let playlists = data.playlists;
-        let savedPlaylists = data.savedPlaylists;
+      }
+        
+        if (data.savedPlaylists && data.savedPlaylists.length > 0){
+        const {data: fullSaved} = await axios.get('/api/playlists/getsavedplaylists', {
+          params: {
+            playlistIds: data.savedPlaylists
+          }
+        });
+        
+        data.savedPlaylists = fullSaved;
+      }
         if (data.publicPlaylist){
           setIsPublic(true);
         }
