@@ -2,6 +2,7 @@ import "./PublicUser.css";
 import React, {useContext, useState, useEffect} from 'react';
 import {Navigate, useParams, Link} from 'react-router-dom';
 import {AuthContext} from '../../firebase/Auth';
+import { AccountPlaylists } from "../../components/AccountPlaylists/AccountPlaylists";
 import axios from "axios";
 
 export const PublicUser = () => {
@@ -37,7 +38,16 @@ export const PublicUser = () => {
         setErrorMessage('');
         setLoading(false);
       } catch (e) {
-        setErrorMessage(e.response.data.error);
+        console.log(e)
+        if (e.response.data.error){
+            setErrorMessage(e.response.data.error);
+        }
+        else if (e.response.statusText){
+            setErrorMessage("Error: " + e.response.statusText);
+        }
+        else{
+            setErrorMessage(e.message);
+        }
         setLoading(false);
       }
     }
@@ -80,22 +90,11 @@ export const PublicUser = () => {
       <p>Name: {data.name}</p>
       <p>Email: {data.emailAddress} {data.publicPlaylist}</p>
       {currentUser && data.publicPlaylist && data.emailAddress !== currentUser.email && (
-        <button onClick={handleFollow}>
+        <button onClick={handleFollow} className="btn">
           {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
       )}
-      {data.playlists && data.playlists.length > 0 ? (
-          <div>
-            <h2>Playlists:</h2>
-            <ul>
-              {data.playlists.map((playlist) => (
-                <li key={playlist._id}><Link to={`/playlist/${playlist._id}`}>{playlist.name}</Link></li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <p>No playlists available.</p>
-        )}
+      <AccountPlaylists user={{email: data.emailAddress}} />
     </div>
   );
 }
