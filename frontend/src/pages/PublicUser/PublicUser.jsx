@@ -85,6 +85,7 @@ export const PublicUser = () => {
     return <div>You must be logged in to access this page!</div>
   }
   return (
+    <>
     <div className='profile'>
       <h1>User Profile</h1>
       <p>Name: {data.name}</p>
@@ -94,7 +95,12 @@ export const PublicUser = () => {
           {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
       )}
-      <AccountPlaylists user={{email: data.emailAddress}} />
     </div>
+    <br />
+    <br />
+    <br />
+    <h2>Playlists:</h2>
+    <AccountPlaylists user={{email: data.emailAddress}} />
+    </>
   );
 }

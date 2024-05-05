@@ -79,7 +79,7 @@ export const FollowedPlaylists = () => {
         className='center'
       >
         <label>
-          <span>Search for a Playlist by Name: </span>
+          <span>Search for a Playlist by Title: </span>
           <input
             autoComplete='off'
             type='text'
