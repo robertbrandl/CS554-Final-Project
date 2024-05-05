@@ -81,7 +81,7 @@ async function searchData(query) {
         body: {
             query: {
               wildcard: {
-                name: `*${query}*`
+                title: `*${query}*`
               }
             }
           }
@@ -101,7 +101,7 @@ async function searchFollowed(query) {
         body: {
             query: {
               wildcard: {
-                name: `*${query}*`
+                title: `*${query}*`
               }
             }
           }
