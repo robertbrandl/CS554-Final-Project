@@ -18,8 +18,15 @@ export const SongSearch = () => {
       console.log(response.data.data);
       setSearchResults(response.data.data);
     } catch (error) {
-      console.log(error.response.data.message)
-      setErrorMessage('Error searching for songs: ' + error.response.data.message);
+      if (error.response.data.message){
+        setErrorMessage('Error searching for songs: ' + error.response.data.message);
+       }
+       else if (error.response.statusText){
+        setErrorMessage('Error searching for songs: ' + error.response.statusText);
+       }
+       else{
+        setErrorMessage('Error searching for songs: ' + error.message);
+       }
     }
   };
 
