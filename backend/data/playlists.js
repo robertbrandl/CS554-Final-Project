@@ -55,12 +55,12 @@ const getFollowingPlaylists = async(
       const playlistCollection = await playlists();
       const followedPlaylists = await playlistCollection.find({userId: {$in: followedUsers.map(user => user._id)}});
       allPlaylists = await followedPlaylists.toArray();
+      
+        await indexArray(allPlaylists);
     }}
-
   }catch(e){
       throw e.message || e;
   }
-  await indexArray(allPlaylists);
   return allPlaylists;
 }
 
