@@ -220,4 +220,14 @@ router.route("/getfollowedusers").get(async (req, res) => {
       return res.status(e.code || 400).json({ error: "Error: " + e.message});
     }
 });
+router.route("/userStats").get(async (req, res) => {
+  const id = xss(req.query.userId);
+  let result = undefined;
+  try {
+    result = await userData.getUserStats(id);
+  } catch (e) {
+    return res.status(e.code || 400).json({ error: "Error: " + e.error });
+  }
+  return res.status(200).json(result);
+});
 export default router;
