@@ -24,12 +24,15 @@ async function synchronizeData() {
       await Promise.all(documents.map(async (doc) => {
         const { _id, ...body } = doc;
         console.log(doc._id.toString())
-        await esClient.index({
-          index: indexName,
-          id: doc._id.toString(),
-          body: body 
-        });
-      }));
+        await esClient.update({
+            index: indexName,
+            id: doc._id.toString(),
+            body: {
+              doc: body
+            },
+            upsert: true 
+          });
+        }));
   
       console.log('Data synchronized successfully!');
     } catch (error) {
@@ -40,6 +43,14 @@ async function indexArray(array) {
     try {
         const esClient = new Client(esOptions);
         // Iterate over each object in the array
+        await esClient.deleteByQuery({
+            index: followedIndex,
+            body: {
+              query: {
+                match_all: {}
+              }
+            }
+          });
         await Promise.all(array.map(async (obj) => {
             // Index the object into Elasticsearch
             await esClient.index({
@@ -81,7 +92,7 @@ async function searchData(query) {
         body: {
             query: {
               wildcard: {
-                name: `*${query}*`
+                title: `*${query}*`
               }
             }
           }
@@ -101,7 +112,7 @@ async function searchFollowed(query) {
         body: {
             query: {
               wildcard: {
-                name: `*${query}*`
+                title: `*${query}*`
               }
             }
           }
