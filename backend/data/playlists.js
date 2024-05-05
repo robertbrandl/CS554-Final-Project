@@ -29,10 +29,12 @@ const getAllPlaylists = async () => {
   let allPlaylists = undefined;
   try {
     allPlaylists = await playlistCollection.find({}).toArray();
+    if (allPlaylists.length > 0){
+        await synchronizeData();
+    }
   } catch (e) {
     throw e.message || e;
   }
-  await synchronizeData();
   return allPlaylists;
 };
 const getFollowingPlaylists = async(

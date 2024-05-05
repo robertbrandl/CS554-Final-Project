@@ -141,6 +141,37 @@ export const UserAccount = () => {
         </div>
       )}
     </div>
+    <div className="item-holder">
+      {data.savedPlaylists && (
+        <div>
+          <ul>
+            {data.savedPlaylists.length > 0 ? (
+              data.savedPlaylists.map((playlist, index) => (
+                <li key={index}>
+                  <Link
+                    className="linker"
+                    key={index}
+                    to={`/playlist/${playlist._id}`}
+                  >
+                    <span>{playlist.title}</span>
+                    <span className="created-by">
+                      Created By: {playlist.userName}
+                    </span>
+
+                    <span className="genre">
+                      {formatDate(playlist.dateCreated)}
+                    </span>
+                    <span className="genre">Genre: {playlist.genre}</span>
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <li>No Saved Playlists</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
     </div>
   );
 }

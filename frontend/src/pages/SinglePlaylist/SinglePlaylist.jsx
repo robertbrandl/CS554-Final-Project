@@ -62,6 +62,11 @@ export const SinglePlaylist = () => {
           <h3 className="album-userName">
             Date Created: {formatDate(playlistData.dateCreated)}
           </h3>
+          {currentUser && data.publicPlaylist && data.emailAddress !== currentUser.email && (
+            <button onClick={handleFollow} className="btn">
+              {isFollowing ? 'Unfollow' : 'Follow'}
+            </button>
+          )}
         </div>
       )}
 
