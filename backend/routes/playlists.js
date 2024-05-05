@@ -120,6 +120,7 @@ router.route("/createplaylist").post(async (req, res) => {
     if (CreatedPlaylist && CreatedPlaylist.insertedCount === 1) {
       return res.status(200).json({ message: "Playlist created" });
     }
+    await client.del("allplaylists");
   } catch (e) {
     return res.status(500).json({ error: e });
   }
