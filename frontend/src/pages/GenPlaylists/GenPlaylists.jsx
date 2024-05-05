@@ -10,12 +10,26 @@ export const GenPlaylists = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
   useEffect(() => {
+    setError('');
+    async function fetchAllData() {
+      setLoading(true);
+      try{
+        const {data} = await axios.get(`/api/playlists/allplaylists`);
+        console.log(data)
+        setPlaylistData(data)
+        setError("");
+      }catch(e){
+        setError(e.message);
+      }
+      setLoading(false);
+    }
     async function fetchData() {
       //setLoading(true);
       try{
         const {data} = await axios.get(`/api/playlists/searchbyname`, {params: {
           name: searchTerm
       }});
+      console.log(data)
         let pdata = []
         if(data && data.length > 0){
           pdata = data.map((e) => e._source);
@@ -28,24 +42,14 @@ export const GenPlaylists = () => {
       }
       //setLoading(false);
     }
-    fetchData();
-  }, [searchTerm])
-  useEffect(() => {
-    setError('');
-    async function fetchData() {
-      setLoading(true);
-      try{
-        const {data} = await axios.get(`/api/playlists/allplaylists`);
-        console.log(data)
-        setPlaylistData(data)
-        setError("");
-      }catch(e){
-        setError(e.message);
-      }
-      setLoading(false);
+    if (searchTerm){
+      fetchData();
     }
-    fetchData()
-  }, []);
+    else{
+      fetchAllData();
+    }
+  }, [searchTerm])
+  
   const handleChange = (e) => {
     e.preventDefault();
     setSearchTerm(e.target.value);

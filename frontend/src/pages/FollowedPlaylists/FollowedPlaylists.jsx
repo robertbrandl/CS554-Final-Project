@@ -10,6 +10,22 @@ export const FollowedPlaylists = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
   useEffect(() => {
+    setError('');
+    async function fetchAllData() {
+      setLoading(true);
+      try{
+        const {data} = await axios.get(`/api/playlists/followedplaylists`, {
+          params:{
+            email:currentUser.email
+          }
+        })
+        setPlaylistData(data)
+        setError("");
+      }catch(e){
+        setError(e.message);
+      }
+      setLoading(false);
+    }
     async function fetchData() {
       try{
         const {data} = await axios.get(`/api/playlists/searchfollowedbyname`, {params: {
@@ -26,27 +42,13 @@ export const FollowedPlaylists = () => {
         setError(e.message);
       }
     }
-    fetchData();
-  }, [searchTerm])
-  useEffect(() => {
-    setError('');
-    async function fetchData() {
-      setLoading(true);
-      try{
-        const {data} = await axios.get(`/api/playlists/followedplaylists`, {
-          params:{
-            email:currentUser.email
-          }
-        })
-        setPlaylistData(data)
-        setError("");
-      }catch(e){
-        setError(e.message);
-      }
-      setLoading(false);
+    if (searchTerm){
+      fetchData();
     }
-    fetchData()
-  }, []);
+    else{
+      fetchAllData();
+    }
+  }, [searchTerm])
   const handleChange = (e) => {
     e.preventDefault();
     setSearchTerm(e.target.value);
