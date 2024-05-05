@@ -29,16 +29,24 @@ export const SinglePlaylist = () => {
     setLoading(true);
     console.log(isSaved)
     if (isSaved === false){
+      try{
       const response = await axios.patch('/api/users/save', {
         email: currentUser.email,
         saveId: id
       });
+      }catch(e){
+        setError(e.response.statusText || e.message)
+      }
     }
     else{
+      try{
       const response = await axios.patch('/api/users/unsave', {
         email: currentUser.email,
         unsaveId: id
       });
+      }catch(e){
+        setError(e.response.statusText || e.message)
+      }
     }
     setIsSaved(!isSaved);
     setLoading(false);
@@ -53,6 +61,16 @@ export const SinglePlaylist = () => {
           `http://localhost:3000/playlists/playlist/${id}`
         );
         console.log(response.data);
+        const {data: loggedInUser} = await axios.get('/api/users/account', {
+            params: {
+              email: currentUser.email
+            }
+          });
+        console.log(loggedInUser)
+        console.log(id)
+        if (loggedInUser.savedPlaylists.includes(id.toString())) {
+            setIsSaved(true);
+        }
 
         setPlaylistData(response.data.playlist);
         setSongsData(response.data.songs.songsArray);
@@ -84,8 +102,8 @@ export const SinglePlaylist = () => {
             Date Created: {formatDate(playlistData.dateCreated)}
           </h3>
           {currentUser &&  (
-            <button onClick={handleSave} className="btn">
-              {isSaved ? 'Unsave' : 'Save'}
+            <button onClick={handleSave} className="save-button">
+              {isSaved ? 'Unsave Playlist' : 'Save Playlist'}
             </button>
           )}
         </div>

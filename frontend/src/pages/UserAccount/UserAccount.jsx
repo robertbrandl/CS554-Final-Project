@@ -85,6 +85,13 @@ export const UserAccount = () => {
     setIsPublic(!isPublic);
     setLoading(false);
   };
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  }
   
   if (loading){
     return <div>Loading...</div>
@@ -141,7 +148,10 @@ export const UserAccount = () => {
         </div>
       )}
     </div>
+    <br />
     <div className="item-holder">
+      <h3>Saved Playlists:</h3>
+      <br />
       {data.savedPlaylists && (
         <div>
           <ul>
@@ -166,12 +176,13 @@ export const UserAccount = () => {
                 </li>
               ))
             ) : (
-              <li>No Saved Playlists</li>
+              <li>No Saved Playlists to Display!</li>
             )}
           </ul>
         </div>
       )}
     </div>
+    <br />
     </div>
   );
 }
