@@ -1,6 +1,6 @@
 import "./GenPlaylists.css";
 import React, {useContext, useState, useEffect} from 'react';
-import {Navigate} from 'react-router-dom';
+import {Navigate, Link} from 'react-router-dom';
 import {AuthContext} from '../../firebase/Auth';
 import axios from "axios";
 export const GenPlaylists = () => {

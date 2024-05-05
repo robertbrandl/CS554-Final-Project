@@ -1,6 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import { userData } from "../data/index.js";
+import xss from "xss";
 import { createClient } from "redis";
 
 const client = createClient();
@@ -13,11 +14,11 @@ router.route("/register").post(async (req, res) => {
       .status(400)
       .json({ error: "Error: Must enter data for the fields" });
   }
-  let name = createUserData.displayName;
-  let email = createUserData.email;
+  let name = xss(createUserData.displayName);
+  let email = xss(createUserData.email);
   console.log(createUserData);
-  let publicPlaylist = createUserData.public;
-  let type = createUserData.accountType;
+  let publicPlaylist = xss(createUserData.public);
+  let type = xss(createUserData.accountType);
   let result = undefined;
   try {
     result = await userData.registerUser(
@@ -34,7 +35,7 @@ router.route("/register").post(async (req, res) => {
 });
 
 router.route("/account").get(async (req, res) => {
-  const email = req.query.email;
+  const email = xss(req.query.email);
   let exists = await client.exists(`account/${email}`);
   if (exists) {
     let result = await client.get(`account/${email}`);
@@ -44,7 +45,7 @@ router.route("/account").get(async (req, res) => {
     try {
       result = await userData.getAccount(email);
     } catch (e) {
-      return res.status(e.code).json({ error: "Error: " + e.error });
+      return res.status(e.code || 400).json({ error: "Error: " + e.error });
     }
     await client.SETEX(`account/${email}`, 3600, JSON.stringify(result));
     return res.status(200).json(result);
@@ -52,18 +53,18 @@ router.route("/account").get(async (req, res) => {
 });
 
 router.route("/profile").get(async (req, res) => {
-  const id = req.query.userId;
+  const id = xss(req.query.userId);
   let result = undefined;
     try {
       result = await userData.getUserById(id);
     } catch (e) {
-      return res.status(e.code).json({ error: "Error: " + e.error });
+      return res.status(e.code || 400).json({ error: "Error: " + e.error });
     }
     return res.status(200).json(result);
 });
 
 router.route("/userexist").get(async (req, res) => {
-  const email = req.query.email;
+  const email = xss(req.query.email);
   let exists = await client.exists(`userexist/${email}`);
   if (exists) {
     let result = await client.get(`userexist/${email}`);
@@ -86,15 +87,15 @@ router.route("/follow").patch(async (req, res) => {
       .status(400)
       .json({ error: "Error: Must press the follow button" });
   }
-  let email = followData.email;
-  let id =  followData.followId;
+  let email = xss(followData.email);
+  let id =  xss(followData.followId);
   let result = undefined;
   try {
     result = await userData.followUser(
       email, id
     );
   } catch (e) {
-    return res.status(e.code).json({ error: "Error: " + e.error });
+    return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
   return res.status(200).json(result);
@@ -107,15 +108,15 @@ router.route("/unfollow").patch(async (req, res) => {
       .status(400)
       .json({ error: "Error: Must press the unfollow button" });
   }
-  let email = followData.email;
-  let id =  followData.unfollowId;
+  let email = xss(followData.email);
+  let id =  xss(followData.unfollowId);
   let result = undefined;
   try {
     result = await userData.unfollowUser(
       email, id
     );
   } catch (e) {
-    return res.status(e.code).json({ error: "Error: " + e.error });
+    return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
   return res.status(200).json(result);
@@ -128,7 +129,7 @@ router.route("/setpublic").patch(async (req, res) => {
       .json({ error: "Error: Must press the set public button" });
   }
   console.log("hi")
-  let email = publicData.email;
+  let email = xss(publicData.email);
   let result = undefined;
   try {
     result = await userData.setUserPublic(
@@ -136,7 +137,7 @@ router.route("/setpublic").patch(async (req, res) => {
     );
   } catch (e) {
     console.log(e)
-    return res.status(e.code).json({ error: "Error: " + e.error });
+    return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
   return res.status(200).json(result);
@@ -148,14 +149,14 @@ router.route("/setprivate").patch(async (req, res) => {
       .status(400)
       .json({ error: "Error: Must press the set public button" });
   }
-  let email = publicData.email;
+  let email = xss(publicData.email);
   let result = undefined;
   try {
     result = await userData.setUserPrivate(
       email
     );
   } catch (e) {
-    return res.status(e.code).json({ error: "Error: " + e.error });
+    return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
   const keys = await client.keys("account*"); 
@@ -169,11 +170,13 @@ router.route("/setprivate").patch(async (req, res) => {
 router.route("/getfollowedusers").get(async (req, res) => {
   try {
     const ids = req.query.followedIds;
+    for (let x of ids){
+      x = xss(x);
+    }
       const result = await userData.getFollowedUsers(ids);
       return res.status(200).json(result);
     } catch (e) {
-      console.log(e)
-      return res.status(e.code).json({ error: "Error: " + e.message});
+      return res.status(e.code || 400).json({ error: "Error: " + e.message});
     }
 });
 export default router;

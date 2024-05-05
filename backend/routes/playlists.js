@@ -5,14 +5,15 @@ import { playlistData, songsData } from "../data/index.js";
 import { userData } from "../data/index.js";
 import { searchData, searchFollowed } from "../config/elasticSync.js";
 import { createClient } from "redis";
+import xss from 'xss';
 const client = createClient();
 client.connect().then(() => {});
 //route to get a single song route based on its id
 
 router.route("/playlist/:id").get(async (req, res) => {
   try {
-    let playlistRef = await playlistData.getPlaylist(req.params.id);
-    let songsRef = await songsData.getAllPlaylistSongs(req.params.id);
+    let playlistRef = await playlistData.getPlaylist(xss(req.params.id));
+    let songsRef = await songsData.getAllPlaylistSongs(xss(req.params.id));
     let data = { playlist: playlistRef, songs: songsRef };
 
     return res.status(200).json(data);
@@ -37,7 +38,7 @@ router.route("/allplaylists").get(async (req, res) => {
   }
 });
 router.route("/followedplaylists").get(async (req, res) => {
-  const { email } = req.query;
+  const { email } = xss(req.query);
   let exists = await client.exists(`followedplaylists/${email}`);
   if (exists) {
     let result = await client.get(`followedplaylists/${email}`);
@@ -58,7 +59,7 @@ router.route("/followedplaylists").get(async (req, res) => {
 });
 router.route("/searchbyname").get(async (req, res) => {
   try {
-    const data = await searchFollowed(req.query.name);
+    const data = await searchFollowed(xss(req.query.name));
     return res.status(200).json(data);
   } catch (e) {
     return res.status(500).json({ error: e });
@@ -66,7 +67,7 @@ router.route("/searchbyname").get(async (req, res) => {
 });
 router.route("/searchfollowedbyname").get(async (req, res) => {
   try {
-    const data = await searchData(req.query.name);
+    const data = await searchData(xss(req.query.name));
     return res.status(200).json(data);
   } catch (e) {
     return res.status(500).json({ error: e });
@@ -84,7 +85,7 @@ router.route("/myplaylists").get(async (req, res) => {
 router.route("/myplaylists").put(async (req, res) => {
   try {
     const { email } = req.body;
-    let userRef = await userData.getAccount(email);
+    let userRef = await userData.getAccount(xss(email));
 
     let usersPlaylists = await playlistData.getUsersPlaylists(userRef._id);
     console.log(usersPlaylists);
@@ -102,18 +103,18 @@ router.route("/createplaylist").post(async (req, res) => {
     console.log("req.body =", req.body);
     const { title, userName, genre, email } = req.body;
 
-    const albumCover = req.file;
+    const albumCover = xss(req.file);
     console.log("Uploaded image:", albumCover);
 
     //data validation
 
-    let userRef = await userData.getAccount(email);
+    let userRef = await userData.getAccount(xss(email));
     let CreatedPlaylist = await playlistData.createPlaylist(
-      title,
+      xss(title),
       userRef._id,
-      userName,
+      xss(userName),
       albumCover,
-      genre
+      xss(genre)
     );
 
     if (CreatedPlaylist && CreatedPlaylist.insertedCount === 1) {
