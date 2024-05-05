@@ -29,7 +29,7 @@ export const PublicUser = () => {
           });
         console.log(loggedInUser)
         console.log(id)
-        if (loggedInUser.followedUsers.includes(id.toString())) {
+        if (loggedInUser.followedUsers && loggedInUser.followedUsers.includes(id.toString())) {
             setIsFollowing(true);
         }
         let playlists = data.playlists;
