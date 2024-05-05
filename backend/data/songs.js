@@ -107,7 +107,7 @@ const addSongToPlaylist = async (songId, playlistId) => {
     "playlist ",
     playlistId
   );
-  return updatedPlaylist;
+  return { message: "Song added to playlist successfully" };
 };
 
 const DeleteSongsInPlaylist = async (songIds, playlistId) => {
