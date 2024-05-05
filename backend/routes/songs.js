@@ -4,23 +4,23 @@ import axios from "axios";
 import redis from "redis";
 const client = redis.createClient();
 import gm from "gm";
-import fs from "fs";
+import xss from "xss";
 import request from "request";
 import { playlistData, songsData } from "../data/index.js";
 client.connect();
 //route to get a single song route based on its id
 router.route("/song/:id").get(async (req, res) => {
   //check redis if SongID is cached
-  let foundSong = await client.get("songId".concat(req.params.id));
+  let foundSong = await client.get("songId".concat(xss(req.params.id)));
   let songData;
 
   if (foundSong) {
-    console.log("songId", req.params.id, "found in cache, returning it");
+    console.log("songId", xss(req.params.id), "found in cache, returning it");
     songData = JSON.parse(foundSong);
   } else {
     // Get the song data from the Deezer API
     const response = await axios.get(
-      `https://api.deezer.com/track/${req.params.id}`
+      `https://api.deezer.com/track/${xss(req.params.id)}`
     );
     songData = response.data;
     console.log(songData);
@@ -45,8 +45,8 @@ router.route("/song/:id").get(async (req, res) => {
     }
 
     // Set the Redis cache
-    await client.set("songId".concat(req.params.id), JSON.stringify(songData));
-    console.log("SongId", req.params.id, "is set in cache");
+    await client.set("songId".concat(xss(req.params.id)), JSON.stringify(songData));
+    console.log("SongId", xss(req.params.id), "is set in cache");
   }
 
   console.log(songData);
@@ -75,11 +75,11 @@ const resizeImage = async (imageUrl, width, height) => {
   }
 };
 router.route("/search/:query").get(async (req, res) => {
-  let foundSongs = await client.get("search-".concat(req.params.query));
+  let foundSongs = await client.get("search-".concat(xss(req.params.query)));
   let songData;
 
   if (foundSongs) {
-    console.log("songs", req.params.query, "found in cache, returning it");
+    console.log("songs", xss(req.params.query), "found in cache, returning it");
     songData = JSON.parse(foundSongs);
   } else {
     const response = await axios.get(
@@ -88,10 +88,10 @@ router.route("/search/:query").get(async (req, res) => {
     songData = response.data;
 
     await client.set(
-      "search-".concat(req.params.query),
+      "search-".concat(xss(req.params.query)),
       JSON.stringify(songData)
     );
-    console.log("Songs", req.params.query, "is set in cache");
+    console.log("Songs", xss(req.params.query), "is set in cache");
   }
 
   console.log(songData);
@@ -103,7 +103,7 @@ router.route("/addsong").post(async (req, res) => {
     console.log(req.body);
     const { songId, playlistId } = req.body;
     //data validation
-    let addedToPlaylist = await songsData.addSongToPlaylist(songId, playlistId);
+    let addedToPlaylist = await songsData.addSongToPlaylist(xss(songId), xss(playlistId));
 
     if (
       addedToPlaylist &&
