@@ -204,5 +204,5 @@ const getUserStats = async (userId) => {
     getFollowedUsers,
     savePlaylist,
     unsavePlaylist,
-    getUserStats // Add this line
+    getUserStats 
   }
