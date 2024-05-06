@@ -145,7 +145,7 @@ export const SongSearch = () => {
                 <p>{song.artist.name}</p>
               </Link>
               {isLoggedIn.currentUser && (
-                <AddToPlaylistButton />
+                <AddToPlaylistButton id={song.id} />
               )}
             </div>
           </li>
