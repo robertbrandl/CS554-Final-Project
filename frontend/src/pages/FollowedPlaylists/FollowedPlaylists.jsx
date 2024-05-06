@@ -98,7 +98,8 @@ export const FollowedPlaylists = () => {
         setError(e.message);
       }
     }
-    getUser();
+    if (currentUser){
+      getUser();}
     if (searchTerm) {
       fetchData();
     } else {
