@@ -130,7 +130,7 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
     // Push the created playlistId into the user's songIds array
     await userCollection.updateOne(
       { _id: new ObjectId(userId) },
-      { $push: { songIds: createNewPlaylist.insertedId } }
+      { $push: { playlists: createNewPlaylist.insertedId } }
     );
   } catch (e) {
     throw e.message || e;

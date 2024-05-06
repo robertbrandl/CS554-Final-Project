@@ -14,6 +14,7 @@ export const SongSearch = () => {
     label: false
   });
   const [searchTerms, setSearchTerms] = useState({
+    track: '',
     artist: '',
     album: '',
     label: ''
@@ -39,7 +40,7 @@ export const SongSearch = () => {
       if (response.data.data.length === 0) {
         setErrorMessage('No results found');
       } else {
-        setSearchResults(response.data.data);
+        setSearchResults(response.data.data.slice(0, 10));
       }
     } catch (error) {
       if (error.message === 'Must supply at least one parameter') {
