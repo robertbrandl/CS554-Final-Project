@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../firebase/Auth';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { AddToPlaylistButton } from '../../components/AddToPlaylistButton/AddToPlaylistButton';
 
 export const SongSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -14,6 +15,7 @@ export const SongSearch = () => {
     label: false
   });
   const [searchTerms, setSearchTerms] = useState({
+    track: '',
     artist: '',
     album: '',
     label: ''
@@ -39,7 +41,7 @@ export const SongSearch = () => {
       if (response.data.data.length === 0) {
         setErrorMessage('No results found');
       } else {
-        setSearchResults(response.data.data);
+        setSearchResults(response.data.data.slice(0, 10));
       }
     } catch (error) {
       if (error.message === 'Must supply at least one parameter') {
@@ -52,10 +54,6 @@ export const SongSearch = () => {
         setErrorMessage('Error searching for songs: ' + error.message);
       }
     }
-  };
-
-  const saveSong = (song) => {
-    console.log('Saved song with Name:', song.name);
   };
 
   const handleOptionChange = (option) => {
@@ -147,7 +145,7 @@ export const SongSearch = () => {
                 <p>{song.artist.name}</p>
               </Link>
               {isLoggedIn.currentUser && (
-                <button onClick={() => saveSong(song)}>Save</button>
+                <AddToPlaylistButton />
               )}
             </div>
           </li>
