@@ -167,8 +167,8 @@ export const GenPlaylists = () => {
       <br />
       {playlistData && playlistData.length > 0 ? (
         <ul>
-          {playlistData.map((playlist) => (
-            <li key={playlist._id}>
+          {playlistData.map((playlist, index) => (
+            <li key={index}>
               <Link className="linker" to={`/playlist/${playlist._id}`}>
                 <span>{playlist.title}</span>
                 <span className="created-by">
@@ -184,7 +184,10 @@ export const GenPlaylists = () => {
                   {playlistStates[playlist._id] ? 'Unsave Playlist' : 'Save Playlist'}
                 </button>
               )}
+            <br />
+            <br />
             </li>
+            
           ))}
         </ul>
       ) : (

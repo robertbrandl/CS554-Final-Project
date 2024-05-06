@@ -19,18 +19,25 @@ async function synchronizeData() {
   
       // Retrieve data from MongoDB
       const documents = await collection.find().toArray();
+      await esClient.deleteByQuery({
+        index: indexName,
+        body: {
+          query: {
+            match_all: {}
+          }
+        }
+      });
   
       // Transform and index data into Elasticsearch
       await Promise.all(documents.map(async (doc) => {
         const { _id, ...body } = doc;
         console.log(doc._id.toString())
-        await esClient.update({
+        await esClient.index({
             index: indexName,
             id: doc._id.toString(),
             body: {
               doc: body
-            },
-            upsert: true 
+            }, 
           });
         }));
   

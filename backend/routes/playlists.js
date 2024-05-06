@@ -38,7 +38,7 @@ router.route("/allplaylists").get(async (req, res) => {
   }
 });
 router.route("/followedplaylists").get(async (req, res) => {
-  const  email  = xss(req.query.email);
+  const email  = xss(req.query.email);
   let exists = await client.exists(`followedplaylists/${email}`);
   if (exists) {
     let result = await client.get(`followedplaylists/${email}`);
