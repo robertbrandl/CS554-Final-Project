@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UserStats.css';
 
-const UserStats = ({ userId }) => {
+export const UserStats = ({ userId }) => {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -38,4 +38,3 @@ const UserStats = ({ userId }) => {
   );
 };
 
-export default UserStats;
