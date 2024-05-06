@@ -12,7 +12,7 @@ Discover, create, and share music playlists with friends. Whether you're searchi
 # Prerequisites
 - To run our project, you must have NodeJS, Elasticsearch, Redis, and GraphicsMagick installed.
   1. Follow the steps here to install NodeJS (and npm) based on your system: https://nodejs.org/en/download
-  2. For Elasticsearch, follow the instructions here: [Elastic Search](https://www.elastic.co/downloads/elasticsearch?msclkid=f60fbe6acecf172e6690d85d1e5c5da6&utm_campaign=Bing-B-Amer-US&utm_content=Brand-Core-install-EXT&utm_source=bing&utm_medium=cpc&device=c&utm_term=elasticsearch%20install&msclkid=f60fbe6acecf172e6690d85d1e5c5da6)
+  2. For Elasticsearch, follow the instructions here: [Elastic Search](https://www.elastic.co/downloads/elasticsearch?msclkid=f60fbe6acecf172e6690d85d1e5c5da6&utm_campaign=Bing-B-Amer-US&utm_content=Brand-Core-install-EXT&utm_source=bing&utm_medium=cpc&device=c&utm_term=elasticsearch%20install&msclkid=f60fbe6acecf172e6690d85d1e5c5da6) (note for Mac and Windows, you most likely need to install kibana as well, here is the download link: https://www.elastic.co/downloads/kibana)
      - For a quick setup on Ubuntu, try these steps:
      - `wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -`
      -  `sudo sh -c 'echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" > /etc/apt/sources.list.d/elastic-7.x.list'`
