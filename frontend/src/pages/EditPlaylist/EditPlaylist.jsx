@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import "./EditPlaylist.css";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,31 @@ export const EditPlaylist = () => {
     albumCover: null,
     genre: "",
   });
+  const [playlistData, setPlaylistData] = useState(null);
   const { currentUser } = useContext(AuthContext);
+  useEffect(() => {
+    //setError("");
+    async function fetchData() {
+      //setLoading(true);
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/playlists/playlist/${id}`
+        );
+        console.log(response.data);
+        setFormData({
+          title: response.data.playlist.title,
+          userName: response.data.playlist.userName,
+          genre: response.data.playlist.genre,
+          // Ensure albumCover is set to null or a file object
+          albumCover: null,
+        });
+      } catch (e) {
+        //setError(e.message);
+      }
+      //setLoading(false);
+    }
+    fetchData();
+  }, [id]);
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prevState) => ({
@@ -61,7 +85,7 @@ export const EditPlaylist = () => {
       <form className="create-playlist-form" onSubmit={handleSubmit}>
         <div className="form-row">
           <label htmlFor="title">Title:</label>{" "}
-          <input type="text" name="title" id="title" onChange={handleChange} />
+          <input type="text" name="title" id="title" onChange={handleChange} value={formData.title}  />
         </div>
         <div className="form-row">
           <label htmlFor="userName">User Name:</label>{" "}
@@ -69,6 +93,7 @@ export const EditPlaylist = () => {
             type="text"
             name="userName"
             id="userName"
+            value={formData.userName}
             onChange={handleChange}
           />
         </div>
@@ -85,7 +110,7 @@ export const EditPlaylist = () => {
         </div>
         <div className="form-row">
           <label htmlFor="genre">Choose a Playlist Genre:</label>{" "}
-          <select name="genre" id="genre" onChange={handleChange}>
+          <select name="genre" id="genre" value={formData.genre} onChange={handleChange}>
             <option value="">Select Genre</option>
             {genres.map((genre, index) => (
               <option key={index} value={genre}>
