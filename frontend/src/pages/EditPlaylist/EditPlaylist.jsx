@@ -54,6 +54,7 @@ export const EditPlaylist = () => {
       console.error("Error submitting form data:", error);
     }
   };
+  const genres = ["Rock", "Pop", "Hip Hop", "R&B", "Country", "Electronic", "Latin", "K-POP", "Classical", "Metal", "Alternative", "Folk", "Rap", "Gospel"];
   return (
     <div className="create-playlist">
       <h1>Edit Playlist</h1>
@@ -83,8 +84,15 @@ export const EditPlaylist = () => {
           />
         </div>
         <div className="form-row">
-          <label htmlFor="genre">Genre:</label>{" "}
-          <input type="text" name="genre" id="genre" onChange={handleChange} />
+          <label htmlFor="genre">Choose a Playlist Genre:</label>{" "}
+          <select name="genre" id="genre" onChange={handleChange}>
+            <option value="">Select Genre</option>
+            {genres.map((genre, index) => (
+              <option key={index} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit">Edit Playlist</button>
       </form>

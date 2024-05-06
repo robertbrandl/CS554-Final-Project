@@ -133,7 +133,7 @@ router.route("/createplaylist").post(async (req, res) => {
       xss(genre)
     );
 
-    if (CreatedPlaylist && CreatedPlaylist.insertedCount === 1) {
+    if (CreatedPlaylist && CreatedPlaylist.acknowledged) {
       return res.status(200).json({ message: "Playlist created" });
     }
     await client.del("allplaylists");
