@@ -182,7 +182,7 @@ const getUserStats = async (userId) => {
       throw { code: 404, error: 'User not found' };
     }
     const followedUsers = user.followedUsers.length;
-    const followers = user.followers.length;
+    const followers = await countFollowers(userId, userCollection);
     const playlistsCreated = user.playlists.length;
     const songsPerArtist = calculateSongsPerArtist(user.playlists); 
     return {
@@ -191,7 +191,26 @@ const getUserStats = async (userId) => {
       playlistsCreated,
       songsPerArtist
     };
-  }
+}
+
+const countFollowers = async (userId, userCollection) => {
+    const users = await userCollection.find({ followedUsers: userId }).toArray();
+    return users.length;
+}
+
+const calculateSongsPerArtist = (playlists) => {
+    const songsPerArtist = {};
+    for (const playlist of playlists) {
+        for (const song of playlist.songs) {
+            if (!songsPerArtist[song.artist]) {
+                songsPerArtist[song.artist] = 1;
+            } else {
+                songsPerArtist[song.artist]++;
+            }
+        }
+    }
+    return songsPerArtist;
+}
   export default {
     registerUser,
     getAccount, 
