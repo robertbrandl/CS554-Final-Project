@@ -1,20 +1,20 @@
 .save-button2 {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
+  padding: 10px 20px;
+  margin-right: 65%;
+  background-color: #7858b8;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
-.save-button2:hover{
-    background-color: #0056b3;
-  }
-  
+.save-button2:hover {
+  background-color: #624798;
+}
+
 .inpclass {
-        width: 30%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+  width: 30%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }

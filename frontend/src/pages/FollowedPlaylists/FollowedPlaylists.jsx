@@ -1,99 +1,110 @@
 import "./FollowedPlaylists.css";
-import React, {useContext, useState, useEffect} from 'react';
-import {Navigate, Link} from 'react-router-dom';
-import {AuthContext} from '../../firebase/Auth';
+import React, { useContext, useState, useEffect } from "react";
+import { Navigate, Link } from "react-router-dom";
+import { AuthContext } from "../../firebase/Auth";
 import axios from "axios";
 export const FollowedPlaylists = () => {
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [playlistData, setPlaylistData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState("");
   const [playlistStates, setPlaylistStates] = useState({});
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   useEffect(() => {
-    setError('');
+    setError("");
     let res = null;
-    async function getUser(){
-      let data = await axios.get('/api/users/account', {
+    async function getUser() {
+      let data = await axios.get("/api/users/account", {
         params: {
-          email: currentUser.email
-        }
+          email: currentUser.email,
+        },
       });
-      res = data.data
-      if (res && res._id){setUserId(res._id);}
-      
+      res = data.data;
+      if (res && res._id) {
+        setUserId(res._id);
+      }
     }
     async function fetchAllData() {
       setLoading(true);
-      try{
-        const {data} = await axios.get(`/api/playlists/followedplaylists`, {
-          params:{
-            email: currentUser.email
-          }
-        })
+      try {
+        const { data } = await axios.get(`/api/playlists/followedplaylists`, {
+          params: {
+            email: currentUser.email,
+          },
+        });
         console.log(data);
         if (data && data.length > 0) {
           const updatedStates = {};
           for (let x of data) {
-            if (res && res.savedPlaylists && res.savedPlaylists.includes(x._id.toString())) {
+            if (
+              res &&
+              res.savedPlaylists &&
+              res.savedPlaylists.includes(x._id.toString())
+            ) {
               updatedStates[x._id] = true;
-            }
-            else if (res && res.savedPlaylists){
+            } else if (res && res.savedPlaylists) {
               updatedStates[x._id] = false;
             }
           }
-          setPlaylistStates(prevStates => ({
+          setPlaylistStates((prevStates) => ({
             ...prevStates,
-            ...updatedStates
+            ...updatedStates,
           }));
         }
-        setPlaylistData(data)
+        setPlaylistData(data);
         setError("");
-      }catch(e){
+      } catch (e) {
         setError(e.message);
       }
       setLoading(false);
     }
     async function fetchData() {
-      try{
-        const {data} = await axios.get(`/api/playlists/searchfollowedbyname`, {params: {
-          name: searchTerm
-      }});
-      if (data && data.length > 0) {
-        const updatedStates = {};
-        for (let x of data) {
-          if (res && res.savedPlaylists && res.savedPlaylists.includes(x._id.toString())) {
-            updatedStates[x._id] = true;
+      try {
+        const { data } = await axios.get(
+          `/api/playlists/searchfollowedbyname`,
+          {
+            params: {
+              name: searchTerm,
+            },
           }
-          else if (res && res.savedPlaylists){
-            updatedStates[x._id] = false;
+        );
+        if (data && data.length > 0) {
+          const updatedStates = {};
+          for (let x of data) {
+            if (
+              res &&
+              res.savedPlaylists &&
+              res.savedPlaylists.includes(x._id.toString())
+            ) {
+              updatedStates[x._id] = true;
+            } else if (res && res.savedPlaylists) {
+              updatedStates[x._id] = false;
+            }
           }
+          setPlaylistStates((prevStates) => ({
+            ...prevStates,
+            ...updatedStates,
+          }));
         }
-        setPlaylistStates(prevStates => ({
-          ...prevStates,
-          ...updatedStates
-        }));
-      }
-        let pdata = []
-        if(data && data.length > 0){
+        let pdata = [];
+        if (data && data.length > 0) {
           pdata = data.map((e) => e._source);
         }
-        console.log(pdata)
-        setPlaylistData(pdata)
+        console.log(pdata);
+        setPlaylistData(pdata);
         setError("");
-      }catch(e){
+      } catch (e) {
         setError(e.message);
       }
     }
     getUser();
-    if (searchTerm){
+    if (searchTerm) {
       fetchData();
-    }
-    else{
+    } else {
       fetchAllData();
     }
-  }, [searchTerm])
+  }, [searchTerm]);
   const handleChange = (e) => {
     e.preventDefault();
     setSearchTerm(e.target.value);
@@ -109,56 +120,54 @@ export const FollowedPlaylists = () => {
     setLoading(true);
     const isPlaylistSaved = playlistStates[playlistId];
     console.log(playlistStates);
-    if (isPlaylistSaved === false){
-      try{
-      const response = await axios.patch('/api/users/save', {
-        email: currentUser.email,
-        saveId: playlistId
-      });
-      }catch(e){
-        setError(e.response.statusText || e.message)
+    if (isPlaylistSaved === false) {
+      try {
+        const response = await axios.patch("/api/users/save", {
+          email: currentUser.email,
+          saveId: playlistId,
+        });
+      } catch (e) {
+        setError(e.response.statusText || e.message);
+      }
+    } else {
+      try {
+        const response = await axios.patch("/api/users/unsave", {
+          email: currentUser.email,
+          unsaveId: playlistId,
+        });
+      } catch (e) {
+        setError(e.response.statusText || e.message);
       }
     }
-    else{
-      try{
-      const response = await axios.patch('/api/users/unsave', {
-        email: currentUser.email,
-        unsaveId: playlistId
-      });
-      }catch(e){
-        setError(e.response.statusText || e.message)
-      }
-    }
-    setPlaylistStates(prevStates => ({
+    setPlaylistStates((prevStates) => ({
       ...prevStates,
-      [playlistId]: !isPlaylistSaved
+      [playlistId]: !isPlaylistSaved,
     }));
     setLoading(false);
   };
 
-  if (loading){
-    return <div>Loading...</div>
-  }
-  else if (error) {
+  if (loading) {
+    return <div>Loading...</div>;
+  } else if (error) {
     return <div>Error: {error}</div>;
   }
   return (
-    <div className='card'>
+    <div className="card">
       <h1>View and Search Through Playlists from Your Followed Users</h1>
       <br />
       <form
-        method='POST'
+        method="POST"
         onSubmit={(e) => {
           e.preventDefault();
         }}
-        name='formName'
-        className='center'
+        name="formName"
+        className="center"
       >
         <label>
           <input
-            autoComplete='off'
-            type='text'
-            name='searchTerm'
+            autoComplete="off"
+            type="text"
+            name="searchTerm"
             value={searchTerm}
             onChange={handleChange}
             autoFocus
@@ -167,34 +176,38 @@ export const FollowedPlaylists = () => {
           />
         </label>
       </form>
-      {playlistData && playlistData.length > 0 ? (
-        <ul>
-          {playlistData.map((playlist, index) => (
-            <li key={index}>
-              <Link className="linker" to={`/playlist/${playlist._id}`}>
-                <span>{playlist.title}</span>
-                <span className="created-by">
-                  Created By: {playlist.userName}
-                </span>
-                <span className="genre">
-                  {formatDate(playlist.dateCreated)}
-                </span>
-                <span className="genre">Genre: {playlist.genre}</span>
-              </Link>
-              {currentUser && playlist.userId !== userId && (
-                <button onClick={() => handleSave(playlist._id)} className="save-button2">
-                  {playlistStates[playlist._id] ? 'Unsave Playlist' : 'Save Playlist'}
-                </button>
-              )}
-            <br />
-            <br />
-            </li>
-            
-          ))}
-        </ul>
-      ) : (
-        <div>No playlists found</div>
-      )}
+      <div className="item-holder">
+        {playlistData && playlistData.length > 0 ? (
+          <ul>
+            {playlistData.map((playlist, index) => (
+              <li key={index}>
+                <Link className="linker" to={`/playlist/${playlist._id}`}>
+                  <span>{playlist.title}</span>
+                  <span className="created-by">
+                    Created By: {playlist.userName}
+                  </span>
+                  <span className="genre">
+                    {formatDate(playlist.dateCreated)}
+                  </span>
+                  <span className="genre">Genre: {playlist.genre}</span>
+                </Link>
+                {currentUser && playlist.userId !== userId && (
+                  <button
+                    onClick={() => handleSave(playlist._id)}
+                    className="save-button2"
+                  >
+                    {playlistStates[playlist._id]
+                      ? "Unsave Playlist"
+                      : "Save Playlist"}
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div>No playlists found</div>
+        )}
+      </div>
     </div>
   );
-}
+};
