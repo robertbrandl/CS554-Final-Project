@@ -10,7 +10,7 @@ import {
   rateLimitMiddleware,
 } from "api-security-middleware";
 import Ddos from "ddos";
-var ddos = new Ddos({ burst: 10, limit: 300 });
+var ddos = new Ddos({ burst: 10, limit: 15 });
 dotenv.config();
 app.use(cors());
 app.use(express.json());
