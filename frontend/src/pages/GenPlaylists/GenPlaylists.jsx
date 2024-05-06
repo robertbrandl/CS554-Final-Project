@@ -152,8 +152,6 @@ export const GenPlaylists = () => {
         className='center'
       >
         <label>
-          <span>Search for a Playlist by Title: </span>
-          <br />
           <input
             autoComplete='off'
             type='text'
@@ -167,30 +165,32 @@ export const GenPlaylists = () => {
         </label>
       </form>
       <br />
-      {playlistData && playlistData.length > 0 ? 
-      playlistData.map((playlist) => (
-        <li key={playlist._id}>
-          <Link
-          className="linker"
-            to={`/playlist/${playlist._id}`}
-          >
-            <span>{playlist.title}</span>
-            <span className="created-by">
-              Created By: {playlist.userName}
-            </span>
-            {currentUser && playlist.userName !== currentUser.displayName  && (
+      {playlistData && playlistData.length > 0 ? (
+        <ul>
+          {playlistData.map((playlist) => (
+            <li key={playlist._id}>
+              <Link className="linker" to={`/playlist/${playlist._id}`}>
+                <span>{playlist.title}</span>
+                <span className="created-by">
+                  Created By: {playlist.userName}
+                </span>
+                <span className="genre">
+                  {formatDate(playlist.dateCreated)}
+                </span>
+                <span className="genre">Genre: {playlist.genre}</span>
+              </Link>
+              {currentUser && playlist.userName !== currentUser.displayName && (
                 <button onClick={() => handleSave(playlist._id)} className="save-button2">
                   {playlistStates[playlist._id] ? 'Unsave Playlist' : 'Save Playlist'}
                 </button>
               )}
-            <span className="genre">
-              {formatDate(playlist.dateCreated)}
-            </span>
-            <span className="genre">Genre: {playlist.genre}</span>
-          </Link>
-        </li>
-      ))
-      : <div>No playlists found</div>}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div>No playlists found</div>
+      )}
+
     </div>
   );
 }
