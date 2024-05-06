@@ -86,6 +86,7 @@ export const CreatePlaylist = () => {
                 {genre}
               </option>
             ))}
+          <option value="No Genre">No Genre</option>
           </select>
         </div>
         <button type="submit">Create Playlist</button>

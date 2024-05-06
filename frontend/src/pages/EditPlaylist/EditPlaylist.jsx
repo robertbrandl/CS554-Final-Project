@@ -117,6 +117,7 @@ export const EditPlaylist = () => {
                 {genre}
               </option>
             ))}
+            <option value="No Genre">No Genre</option>
           </select>
         </div>
         <button type="submit">Edit Playlist</button>
