@@ -1,7 +1,11 @@
 import { ObjectId } from "mongodb";
 import * as validation from "../validation.js";
 import { playlists, users } from "../config/mongoCollections.js";
-import { indexArray, printAllData, synchronizeData } from "../config/elasticSync.js";
+import {
+  indexArray,
+  printAllData,
+  synchronizeData,
+} from "../config/elasticSync.js";
 const getPlaylist = async (playlistId) => {
   let id = undefined;
   try {
@@ -29,43 +33,44 @@ const getAllPlaylists = async () => {
   let allPlaylists = undefined;
   try {
     allPlaylists = await playlistCollection.find({}).toArray();
-    if (allPlaylists.length > 0){
-        await synchronizeData();
-        //await printAllData();
+    if (allPlaylists.length > 0) {
+      await synchronizeData();
+      //await printAllData();
     }
   } catch (e) {
     throw e.message || e;
   }
   return allPlaylists;
 };
-const getFollowingPlaylists = async(
-  userEmail
-) =>{
+const getFollowingPlaylists = async (userEmail) => {
   let em = validation.checkString(userEmail);
   const userCollection = await users();
-  const user = await userCollection.findOne({emailAddress: em});
-  if (user === null) throw 'No user account with that email';
+  const user = await userCollection.findOne({ emailAddress: em });
+  if (user === null) throw "No user account with that email";
   let allPlaylists = [];
 
-  try{
-    if(user.followedUser && user.followedUser.length > 0){
-
+  try {
+    if (user.followedUser && user.followedUser.length > 0) {
       //get users that are followed by user
-      const followedUsers = await db.users.find({_id: {$in: user.followedUser}});
+      const followedUsers = await db.users.find({
+        _id: { $in: user.followedUser },
+      });
       if (followedUsers && followedUsers.length > 0) {
+        //get playlists of those followed ids
+        const playlistCollection = await playlists();
+        const followedPlaylists = await playlistCollection.find({
+          userId: { $in: followedUsers.map((user) => user._id) },
+        });
+        allPlaylists = await followedPlaylists.toArray();
 
-      //get playlists of those followed ids
-      const playlistCollection = await playlists();
-      const followedPlaylists = await playlistCollection.find({userId: {$in: followedUsers.map(user => user._id)}});
-      allPlaylists = await followedPlaylists.toArray();
-      
         await indexArray(allPlaylists);
-    }}
-  }catch(e){
-      throw e.message || e;
+      }
+    }
+  } catch (e) {
+    throw e.message || e;
   }
   return allPlaylists;
-}
+};
 
 const getUsersPlaylists = async (userId) => {
   console.log("in getUsersPlaylists DF");
@@ -82,20 +87,20 @@ const getUsersPlaylists = async (userId) => {
 
   return userPlaylists;
 };
-const getSavedPlaylists = async (playlistIds) =>{
-    let ret = [];
-    const playlistCollection = await playlists();
-    for (let x of playlistIds){
-        console.log(x);
-        const playlist = await playlistCollection.findOne({ _id: new ObjectId(x) });
-        if (!playlist) {
-            throw { code: 404, message: 'Playlist not found' };
-        }
-        console.log(playlist);
-        ret.push(playlist);
+const getSavedPlaylists = async (playlistIds) => {
+  let ret = [];
+  const playlistCollection = await playlists();
+  for (let x of playlistIds) {
+    console.log(x);
+    const playlist = await playlistCollection.findOne({ _id: new ObjectId(x) });
+    if (!playlist) {
+      throw { code: 404, message: "Playlist not found" };
     }
-    return ret;
-}
+    console.log(playlist);
+    ret.push(playlist);
+  }
+  return ret;
+};
 const createPlaylist = async (title, userId, userName, albumCover, genre) => {
   const playlistCollection = await playlists();
   const userCollection = await users();
@@ -127,10 +132,10 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
     validation.stringValidation(newPlaylist.genre);
 
     createNewPlaylist = await playlistCollection.insertOne(newPlaylist);
-    // Push the created playlistId into the user's songIds array
+    // Push the created playlistId into the user's playlists array
     await userCollection.updateOne(
       { _id: new ObjectId(userId) },
-      { $push: { songIds: createNewPlaylist.insertedId } }
+      { $push: { playlists: createNewPlaylist.insertedId } }
     );
   } catch (e) {
     throw e.message || e;
@@ -221,8 +226,8 @@ const deletePlaylist = async (playlistId, userId) => {
       { $pull: { songIds: new ObjectId(playlistFound._id) } }
     );
     await userCollection.updateMany(
-        { savedPlaylists: { $in: [playlistId] } },
-        { $pull: { savedPlaylists: playlistId } }
+      { savedPlaylists: { $in: [playlistId] } },
+      { $pull: { savedPlaylists: playlistId } }
     );
     return deletedPlaylist;
   } catch (e) {
@@ -251,5 +256,5 @@ export default {
   updatePlaylist,
   deletePlaylist,
   getUsersPlaylists,
-  getSavedPlaylists
+  getSavedPlaylists,
 };

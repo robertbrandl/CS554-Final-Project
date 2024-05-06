@@ -3,7 +3,7 @@ import albumImage from "../../assets/album.png";
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import {AuthContext} from '../../firebase/Auth';
+import { AuthContext } from "../../firebase/Auth";
 export const SinglePlaylist = () => {
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -22,31 +22,30 @@ export const SinglePlaylist = () => {
   const [songsData, setSongsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [isSaved, setIsSaved] = useState(false);
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const { id } = useParams();
   const handleSave = async () => {
     setLoading(true);
-    console.log(isSaved)
-    if (isSaved === false){
-      try{
-      const response = await axios.patch('/api/users/save', {
-        email: currentUser.email,
-        saveId: id
-      });
-      }catch(e){
-        setError(e.response.statusText || e.message)
+    console.log(isSaved);
+    if (isSaved === false) {
+      try {
+        const response = await axios.patch("/api/users/save", {
+          email: currentUser.email,
+          saveId: id,
+        });
+      } catch (e) {
+        setError(e.response.statusText || e.message);
       }
-    }
-    else{
-      try{
-      const response = await axios.patch('/api/users/unsave', {
-        email: currentUser.email,
-        unsaveId: id
-      });
-      }catch(e){
-        setError(e.response.statusText || e.message)
+    } else {
+      try {
+        const response = await axios.patch("/api/users/unsave", {
+          email: currentUser.email,
+          unsaveId: id,
+        });
+      } catch (e) {
+        setError(e.response.statusText || e.message);
       }
     }
     setIsSaved(!isSaved);
@@ -62,16 +61,22 @@ export const SinglePlaylist = () => {
           `http://localhost:3000/playlists/playlist/${id}`
         );
         console.log(response.data);
-        const {data: loggedInUser} = await axios.get('/api/users/account', {
-            params: {
-              email: currentUser.email
-            }
-          });
-        console.log(loggedInUser)
-        console.log(id)
-        if (loggedInUser && loggedInUser._id){setUserId(loggedInUser._id);}
-        if (loggedInUser && loggedInUser.savedPlaylists && loggedInUser.savedPlaylists.includes(id.toString())) {
-            setIsSaved(true);
+        const { data: loggedInUser } = await axios.get("/api/users/account", {
+          params: {
+            email: currentUser.email,
+          },
+        });
+        console.log(loggedInUser);
+        console.log(id);
+        if (loggedInUser && loggedInUser._id) {
+          setUserId(loggedInUser._id);
+        }
+        if (
+          loggedInUser &&
+          loggedInUser.savedPlaylists &&
+          loggedInUser.savedPlaylists.includes(id.toString())
+        ) {
+          setIsSaved(true);
         }
 
         setPlaylistData(response.data.playlist);
@@ -103,9 +108,9 @@ export const SinglePlaylist = () => {
           <h3 className="album-userName">
             Date Created: {formatDate(playlistData.dateCreated)}
           </h3>
-          {currentUser && playlistData.userId !== userId  && (
+          {currentUser && playlistData.userId !== userId && (
             <button onClick={handleSave} className="save-button">
-              {isSaved ? 'Unsave Playlist' : 'Save Playlist'}
+              {isSaved ? "Unsave Playlist" : "Save Playlist"}
             </button>
           )}
         </div>
@@ -132,7 +137,7 @@ export const SinglePlaylist = () => {
                 <div className="song-info">{song.title}</div>
                 <div className="song-info">{song.album.title}</div>
                 <div className="song-info">{song.artist.name}</div>
-                <div className="song-info">{song.release_date}</div>
+                <div className="song-info">{formatDate(song.release_date)}</div>
                 <div className="song-info">{formatTime(song.duration)}</div>
               </div>
             </Link>
