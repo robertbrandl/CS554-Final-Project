@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../firebase/Auth";
 
 export const AccountPlaylists = ({ user }) => {
   const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const month = date.getMonth() + 1;
@@ -36,6 +38,7 @@ export const AccountPlaylists = ({ user }) => {
 
   async function deletePlaylist(playlistId, userEmail) {
     console.log("delete clicked");
+    console.log(userEmail)
     const response = await axios.delete(
       "http://localhost:3000/playlists/myplaylists",
       {
@@ -77,19 +80,23 @@ export const AccountPlaylists = ({ user }) => {
                     </span>
                     <span className="genre">Genre: {playlist.genre}</span>
                   </Link>
-                  <button
-                    className="delete-playlist-button"
-                    onClick={() => deletePlaylist(playlist._id)}
-                  >
-                    Delete Playlist
-                  </button>
+                  {currentUser && user.email === currentUser.email && (
+                    <div>
+                      <button
+                        className="delete-playlist-button"
+                        onClick={() => deletePlaylist(playlist._id, user.email)}
+                      >
+                        Delete Playlist
+                      </button>
+                      <button
+                        className="edit-playlist-button"
+                        onClick={() => editPlaylist(playlist._id, user.email)}
+                      >
+                        Edit Playlist
+                      </button>
+                    </div>
+                  )}
 
-                  <button
-                    className="edit-playlist-button"
-                    onClick={() => editPlaylist(playlist._id, user.email)}
-                  >
-                    Edit Playlist
-                  </button>
                 </li>
               ))
             ) : (
