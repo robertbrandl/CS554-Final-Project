@@ -61,6 +61,7 @@ export const SinglePlaylist = () => {
           `http://localhost:3000/playlists/playlist/${id}`
         );
         console.log(response.data);
+        if (currentUser){
         const { data: loggedInUser } = await axios.get("/api/users/account", {
           params: {
             email: currentUser.email,
@@ -78,6 +79,7 @@ export const SinglePlaylist = () => {
         ) {
           setIsSaved(true);
         }
+      }
 
         setPlaylistData(response.data.playlist);
         setSongsData(response.data.songs.songsArray);
