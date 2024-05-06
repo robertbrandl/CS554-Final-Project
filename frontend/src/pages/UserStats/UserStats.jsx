@@ -1,13 +1,41 @@
-import "./UserStats.css";
-import React, {useContext, useState} from 'react';
-import {Navigate} from 'react-router-dom';
-import {AuthContext} from '../../firebase/Auth';
-export const UserStats = () => {
-  const {currentUser} = useContext(AuthContext);
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './UserStats.css';
+
+const UserStats = ({ userId }) => {
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get(`/userStats?userId=${userId}`);
+        setStats(response.data);
+      } catch (error) {
+        console.error('Failed to fetch user stats:', error);
+      }
+    };
+
+    fetchStats();
+  }, [userId]);
+
+  if (!stats) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className='card'>
-      <h1>See your Music Statistics</h1>
+    <div className="user-stats">
+      <h2>User Stats</h2>
+      <p>Followed Users: {stats.followedUsers}</p>
+      <p>Followers: {stats.followers}</p>
+      <p>Playlists Created: {stats.playlistsCreated}</p>
+      <div>
+        <h3>Songs per Artist:</h3>
+        {Object.entries(stats.songsPerArtist).map(([artist, count]) => (
+          <p key={artist}>{artist}: {count}</p>
+        ))}
+      </div>
     </div>
   );
-}
+};
+
+export default UserStats;
