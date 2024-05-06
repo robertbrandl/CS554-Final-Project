@@ -59,7 +59,8 @@ router.route("/followedplaylists").get(async (req, res) => {
 });
 router.route("/searchbyname").get(async (req, res) => {
   try {
-    const data = await searchData(xss(req.query.name));
+    console.log("route")
+    const data = await searchData(xss(req.query.name), xss(req.query.item), xss(req.query.order));
     return res.status(200).json(data);
   } catch (e) {
     return res.status(500).json({ error: e });

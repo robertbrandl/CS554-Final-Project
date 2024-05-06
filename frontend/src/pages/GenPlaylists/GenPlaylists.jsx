@@ -11,6 +11,8 @@ export const GenPlaylists = () => {
   const [error, setError] = useState("");
   const [playlistStates, setPlaylistStates] = useState({});
   const [userId, setUserId] = useState("");
+  const [sortItem, setSortItem] = useState(undefined);
+  const [sortOrder, setSortOrder] = useState(undefined);
   useEffect(() => {
     setError("");
     let res = null;
@@ -61,6 +63,8 @@ export const GenPlaylists = () => {
         const { data } = await axios.get(`/api/playlists/searchbyname`, {
           params: {
             name: searchTerm,
+            item: sortItem,
+            order: sortOrder
           },
         });
         console.log(data);
@@ -95,17 +99,26 @@ export const GenPlaylists = () => {
       //setLoading(false);
     }
     getUser();
-    if (searchTerm) {
+    if (searchTerm || sortItem || sortOrder) {
       fetchData();
     } else {
       fetchAllData();
     }
-  }, [searchTerm]);
+  }, [searchTerm, sortItem, sortOrder]);
 
   const handleChange = (e) => {
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
+
+  const handleSortItem = (e) => {
+    setSortItem(e.target.value);
+  };
+
+  const handleSortOrder = (e) => {
+    setSortOrder(e.target.value)
+  }
+
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const month = date.getMonth() + 1;
@@ -174,6 +187,22 @@ export const GenPlaylists = () => {
         </label>
       </form>
       <br />
+      <div className="sort-selector">
+        <label>
+          Sort by:
+          <select value={sortItem} onChange={handleSortItem}>
+            <option value="title">Title</option>
+          </select>
+        </label>
+        <label>
+          Order:
+          <select value={sortOrder} onChange={handleSortOrder}>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </label>
+        </div>
+      <br/>  
       <div className="item-holder">
         {playlistData && playlistData.length > 0 ? (
           <ul>
