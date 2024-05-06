@@ -24,6 +24,7 @@ export const SinglePlaylist = () => {
   const [error, setError] = useState("");
   const {currentUser} = useContext(AuthContext);
   const [isSaved, setIsSaved] = useState(false);
+  const [userId, setUserId] = useState('');
   const { id } = useParams();
   const handleSave = async () => {
     setLoading(true);
@@ -68,7 +69,8 @@ export const SinglePlaylist = () => {
           });
         console.log(loggedInUser)
         console.log(id)
-        if (loggedInUser.savedPlaylists && loggedInUser.savedPlaylists.includes(id.toString())) {
+        if (loggedInUser && loggedInUser._id){setUserId(loggedInUser._id);}
+        if (loggedInUser && loggedInUser.savedPlaylists && loggedInUser.savedPlaylists.includes(id.toString())) {
             setIsSaved(true);
         }
 
@@ -101,7 +103,7 @@ export const SinglePlaylist = () => {
           <h3 className="album-userName">
             Date Created: {formatDate(playlistData.dateCreated)}
           </h3>
-          {currentUser && playlistData.userName !== currentUser.displayName  && (
+          {currentUser && playlistData.userId !== userId  && (
             <button onClick={handleSave} className="save-button">
               {isSaved ? 'Unsave Playlist' : 'Save Playlist'}
             </button>

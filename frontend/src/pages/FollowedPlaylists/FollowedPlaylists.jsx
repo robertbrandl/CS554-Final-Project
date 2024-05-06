@@ -21,7 +21,8 @@ export const FollowedPlaylists = () => {
         }
       });
       res = data.data
-      setUserId(res._id);
+      if (res && res._id){setUserId(res._id);}
+      
     }
     async function fetchAllData() {
       setLoading(true);
