@@ -54,7 +54,7 @@ export const AccountPlaylists = ({ user }) => {
     }
   }
 
-  async function editPlaylist(playlistId) {
+  async function editPlaylist(playlistId, userEmail) {
     navigate(`/playlist/editplaylist/${playlistId}`);
   }
   return (
