@@ -4,13 +4,13 @@ import session from "express-session";
 import configRoutes from "./routes/routeindex.js";
 import cors from "cors";
 import dotenv from "dotenv";
-import multer from 'multer';
+import multer from "multer";
 import {
   contentMiddleware,
   rateLimitMiddleware,
 } from "api-security-middleware";
 import Ddos from "ddos";
-var ddos = new Ddos({ burst: 10, limit: 15 });
+var ddos = new Ddos({ burst: 10, limit: 300 });
 dotenv.config();
 app.use(cors());
 app.use(express.json());

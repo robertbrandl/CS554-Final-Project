@@ -145,51 +145,55 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
   return createNewPlaylist;
 };
 
-const updatePlaylist = async (playlistId, updates) => {
+const updatePlaylist = async (playlistId, updates, userId) => {
+  console.log("in create playlist DF");
   const playlistCollection = await playlists();
-  try {
-    const playlistFound = await playlistCollection.findOne({
-      _id: new ObjectId(playlistId),
-    });
 
-    if (!playlistFound) {
-      throw { code: 404, error: `Playlist with ID ${playlistId} not found` };
-    }
-    console.log("playlist found");
+  const playlistFound = await playlistCollection.findOne({
+    _id: new ObjectId(playlistId),
+  });
 
-    //data validation
-    if (updates.title) {
-      validation.stringValidation(updates.title);
-      playlistFound.title = updates.title.trim();
-    }
-
-    if (updates.userName) {
-      validation.stringValidation(updates.userName);
-      playlistFound.userName = updates.userName.trim();
-    }
-    if (updates.albumCover) {
-      playlistFound.albumCover = updates.albumCover;
-    }
-
-    if (updates.genre) {
-      validation.stringValidation(updates.genre);
-      playlistFound.genre = updates.genre;
-    }
-
-    const updatedPlaylist = await playlistCollection.updateOne(
-      { _id: new ObjectId(playlistId) },
-      { $set: playlistFound }
-    );
-
-    if (updatedPlaylist.modifiedCount === 0) {
-      throw { code: 500, error: "Failed to update playlist" };
-    }
-
-    console.log("playlist updated");
-    return updatedPlaylist;
-  } catch (e) {
-    throw e.message || e;
+  if (!playlistFound) {
+    throw { code: 404, error: `Playlist with ID ${playlistId} not found` };
   }
+  console.log("playlist found");
+
+  if (String(playlistFound.userId) !== userId) {
+    throw { code: 403, error: `Unauthorized to edit this playlist` };
+  }
+  console.log("User Authorized to edit this playlist");
+
+  //data validation
+  if (updates.title) {
+    validation.stringValidation(updates.title);
+    playlistFound.title = updates.title.trim();
+  }
+
+  if (updates.userName) {
+    validation.stringValidation(updates.userName);
+    playlistFound.userName = updates.userName.trim();
+  }
+  if (updates.albumCover) {
+    playlistFound.albumCover = updates.albumCover;
+  }
+
+  if (updates.genre) {
+    validation.stringValidation(updates.genre);
+    playlistFound.genre = updates.genre;
+  }
+  console.log("playlist after updates =", playlistFound);
+
+  const updatedPlaylist = await playlistCollection.updateOne(
+    { _id: new ObjectId(playlistId) },
+    { $set: playlistFound }
+  );
+
+  if (updatedPlaylist.modifiedCount === 0) {
+    throw { code: 500, error: "Failed to update playlist" };
+  }
+
+  console.log("playlist updated");
+  return updatedPlaylist;
 };
 
 const deletePlaylist = async (playlistId, userId) => {

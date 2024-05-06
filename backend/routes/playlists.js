@@ -5,7 +5,7 @@ import { playlistData, songsData } from "../data/index.js";
 import { userData } from "../data/index.js";
 import { searchData, searchFollowed } from "../config/elasticSync.js";
 import { createClient } from "redis";
-import xss from 'xss';
+import xss from "xss";
 const client = createClient();
 client.connect().then(() => {});
 //route to get a single song route based on its id
@@ -38,7 +38,7 @@ router.route("/allplaylists").get(async (req, res) => {
   }
 });
 router.route("/followedplaylists").get(async (req, res) => {
-  const email  = xss(req.query.email);
+  const email = xss(req.query.email);
   let exists = await client.exists(`followedplaylists/${email}`);
   if (exists) {
     let result = await client.get(`followedplaylists/${email}`);
@@ -77,6 +77,22 @@ router.route("/searchfollowedbyname").get(async (req, res) => {
 router.route("/myplaylists").get(async (req, res) => {
   try {
     return res.status(200).json(data);
+  } catch (e) {
+    return res.status(500).json({ error: e });
+  }
+});
+
+router.route("/myplaylists").delete(async (req, res) => {
+  try {
+    const { playlistId, userEmail } = req.body;
+    console.log("req.body=", req.body);
+    let userRef = await userData.getAccount(xss(userEmail));
+    let deletedPlaylist = await playlistData.deletePlaylist(
+      playlistId,
+      userRef._id
+    );
+
+    return res.status(200).json({ message: "Playlist deleted successfully" });
   } catch (e) {
     return res.status(500).json({ error: e });
   }
@@ -126,15 +142,56 @@ router.route("/createplaylist").post(async (req, res) => {
   }
 });
 router.route("/getsavedplaylists").get(async (req, res) => {
-    try {
-      const ids = req.query.playlistIds;
-      for (let x of ids){
-        x = xss(x);
-      }
-        const result = await playlistData.getSavedPlaylists(ids);
-        return res.status(200).json(result);
-      } catch (e) {
-        return res.status(e.code || 400).json({ error: "Error: " + e.message});
-      }
-  });
+  try {
+    const ids = req.query.playlistIds;
+    for (let x of ids) {
+      x = xss(x);
+    }
+    const result = await playlistData.getSavedPlaylists(ids);
+    return res.status(200).json(result);
+  } catch (e) {
+    return res.status(e.code || 400).json({ error: "Error: " + e.message });
+  }
+});
+
+router.route("/editplaylist/:id").patch(async (req, res) => {
+  try {
+    const playlistId = req.params.id;
+    console.log("req.body =", req.body);
+    const { title, userName, genre, email } = req.body;
+
+    const albumCover = req.file;
+
+    //data validation
+
+    let userRef = await userData.getAccount(xss(email));
+    console.log("playlistId =", playlistId);
+
+    let sanatizedTitle = xss(title);
+    let sanatizedUserName = xss(userName);
+    let sanatizedGenre = xss(genre);
+
+    const updatedPlaylist = await playlistData.updatePlaylist(
+      playlistId,
+      {
+        title: sanatizedTitle,
+        userName: sanatizedUserName,
+        albumCover,
+        genre: sanatizedGenre,
+      },
+      userRef._id
+    );
+    console.log(updatedPlaylist);
+
+    if (updatedPlaylist) {
+      await client.del("allplaylists");
+      return res.status(200).json({ message: "Playlist updated" });
+    } else {
+      return res.status(500).json({ error: "Failed to update playlist" });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: e });
+  }
+});
+
 export default router;

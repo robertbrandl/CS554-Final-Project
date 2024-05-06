@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const AccountPlaylists = ({ user }) => {
+  const navigate = useNavigate();
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const month = date.getMonth() + 1;
@@ -32,6 +33,27 @@ export const AccountPlaylists = ({ user }) => {
 
     fetchData();
   }, []);
+
+  async function deletePlaylist(playlistId, userEmail) {
+    console.log("delete clicked");
+    const response = await axios.delete(
+      "http://localhost:3000/playlists/myplaylists",
+      {
+        data: { playlistId, userEmail },
+      }
+    );
+    if (response.status === 200) {
+      console.log("users playlist have been deleted");
+      window.alert("Playlist deleted successfully");
+      window.location.reload();
+    } else {
+      console.error("Failed to deleted user playlists:", response.data.error);
+    }
+  }
+
+  async function editPlaylist(playlistId) {
+    navigate(`/playlist/editplaylist/${playlistId}`);
+  }
   return (
     <div className="item-holder">
       {playlists && (
@@ -55,6 +77,19 @@ export const AccountPlaylists = ({ user }) => {
                     </span>
                     <span className="genre">Genre: {playlist.genre}</span>
                   </Link>
+                  <button
+                    className="delete-playlist-button"
+                    onClick={() => deletePlaylist(playlist._id)}
+                  >
+                    Delete Playlist
+                  </button>
+
+                  <button
+                    className="edit-playlist-button"
+                    onClick={() => editPlaylist(playlist._id, user.email)}
+                  >
+                    Edit Playlist
+                  </button>
                 </li>
               ))
             ) : (

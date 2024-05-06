@@ -16,6 +16,7 @@ import { SinglePlaylist } from "../../pages/SinglePlaylist/SinglePlaylist";
 import { PublicUser } from "../../pages/PublicUser/PublicUser";
 import { MyPlaylists } from "../../pages/MyPlaylists/MyPlaylists";
 import { CreatePlaylist } from "../../pages/CreatePlaylist/CreatePlaylist";
+import { EditPlaylist } from "../../pages/EditPlaylist/EditPlaylist";
 
 function App() {
   return (
@@ -37,6 +38,11 @@ function App() {
         />
         <Route exact path="/myplaylists" element={<MyPlaylists />} />
         <Route exact path="/song/:id" element={<SingleSong />} />
+        <Route
+          exact
+          path="/playlist/editplaylist/:id"
+          element={<EditPlaylist />}
+        />
         <Route exact path="/playlist/:id" element={<SinglePlaylist />} />
         <Route
           exact
