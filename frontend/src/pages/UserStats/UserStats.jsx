@@ -30,11 +30,10 @@ export const UserStats = ({ userId }) => {
       <p>Playlists Created: {stats.playlistsCreated}</p>
       <div>
         <h3>Songs per Artist:</h3>
-        {Object.entries(stats.songsPerArtist).map(([artist, count]) => (
+        {stats.songsPerArtist && Object.entries(stats.songsPerArtist).map(([artist, count]) => (
           <p key={artist}>{artist}: {count}</p>
         ))}
       </div>
     </div>
   );
 };
-
