@@ -170,7 +170,29 @@ const getFollowedUsers = async (followedIds) =>{
     }
     return ret;
 }
-export default {
+const getUserStats = async (userId) => {
+    if (!ObjectId.isValid(userId)) {
+      throw { code: 400, error: "Invalid user ID format" };
+    }
+  
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+  
+    if (!user) {
+      throw { code: 404, error: 'User not found' };
+    }
+    const followedUsers = user.followedUsers.length;
+    const followers = user.followers.length;
+    const playlistsCreated = user.playlists.length;
+    const songsPerArtist = calculateSongsPerArtist(user.playlists); 
+    return {
+      followedUsers,
+      followers,
+      playlistsCreated,
+      songsPerArtist
+    };
+  }
+  export default {
     registerUser,
     getAccount, 
     userExist,
@@ -181,5 +203,6 @@ export default {
     setUserPrivate,
     getFollowedUsers,
     savePlaylist,
-    unsavePlaylist
-}
+    unsavePlaylist,
+    getUserStats // Add this line
+  }
