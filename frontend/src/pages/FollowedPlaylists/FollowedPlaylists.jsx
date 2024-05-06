@@ -10,6 +10,7 @@ export const FollowedPlaylists = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
   const [playlistStates, setPlaylistStates] = useState({});
+  const [userId, setUserId] = useState('');
   useEffect(() => {
     setError('');
     let res = null;
@@ -20,6 +21,7 @@ export const FollowedPlaylists = () => {
         }
       });
       res = data.data
+      setUserId(res._id);
     }
     async function fetchAllData() {
       setLoading(true);
@@ -178,7 +180,7 @@ export const FollowedPlaylists = () => {
                 </span>
                 <span className="genre">Genre: {playlist.genre}</span>
               </Link>
-              {currentUser && playlist.userName !== currentUser.displayName && (
+              {currentUser && playlist.userId !== userId && (
                 <button onClick={() => handleSave(playlist._id)} className="save-button2">
                   {playlistStates[playlist._id] ? 'Unsave Playlist' : 'Save Playlist'}
                 </button>
