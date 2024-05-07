@@ -52,6 +52,7 @@ export const SinglePlaylist = () => {
     console.log("delete song clicked");
     console.log(userEmail);
     console.log(songId);
+    console.log(songsData);
     const response = await axios.delete(
       "http://localhost:3000/playlists/myplaylists/deletesong",
       {
@@ -61,8 +62,8 @@ export const SinglePlaylist = () => {
 
     if (response.status === 200) {
       console.log("song has been deleted from playlist ");
+      setSongsData(prevSongsData => prevSongsData.filter(song => song.id !== songId));
       window.alert("Song deleted successfully");
-      window.location.reload();
     } else {
       console.error("Failed to deleted user playlists:", response.data.error);
     }
