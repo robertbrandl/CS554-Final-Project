@@ -86,7 +86,8 @@ export const GenPlaylists = () => {
         }
         let pdata = [];
         if (data && data.length > 0) {
-          pdata = data.map((e) => e._source);
+          // pdata = data.map((e) => e._source);
+          pdata = data.map(({ _id, _source: { doc } }) => ({ _id, ...doc }));
         }
         console.log(pdata);
         setPlaylistData(pdata);
