@@ -76,3 +76,7 @@
 .song-search-page .search-row {
   display: flex;
 }
+.song-search-page .error {
+  color: darkred;
+  font-size: 18px;
+}

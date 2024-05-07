@@ -106,7 +106,8 @@ export const SongSearch = () => {
   return (
     <div className="song-search-page">
       <h1>Song Search</h1>
-      {errorMessage && <p>{errorMessage}</p>}
+      {errorMessage && <p className="error">{errorMessage}</p>}
+      <br />
       <div>
         <label>
           <input

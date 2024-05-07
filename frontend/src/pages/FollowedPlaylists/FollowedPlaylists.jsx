@@ -13,6 +13,7 @@ export const FollowedPlaylists = () => {
   const [userId, setUserId] = useState("");
   const [sortItem, setSortItem] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedGenre, setSelectedGenre] = useState("");
   useEffect(() => {
     setError("");
     let res = null;
@@ -27,10 +28,10 @@ export const FollowedPlaylists = () => {
         setUserId(res._id);
       }
     }
-    async function fetchAllData() {
+    async function fetchAllData(genre) {
       setLoading(true);
       try {
-        const { data } = await axios.get(`/api/playlists/followedplaylists`, {
+        let { data } = await axios.get(`/api/playlists/followedplaylists`, {
           params: {
             email: currentUser.email,
           },
@@ -54,6 +55,9 @@ export const FollowedPlaylists = () => {
             ...updatedStates,
           }));
         }
+        if (genre){
+          data = data.filter((playlist) => playlist.genre == genre)
+        }
         setPlaylistData(data);
         setError("");
       } catch (e) {
@@ -61,13 +65,14 @@ export const FollowedPlaylists = () => {
       }
       setLoading(false);
     }
-    async function fetchData() {
+    async function fetchData(genre) {
       try {
         const { data } = await axios.get(
           `/api/playlists/searchfollowedbyname`,
           {
             params: {
               name: searchTerm.toLowerCase(),
+              genre: genre.trim()
             },
           }
         );
@@ -104,12 +109,17 @@ export const FollowedPlaylists = () => {
     }
     if (currentUser){
       getUser();}
-    if (searchTerm) {
-      fetchData();
-    } else {
+    if (searchTerm && selectedGenre) {
+      fetchData(selectedGenre);
+    } else if (searchTerm) {
+      fetchData(selectedGenre);
+    }else if (selectedGenre) {
+      fetchAllData(selectedGenre);
+    }
+    else{
       fetchAllData();
     }
-  }, [searchTerm]);
+  }, [searchTerm, selectedGenre]);
   useEffect(() => { 
     setPlaylistData(sortedData());
   }, [sortItem, sortOrder]); 
@@ -174,6 +184,25 @@ export const FollowedPlaylists = () => {
     }));
     setLoading(false);
   };
+  const handleGenreChange = (e) => {
+    setSelectedGenre(e.target.value);
+  };
+  const genres = [
+    "Rock",
+    "Pop",
+    "Hip Hop",
+    "R&B",
+    "Country",
+    "Electronic",
+    "Latin",
+    "K-POP",
+    "Classical",
+    "Metal",
+    "Alternative",
+    "Folk",
+    "Rap",
+    "Gospel",
+  ];
 
   if (loading) {
     return <div>Loading...</div>;
@@ -223,6 +252,21 @@ export const FollowedPlaylists = () => {
           </select>
         </label>
         </div>
+        <br />
+        <div className="filter-selector">
+        <label>
+          Filter by Genre:
+          <select value={selectedGenre} onChange={handleGenreChange}>
+          <option value="">Select Genre</option>
+            {genres.map((genre, index) => (
+              <option key={index} value={genre}>
+                {genre}
+              </option>
+            ))}
+            <option value="No Genre">No Genre</option>
+          </select>
+        </label>
+      </div>
       <br />
       <div className="item-holder">
         {playlistData && playlistData.length > 0 ? (

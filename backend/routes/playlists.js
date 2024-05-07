@@ -77,7 +77,7 @@ router.route("/followedplaylists").get(async (req, res) => {
 });
 router.route("/searchbyname").get(async (req, res) => {
   try {
-    const data = await searchData(xss(req.query.name));
+    const data = await searchData(xss(req.query.name), xss(req.query.genre));
     return res.status(200).json(data);
   } catch (e) {
     return res.status(500).json({ error: e });
@@ -85,7 +85,7 @@ router.route("/searchbyname").get(async (req, res) => {
 });
 router.route("/searchfollowedbyname").get(async (req, res) => {
   try {
-    const data = await searchFollowed(xss(req.query.name));
+    const data = await searchFollowed(xss(req.query.name), xss(req.query.genre));
     return res.status(200).json(data);
   } catch (e) {
     return res.status(500).json({ error: e });

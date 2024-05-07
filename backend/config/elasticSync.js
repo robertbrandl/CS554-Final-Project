@@ -99,20 +99,34 @@ async function printAllData() {
       console.error('Error retrieving data:', error);
     }
   }
-async function searchData(query) {
+async function searchData(query, genre) {
     try {
-
+        const queryFilters = [];
+        if (query) {
+            queryFilters.push({
+                match_phrase_prefix: {
+                    "doc.title": query
+                }
+            });
+        }
+        if (genre) {
+            queryFilters.push({
+                match_phrase_prefix: {
+                    "doc.genre": genre
+                }
+            });
+        }
       const esClient = new Client(esOptions);
-  
+      console.log(genre)
       const response = await esClient.search({
         index: indexName,
         body: {
             query: {
-                match_phrase_prefix: {
-                    "doc.title": query
+                bool: {
+                    must: queryFilters
                 }
             }
-          }
+        }
       });
       console.log(response.hits.hits)
   
@@ -121,16 +135,31 @@ async function searchData(query) {
       console.error('Error searching data:', error);
     }
   }
-async function searchFollowed(query) {
+async function searchFollowed(query, genre) {
     try {
+        const queryFilters = [];
+        if (query) {
+            queryFilters.push({
+                match_phrase_prefix: {
+                    "doc.title": query
+                }
+            });
+        }
+        if (genre) {
+            queryFilters.push({
+                match_phrase_prefix: {
+                    "doc.genre": genre
+                }
+            });
+        }
       const esClient = new Client(esOptions);
   
       const response = await esClient.search({
         index: followedIndex,
         body: {
             query: {
-                match_phrase_prefix: {
-                    "doc.title": query
+                bool: {
+                    must: queryFilters
                 }
             }
           }
