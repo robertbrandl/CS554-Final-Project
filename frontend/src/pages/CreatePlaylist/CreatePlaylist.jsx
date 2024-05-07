@@ -30,12 +30,7 @@ export const CreatePlaylist = () => {
 
       const response = await axios.post(
         "http://localhost:3000/playlists/createplaylist",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formDataToSend
       );
 
       if (response.status === 200) {
@@ -48,7 +43,22 @@ export const CreatePlaylist = () => {
       console.error("Error submitting form data:", error);
     }
   };
-  const genres = ["Rock", "Pop", "Hip Hop", "R&B", "Country", "Electronic", "Latin", "K-POP", "Classical", "Metal", "Alternative", "Folk", "Rap", "Gospel"];
+  const genres = [
+    "Rock",
+    "Pop",
+    "Hip Hop",
+    "R&B",
+    "Country",
+    "Electronic",
+    "Latin",
+    "K-POP",
+    "Classical",
+    "Metal",
+    "Alternative",
+    "Folk",
+    "Rap",
+    "Gospel",
+  ];
   return (
     <div className="create-playlist">
       <h1>CreatePlaylist</h1>
@@ -86,7 +96,7 @@ export const CreatePlaylist = () => {
                 {genre}
               </option>
             ))}
-          <option value="No Genre">No Genre</option>
+            <option value="No Genre">No Genre</option>
           </select>
         </div>
         <button type="submit">Create Playlist</button>

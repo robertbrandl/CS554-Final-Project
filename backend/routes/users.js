@@ -203,8 +203,6 @@ router.route("/setprivate").patch(async (req, res) => {
   const keys = await client.keys("account*"); 
   !!keys.length && client.unlink(keys); 
   const newKeys = await client.keys("account*");
-  console.log(keys);
-  console.log(newKeys);
   return res.status(200).json(result);
 })
 
@@ -221,10 +219,10 @@ router.route("/getfollowedusers").get(async (req, res) => {
     }
 });
 router.route("/userStats").get(async (req, res) => {
-  const id = xss(req.query.userId);
+  const email = xss(req.query.userEmail);
   let result = undefined;
   try {
-    result = await userData.getUserStats(id);
+    result = await userData.getUserStats(email);
   } catch (e) {
     return res.status(e.code || 400).json({ error: "Error: " + e.error });
   }

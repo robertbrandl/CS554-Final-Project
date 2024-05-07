@@ -1,6 +1,7 @@
 import {ObjectId} from 'mongodb';
 import * as validation from '../validation.js';
-import {users} from '../config/mongoCollections.js';
+import {users, playlists } from '../config/mongoCollections.js';
+import axios from "axios";
 const registerUser = async (
     name,
     emailAddress,
@@ -149,7 +150,6 @@ const setUserPrivate = async (email) => {
             { followedUsers: { $in: [user._id.toString()] } },
             { $pull: { followedUsers: user._id.toString() } }
         );
-        console.log(res);
         return updateResult;
     } catch (error) {
         console.error('Error setting user as public:', error);
@@ -160,31 +160,25 @@ const getFollowedUsers = async (followedIds) =>{
     let ret = [];
     const userCollection = await users();
     for (let x of followedIds){
-        console.log(x);
         const user = await userCollection.findOne({ _id: new ObjectId(x) });
         if (!user) {
             throw { code: 404, message: 'User not found' };
         }
-        console.log(user);
         ret.push(user);
     }
     return ret;
 }
-const getUserStats = async (userId) => {
-    if (!ObjectId.isValid(userId)) {
-      throw { code: 400, error: "Invalid user ID format" };
-    }
-  
+const getUserStats = async (email) => {
     const userCollection = await users();
-    const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+    const user = await userCollection.findOne({ emailAddress: email });
   
     if (!user) {
       throw { code: 404, error: 'User not found' };
     }
     const followedUsers = user.followedUsers.length;
-    const followers = await countFollowers(userId, userCollection);
+    const followers = await countFollowers(user._id.toString(), userCollection);
     const playlistsCreated = user.playlists.length;
-    const songsPerArtist = calculateSongsPerArtist(user.playlists); 
+    const songsPerArtist = await calculateSongsPerArtist(user.playlists); 
     return {
       followedUsers,
       followers,
@@ -198,14 +192,24 @@ const countFollowers = async (userId, userCollection) => {
     return users.length;
 }
 
-const calculateSongsPerArtist = (playlists) => {
+const calculateSongsPerArtist = async (playlistsarr) => {
     const songsPerArtist = {};
-    for (const playlist of playlists) {
-        for (const song of playlist.songs) {
-            if (!songsPerArtist[song.artist]) {
-                songsPerArtist[song.artist] = 1;
-            } else {
-                songsPerArtist[song.artist]++;
+    for (const playlist of playlistsarr) {
+        const playlistCollection = await playlists();
+        const playlistFound = await playlistCollection.findOne({
+            _id: playlist,
+        });
+        if (playlistFound && playlistFound.songIds && playlistFound.songIds > 0){
+            for (const song of playlistFound.songIds) {
+                const response = await axios.get(
+                    `https://api.deezer.com/track/${song}`
+                  );
+                let songData = response.data;
+                if (!songsPerArtist[songData.artist.name]) {
+                    songsPerArtist[songData.artist.name] = 1;
+                } else {
+                    songsPerArtist[songData.artist.name]++;
+                }
             }
         }
     }
