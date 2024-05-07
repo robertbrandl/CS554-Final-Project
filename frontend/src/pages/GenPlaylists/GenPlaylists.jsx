@@ -11,8 +11,8 @@ export const GenPlaylists = () => {
   const [error, setError] = useState("");
   const [playlistStates, setPlaylistStates] = useState({});
   const [userId, setUserId] = useState("");
-  const [sortItem, setSortItem] = useState(undefined);
-  const [sortOrder, setSortOrder] = useState(undefined);
+  const [sortItem, setSortItem] = useState("title");
+  const [sortOrder, setSortOrder] = useState("asc");
   useEffect(() => {
     setError("");
     let res = null;
@@ -62,9 +62,7 @@ export const GenPlaylists = () => {
       try {
         const { data } = await axios.get(`/api/playlists/searchbyname`, {
           params: {
-            name: searchTerm,
-            item: sortItem,
-            order: sortOrder
+            name: searchTerm
           },
         });
         console.log(data);
@@ -98,27 +96,49 @@ export const GenPlaylists = () => {
       }
       //setLoading(false);
     }
+<<<<<<< Updated upstream
     if (currentUser){
       getUser();}
     if (searchTerm || sortItem || sortOrder) {
+=======
+    getUser();
+    if (searchTerm) {
+>>>>>>> Stashed changes
       fetchData();
     } else {
       fetchAllData();
     }
-  }, [searchTerm, sortItem, sortOrder]);
+  }, [searchTerm]);
+
+  useEffect(() => { 
+    setPlaylistData(sortedData());
+  }, [sortItem, sortOrder]); 
 
   const handleChange = (e) => {
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
+  const sortedData = () => {
+    if (!playlistData) return [];
+    return playlistData.sort((a, b) => {
+      if (sortOrder === 'asc'){
+        return a[sortItem].localeCompare(b[sortItem]);
+      }else{
+        return b[sortItem].localeCompare(a[sortItem]);
+      }
+    });
+  };
 
   const handleSortItem = (e) => {
     setSortItem(e.target.value);
+    sortedData()
   };
 
   const handleSortOrder = (e) => {
     setSortOrder(e.target.value)
+    sortedData()
   }
+  
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -193,6 +213,8 @@ export const GenPlaylists = () => {
           Sort by:
           <select value={sortItem} onChange={handleSortItem}>
             <option value="title">Title</option>
+            <option value="userName">Username</option>
+            <option value="dateCreated">Date Created</option>
           </select>
         </label>
         <label>

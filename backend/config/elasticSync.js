@@ -17,23 +17,6 @@ async function synchronizeData() {
       // Connect to Elasticsearch
       const esClient = new Client(esOptions);
 
-      // Define index mapping
-      const indexMapping = {
-        mappings: {
-          properties: {
-            title: {
-              type: "keyword"
-            }
-          }
-        }
-      };
-  
-        await esClient.indices.create({
-          index: indexName,
-          body: indexMapping
-        });
-      
-
       // Retrieve data from MongoDB
       const documents = await collection.find().toArray();
       await esClient.deleteByQuery({
@@ -107,10 +90,9 @@ async function printAllData() {
       console.error('Error retrieving data:', error);
     }
   }
-async function searchData(query, sortItem, sortOrder) {
+async function searchData(query) {
     try {
-      sortItem = sortItem || "title"
-      sortOrder = sortOrder || "asc"
+
       const esClient = new Client(esOptions);
   
       const response = await esClient.search({
@@ -119,9 +101,8 @@ async function searchData(query, sortItem, sortOrder) {
             query: {
               wildcard: {
                 title: `*${query}*`
-              },
-            },
-            sort: [{ [sortItem]: { order: sortOrder } }],
+              }
+            }
           }
       });
       console.log(response.hits.hits)
