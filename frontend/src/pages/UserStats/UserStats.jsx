@@ -31,17 +31,48 @@ export const UserStats = () => {
 
   return (
     <div className="user-stats">
-      <h2>User Stats</h2>
-      <p>Followed Users: {stats.followedUsers}</p>
-      <p>Followers: {stats.followers}</p>
-      <p>Playlists Created: {stats.playlistsCreated}</p>
-      <p>Saved Playlists: {stats.savedPlaylists}</p>
-      <div>
-        <h3>Songs per Artist:</h3>
-        {stats.songsPerArtist && Object.entries(stats.songsPerArtist).map(([artist, count]) => (
-          <p key={artist}>{artist}: {count}</p>
-        ))}
-      </div>
+      <br />
+      <h2>Your Stats</h2>
+      <br />
+      <hr />
+      
+      <section className="user-rel-stats">
+        <h3>User-Related Statistics</h3>
+        <div>
+          <p>Followed Users: {stats.followedUsers}</p>
+          <p>Followers: {stats.followers}</p>
+        </div>
+      </section>
+
+      <hr /> 
+
+      <section className="playlist-stats">
+        <h3>Playlist-Related Statistics</h3>
+        <div>
+          <p>Playlists Created: {stats.playlistsCreated}</p>
+          <p>Saved Playlists: {stats.savedPlaylists}</p>
+        </div>
+      </section>
+
+      <hr /> 
+
+      <section className="song-stats">
+        <h3>Song-Related Statistics</h3>
+        <div>
+          <p>Total Number of Songs Added to Playlists: {stats.songsAdded}</p>
+          <br />
+          <h4>Songs per Artist:</h4>
+          {stats.songsPerArtist && Object.entries(stats.songsPerArtist).map(([artist, count]) => (
+            <p key={artist}>{artist}: {count}</p>
+          ))}
+          <br />
+          <h4>Songs per Album:</h4>
+          {stats.songsPerAlbum && Object.entries(stats.songsPerAlbum).map(([album, count]) => (
+            <p key={album}>{album}: {count}</p>
+          ))}
+        </div>
+        <br />
+      </section>
     </div>
   );
 };

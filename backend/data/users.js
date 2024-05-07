@@ -178,14 +178,16 @@ const getUserStats = async (email) => {
     const followedUsers = user.followedUsers.length;
     const followers = await countFollowers(user._id.toString(), userCollection);
     const playlistsCreated = user.playlists.length;
-    const songsPerArtist = await calculateSongsPerArtist(user.playlists); 
+    const [songsPerArtist, songsPerAlbum, songsAdded] = await calculateSongsPerArtist(user.playlists); 
     const savedPlaylists = user.savedPlaylists.length;
     return {
       followedUsers,
       followers,
       playlistsCreated,
       songsPerArtist,
-      savedPlaylists
+      savedPlaylists,
+      songsPerAlbum,
+      songsAdded
     };
 }
 
@@ -196,26 +198,41 @@ const countFollowers = async (userId, userCollection) => {
 
 const calculateSongsPerArtist = async (playlistsarr) => {
     const songsPerArtist = {};
+    const songsPerAlbum = {};
+    let songsAdded = 0;
+    console.log(playlistsarr.length);
     for (const playlist of playlistsarr) {
+        console.log(playlist)
         const playlistCollection = await playlists();
         const playlistFound = await playlistCollection.findOne({
             _id: playlist,
         });
+        console.log(playlistFound);
         if (playlistFound && playlistFound.songIds && playlistFound.songIds.length > 0){
             for (const song of playlistFound.songIds) {
+                songsAdded++;
+                console.log(song)
                 const response = await axios.get(
                     `https://api.deezer.com/track/${song}`
                   );
                 let songData = response.data;
+                
+                console.log(songData)
                 if (!songsPerArtist[songData.artist.name]) {
                     songsPerArtist[songData.artist.name] = 1;
                 } else {
                     songsPerArtist[songData.artist.name]++;
                 }
+                if (!songsPerAlbum[songData.album.title]) {
+                    songsPerAlbum[songData.album.title] = 1;
+                } else {
+                    songsPerAlbum[songData.album.title]++;
+                }
             }
         }
     }
-    return songsPerArtist;
+    console.log(songsPerArtist)
+    return [songsPerArtist, songsPerAlbum, songsAdded];
 }
   export default {
     registerUser,
