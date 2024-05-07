@@ -193,7 +193,8 @@ router
         return res.status(200).json({ message: "Playlist created" });
       }
     } catch (e) {
-      return res.status(500).json({ error: e });
+        console.log(e);
+      return res.status(e.code).json({ error: e.error });
     }
   });
 router.route("/getsavedplaylists").get(async (req, res) => {

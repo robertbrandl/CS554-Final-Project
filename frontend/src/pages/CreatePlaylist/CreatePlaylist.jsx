@@ -9,6 +9,7 @@ export const CreatePlaylist = () => {
     genre: "",
   });
   const { currentUser } = useContext(AuthContext);
+  const [error, setError] = useState('');
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prevState) => ({
@@ -18,6 +19,7 @@ export const CreatePlaylist = () => {
   };
 
   const handleSubmit = async (event) => {
+    setError('');
     event.preventDefault();
 
     try {
@@ -39,7 +41,8 @@ export const CreatePlaylist = () => {
         console.error("Form submission failed:", response.statusText);
       }
     } catch (error) {
-      console.error("Error submitting form data:", error);
+      console.log(error);
+      setError(error.response.data.error);
     }
   };
   const genres = [
@@ -62,6 +65,8 @@ export const CreatePlaylist = () => {
     <div className="create-playlist">
       <h1>CreatePlaylist</h1>
       <form className="create-playlist-form" onSubmit={handleSubmit}>
+      {error && <div className="error">{error}</div>}
+      <br />
         <div className="form-row">
           <label htmlFor="title">Title:</label>{" "}
           <input type="text" name="title" id="title" onChange={handleChange} />

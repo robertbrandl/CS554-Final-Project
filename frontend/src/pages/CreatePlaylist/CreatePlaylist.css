@@ -44,3 +44,7 @@
 .create-playlist-form button:hover {
   background-color: rgba(222, 222, 222, 0.198);
 }
+
+.create-playlist .error{
+  color: darkred;
+}

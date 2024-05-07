@@ -121,9 +121,14 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
 
   try {
     //data validation
-    validation.stringValidation(newPlaylist.title);
-    newPlaylist.userId = new ObjectId(newPlaylist.userId);
-    await validation.checkId(userId, "userId");
+    try {
+        validation.stringValidation(newPlaylist.title);
+        newPlaylist.userId = new ObjectId(newPlaylist.userId);
+        await validation.checkId(userId, "userId");
+    }
+    catch(e){throw {code: 400, error: e}}
+    
+    
     //check if userId exists in users collection
     const userFound = await userCollection.findOne({
       _id: new ObjectId(userId),
@@ -131,8 +136,20 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
     if (!userFound) {
       throw { code: 404, error: `User with ID ${userId} not found` };
     }
-    validation.stringValidation(newPlaylist.userName);
-    validation.stringValidation(newPlaylist.genre);
+    try{
+        validation.stringValidation(newPlaylist.userName);
+    }catch(e){
+        throw {code: 400, error: e}
+    }
+    try{
+        validation.checkString(newPlaylist.genre);
+    }catch(e){
+        throw {code: 400, error: "Error: must provide a genre or select No Genre!"}
+    }
+    if (!albumCover){
+        throw {code: 400, error: "Error: must provide a cover picture for the playlist"}
+    }
+    
 
     createNewPlaylist = await playlistCollection.insertOne(newPlaylist);
     // Push the created playlistId into the user's playlists array
@@ -141,7 +158,8 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
       { $push: { playlists: createNewPlaylist.insertedId } }
     );
   } catch (e) {
-    throw e.message || e;
+    console.log(e);
+    throw e;
   }
 
   console.log(newPlaylist.title, "Inserted into DB");
