@@ -98,7 +98,8 @@ export const GenPlaylists = () => {
       }
       //setLoading(false);
     }
-    getUser();
+    if (currentUser){
+      getUser();}
     if (searchTerm || sortItem || sortOrder) {
       fetchData();
     } else {

@@ -124,6 +124,7 @@ async function searchData(query, sortItem, sortOrder) {
             sort: [{ [sortItem]: { order: sortOrder } }],
           }
       });
+      console.log(response.hits.hits)
   
       return response.hits.hits;
     } catch (error) {

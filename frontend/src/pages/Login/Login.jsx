@@ -72,7 +72,6 @@ export const Login = () => {
             name="email"
             id="email"
             type="email"
-            label="Email Address"
             placeholder="Email"
             className="text_input"
             required
@@ -83,7 +82,6 @@ export const Login = () => {
           <input
             name="password"
             type="password"
-            label="Password"
             placeholder="Password"
             autoComplete="off"
             className="text_input"

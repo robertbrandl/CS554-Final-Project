@@ -65,7 +65,6 @@ export const Signup = () => {
         <div className='text_area'>
             <br />
             <input
-              className="text_input"
               required
               name='displayName'
               type='text'
