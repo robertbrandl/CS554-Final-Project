@@ -38,6 +38,7 @@ export const SinglePlaylist = () => {
         data: { playlistId, userEmail },
       }
     );
+
     if (response.status === 200) {
       console.log("users playlist have been deleted");
       window.alert("Playlist deleted successfully");
@@ -47,7 +48,27 @@ export const SinglePlaylist = () => {
     }
   }
 
-  async function editPlaylist(playlistId, userEmail) {
+  async function deleteSong(songId, playlistId, userEmail) {
+    console.log("delete song clicked");
+    console.log(userEmail);
+    console.log(songId);
+    const response = await axios.delete(
+      "http://localhost:3000/playlists/myplaylists/deletesong",
+      {
+        data: { songId, playlistId, userEmail },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("song has been deleted from playlist ");
+      window.alert("Song deleted successfully");
+      window.location.reload();
+    } else {
+      console.error("Failed to deleted user playlists:", response.data.error);
+    }
+  }
+
+  async function editPlaylist(playlistId) {
     navigate(`/playlist/editplaylist/${playlistId}`);
   }
   const [playlistData, setPlaylistData] = useState(null);
@@ -168,21 +189,34 @@ export const SinglePlaylist = () => {
         </div>
         {songsData &&
           songsData.map((song, index) => (
-            <Link
-              key={song.id}
-              to={`/song/${song.id}`}
-              className="playlist-link"
-            >
-              <div className="song-row" key={song.id}>
-                <div className="song-info">{index + 1}</div>
-                <div className="song-info">{song.title}</div>
-                <div className="song-info">{song.album.title}</div>
-                <div className="song-info">{song.artist.name}</div>
-                <div className="song-info">{formatDate(song.release_date)}</div>
-                <div className="song-info">{formatTime(song.duration)}</div>
-              </div>
-            </Link>
+            <div key={song.id}>
+              <Link
+                key={song.id}
+                to={`/song/${song.id}`}
+                className="playlist-link"
+              >
+                <div className="song-row" key={song.id}>
+                  <div className="song-info">{index + 1}</div>
+                  <div className="song-info">{song.title}</div>
+                  <div className="song-info">{song.album.title}</div>
+                  <div className="song-info">{song.artist.name}</div>
+                  <div className="song-info">
+                    {formatDate(song.release_date)}
+                  </div>
+                  <div className="song-info">{formatTime(song.duration)}</div>
+                </div>
+              </Link>
+              <button
+                className="delete-song-button"
+                onClick={() =>
+                  deleteSong(song.id, playlistData._id, currentUser.email)
+                }
+              >
+                Delete Song
+              </button>
+            </div>
           ))}
+        <div className="space-below"></div>
         {currentUser && playlistData.userId == userId && (
           <div>
             <button

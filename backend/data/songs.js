@@ -110,7 +110,7 @@ const addSongToPlaylist = async (songId, playlistId) => {
   return { message: "Song added to playlist successfully" };
 };
 
-const DeleteSongsInPlaylist = async (songIds, playlistId) => {
+const DeleteSongInPlaylist = async (songId, playlistId, userId) => {
   //check if Playlist exists
   const playlistCollection = await playlists();
 
@@ -123,30 +123,37 @@ const DeleteSongsInPlaylist = async (songIds, playlistId) => {
   }
   console.log("Playlist found");
 
-  for (const songId of songIds) {
-    // Check if song exists in playlist
-    if (!playlistFound.songIds.includes(songId)) {
-      throw {
-        code: 400,
-        error: `Song with ID ${songId} not found in the playlist`,
-      };
-    }
-
-    // Delete song from playlist's songIds
-    const updatedPlaylist = await playlistCollection.updateOne(
-      { _id: new ObjectId(playlistId) },
-      { $pull: { songIds: songId } }
-    );
-
-    if (updatedPlaylist.modifiedCount === 0) {
-      throw {
-        code: 500,
-        error: `Failed to delete song with ID ${songId} from playlist ${playlistId}`,
-      };
-    }
-
-    console.log(`Song with ID ${songId} deleted from playlist`);
+  if (String(playlistFound.userId) !== userId) {
+    throw { code: 403, error: `Unauthorized to edit this playlist` };
   }
+  console.log("User Authorized to Delete songs in this playlist");
+
+  // Check if song exists in playlist
+  if (!playlistFound.songIds.includes(String(songId))) {
+    throw {
+      code: 400,
+      error: `Song with ID ${songId} not found in the playlist`,
+    };
+  }
+
+  console.log("song found in playlist");
+
+  // Delete song from playlist's songIds
+  const updatedPlaylist = await playlistCollection.updateOne(
+    { _id: new ObjectId(playlistId) },
+    { $pull: { songIds: String(songId) } }
+  );
+  console.log("song pulled from playlist");
+  if (updatedPlaylist.modifiedCount === 0) {
+    throw {
+      code: 500,
+      error: `Failed to delete song with ID ${songId} from playlist ${playlistId}`,
+    };
+  }
+  console.log("finished all stuff");
+
+  console.log(`Song with ID ${songId} deleted from playlist`);
+  return updatedPlaylist;
 };
 //tester
 try {
@@ -164,5 +171,5 @@ try {
 export default {
   getAllPlaylistSongs,
   addSongToPlaylist,
-  DeleteSongsInPlaylist,
+  DeleteSongInPlaylist,
 };

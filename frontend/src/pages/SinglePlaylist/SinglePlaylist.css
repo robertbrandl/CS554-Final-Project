@@ -82,3 +82,24 @@ a {
 .save-button:hover {
   background-color: #0056b3;
 }
+
+.song-column {
+  display: flex;
+  flex-direction: row;
+}
+
+.delete-song-button {
+  color: white;
+  padding: 5px;
+  margin-right: 5px;
+  font-size: 15px;
+  border-radius: 5px;
+  margin-left: 90%;
+  background-color: rgba(255, 2, 2, 0.541);
+  border: 1px solid rgb(255, 255, 255);
+}
+
+.delete-song-button:hover {
+  background-color: rgb(255, 2, 2);
+  cursor: pointer;
+}

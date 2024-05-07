@@ -45,3 +45,7 @@
   background-color: rgb(255, 234, 2);
   cursor: pointer;
 }
+
+.space-below {
+  margin-bottom: 60px;
+}

@@ -114,6 +114,39 @@ router.route("/myplaylists").put(async (req, res) => {
   }
 });
 
+router.route("/myplaylists/deletesong").delete(async (req, res) => {
+  try {
+    const { songId, playlistId, userEmail } = req.body;
+    console.log("req.body=", req.body);
+    let userRef = await userData.getAccount(xss(userEmail));
+    let deletedPlaylist = await songsData.DeleteSongInPlaylist(
+      songId,
+      playlistId,
+      userRef._id
+    );
+
+    return res.status(200).json({ message: "Song deleted successfully" });
+  } catch (e) {
+    return res.status(500).json({ error: e });
+  }
+});
+
+router.route("/myplaylists").put(async (req, res) => {
+  try {
+    const { email } = req.body;
+    let userRef = await userData.getAccount(xss(email));
+
+    let usersPlaylists = await playlistData.getUsersPlaylists(userRef._id);
+    console.log(usersPlaylists);
+    return res.status(200).json({
+      message: "Playlist updated successfully",
+      playlists: usersPlaylists,
+    });
+  } catch (e) {
+    return res.status(500).json({ error: e });
+  }
+});
+
 router.route("/createplaylist").post(async (req, res) => {
   try {
     console.log("req.body =", req.body);
