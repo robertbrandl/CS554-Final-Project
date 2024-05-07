@@ -4,7 +4,7 @@ import './UserStats.css';
 import { AuthContext } from "../../firebase/Auth";
 
 export const UserStats = () => {
-  const [stats, setStats] = useState({ songsPerArtist: {} });
+  const [stats, setStats] = useState(null);
   const {currentUser} = useContext(AuthContext);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export const UserStats = () => {
       <p>Playlists Created: {stats.playlistsCreated}</p>
       <div>
         <h3>Songs per Artist:</h3>
-        {stats.songsPerArtist && stats.songsPerArtist.__proto__ && Object.entries(stats.songsPerArtist.__proto__).map(([artist, count]) => (
+        {stats.songsPerArtist && Object.entries(stats.songsPerArtist).map(([artist, count]) => (
           <p key={artist}>{artist}: {count}</p>
         ))}
       </div>

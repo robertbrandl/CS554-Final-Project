@@ -2,7 +2,6 @@ import {ObjectId} from 'mongodb';
 import * as validation from '../validation.js';
 import {users, playlists } from '../config/mongoCollections.js';
 import axios from "axios";
-import { getAllPlaylistSongs} from './songs.js';
 const registerUser = async (
     name,
     emailAddress,
@@ -196,9 +195,16 @@ const countFollowers = async (userId, userCollection) => {
 const calculateSongsPerArtist = async (playlistsarr) => {
     const songsPerArtist = {};
     for (const playlist of playlistsarr) {
-        const playlistFound = await getAllPlaylistSongs(playlist);
-        if (playlistFound && playlistFound.songsArray && playlistFound.songsArray.length > 0){
-            for (const songData of playlistFound.songsArray) {
+        const playlistCollection = await playlists();
+        const playlistFound = await playlistCollection.findOne({
+            _id: playlist,
+        });
+        if (playlistFound && playlistFound.songIds && playlistFound.songIds > 0){
+            for (const song of playlistFound.songIds) {
+                const response = await axios.get(
+                    `https://api.deezer.com/track/${song}`
+                  );
+                let songData = response.data;
                 if (!songsPerArtist[songData.artist.name]) {
                     songsPerArtist[songData.artist.name] = 1;
                 } else {
