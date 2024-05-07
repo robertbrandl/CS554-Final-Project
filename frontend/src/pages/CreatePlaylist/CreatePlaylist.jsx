@@ -5,7 +5,6 @@ import { AuthContext } from "../../firebase/Auth";
 export const CreatePlaylist = () => {
   const [formData, setFormData] = useState({
     title: "",
-    userName: "",
     albumCover: null,
     genre: "",
   });
@@ -24,10 +23,10 @@ export const CreatePlaylist = () => {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("email", currentUser.email);
+      formDataToSend.append("userName", currentUser.displayName)
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
-
       const response = await axios.post(
         "http://localhost:3000/playlists/createplaylist",
         formDataToSend
@@ -66,15 +65,6 @@ export const CreatePlaylist = () => {
         <div className="form-row">
           <label htmlFor="title">Title:</label>{" "}
           <input type="text" name="title" id="title" onChange={handleChange} />
-        </div>
-        <div className="form-row">
-          <label htmlFor="userName">User Name:</label>{" "}
-          <input
-            type="text"
-            name="userName"
-            id="userName"
-            onChange={handleChange}
-          />
         </div>
         <div className="form-row">
           <label htmlFor="albumCover" className="album-cover-label">
