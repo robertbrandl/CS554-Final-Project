@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UserStats.css';
-import { AuthContext } from "../../firebase/Auth";
 
+export const UserStats = ({ userId }) => {
+  const [stats, setStats] = useState(null);
 export const UserStats = () => {
   const [stats, setStats] = useState(null);
   const {currentUser} = useContext(AuthContext);
@@ -10,8 +11,7 @@ export const UserStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get(`api/users/userStats?userEmail=${currentUser.email}`);
-        console.log(response.data)
+        const response = await axios.get(`/userStats?userId=${userId}`);
         setStats(response.data);
       } catch (error) {
         console.error('Failed to fetch user stats:', error);
@@ -19,14 +19,10 @@ export const UserStats = () => {
     };
 
     fetchStats();
-  }, []);
+  }, [userId]);
 
   if (!stats) {
     return <div>Loading...</div>;
-  }
-
-  if (!currentUser){
-    return <div className="not-current-user"><br />You must be logged in to access this page!</div>
   }
 
   return (
