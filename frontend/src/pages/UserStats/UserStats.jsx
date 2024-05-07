@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UserStats.css';
 
-export const UserStats = ({ userId }) => {
-  const [stats, setStats] = useState(null);
 export const UserStats = () => {
   const [stats, setStats] = useState(null);
   const {currentUser} = useContext(AuthContext);
