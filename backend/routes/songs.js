@@ -28,8 +28,8 @@ router.route("/song/:id").get(async (req, res) => {
     if (songData.album && songData.album.cover_medium) {
       const resizedImageBuffer = await resizeImage(
         songData.album.cover_medium,
-        150,
-        150
+        200,
+        200
       );
       const resizedImageBase64 = resizedImageBuffer.toString("base64");
       songData.album.cover_medium = `data:image/jpeg;base64,${resizedImageBase64}`;

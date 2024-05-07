@@ -247,6 +247,8 @@ export const FollowedPlaylists = () => {
                       : "Save Playlist"}
                   </button>
                 )}
+                <br/>
+                <br/>
               </li>
             ))}
           </ul>
