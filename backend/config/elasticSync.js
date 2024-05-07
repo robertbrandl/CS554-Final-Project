@@ -5,7 +5,7 @@ import { mongoConfig } from "./settings.js";
 let collectionName = "playlists";
 const esOptions = { node: 'http://localhost:9200' };
 let indexName = "playlist_ind";
-let followedIndex = "followedPlaylist_ind";
+let followedIndex = "followedplaylist_ind";
 async function synchronizeData() {
     try {
       // Connect to MongoDB
@@ -52,20 +52,27 @@ async function indexArray(array) {
     try {
         const esClient = new Client(esOptions);
         // Iterate over each object in the array
-        await esClient.deleteByQuery({
+        try{await esClient.deleteByQuery({
             index: followedIndex,
             body: {
               query: {
                 match_all: {}
               }
             }
-          });
+          });}catch(e){}
         await Promise.all(array.map(async (obj) => {
             // Index the object into Elasticsearch
+            const { _id, ...body } = obj;
+            delete body.albumCover;
+            console.log(_id);
+            console.log(body);
             await esClient.index({
-                index: followedIndex,
-                body: obj
-            });
+                index: indexName,
+                id: obj._id.toString(),
+                body: {
+                  doc: body
+                }, 
+              });
         }));
 
         console.log('Array indexed successfully into Elasticsearch!');
