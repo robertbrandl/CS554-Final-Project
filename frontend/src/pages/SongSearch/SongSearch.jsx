@@ -1,64 +1,79 @@
 import "./SongSearch.css";
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../firebase/Auth';
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../firebase/Auth";
 import { Link } from "react-router-dom";
-import axios from 'axios';
-import { AddToPlaylistButton } from '../../components/AddToPlaylistButton/AddToPlaylistButton';
+import axios from "axios";
+import { AddToPlaylistButton } from "../../components/AddToPlaylistButton/AddToPlaylistButton";
 
 export const SongSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [options, setOptions] = useState({
     artist: false,
     album: false,
-    track: true, 
-    label: false
+    track: true,
+    label: false,
   });
   const [searchTerms, setSearchTerms] = useState({
-    track: '',
-    artist: '',
-    album: '',
-    label: ''
+    track: "",
+    artist: "",
+    album: "",
+    label: "",
   });
   const isLoggedIn = useContext(AuthContext);
 
   const searchSong = async () => {
-    setErrorMessage('');
+    setErrorMessage("");
     try {
-      if (!options.artist && !options.album && !options.track && !options.label) {
-        throw new Error('Must supply at least one parameter');
+      if (
+        !options.artist &&
+        !options.album &&
+        !options.track &&
+        !options.label
+      ) {
+        throw new Error("Must supply at least one parameter");
       }
 
       let response;
       let params = "";
-      if (options.track) params += `track:"${searchTerms.track.toLowerCase().trim()}"`;
-      if (options.artist) params += ` artist:"${searchTerms.artist.toLowerCase().trim()}"`;
-      if (options.album) params += ` album:${searchTerms.album.toLowerCase().trim()}`;
-      if (options.label) params += ` label:${searchTerms.label.toLowerCase().trim()}`;
+      if (options.track)
+        params += `track:"${searchTerms.track.toLowerCase().trim()}"`;
+      if (options.artist)
+        params += ` artist:"${searchTerms.artist.toLowerCase().trim()}"`;
+      if (options.album)
+        params += ` album:${searchTerms.album.toLowerCase().trim()}`;
+      if (options.label)
+        params += ` label:${searchTerms.label.toLowerCase().trim()}`;
 
-      response = await axios.get(`http://localhost:3000/songs/search/${params}`);
-      
+      response = await axios.get(
+        `http://localhost:3000/songs/search/${params}`
+      );
+
       if (response.data.data.length === 0) {
-        setErrorMessage('No results found');
+        setErrorMessage("No results found");
       } else {
         setSearchResults(response.data.data.slice(0, 10));
       }
     } catch (error) {
-      if (error.message === 'Must supply at least one parameter') {
-        setErrorMessage('Error: Must supply at least one parameter');
+      if (error.message === "Must supply at least one parameter") {
+        setErrorMessage("Error: Must supply at least one parameter");
       } else if (error.response && error.response.data.message) {
-        setErrorMessage('Error searching for songs: ' + error.response.data.message);
+        setErrorMessage(
+          "Error searching for songs: " + error.response.data.message
+        );
       } else if (error.response && error.response.statusText) {
-        setErrorMessage('Error searching for songs: ' + error.response.statusText);
+        setErrorMessage(
+          "Error searching for songs: " + error.response.statusText
+        );
       } else {
-        setErrorMessage('Error searching for songs: ' + error.message);
+        setErrorMessage("Error searching for songs: " + error.message);
       }
     }
   };
 
   const handleOptionChange = (option) => {
     setOptions({ ...options, [option]: !options[option] });
-    setSearchTerms({ ...searchTerms, [option]: '' });
+    setSearchTerms({ ...searchTerms, [option]: "" });
   };
 
   const handleSearchTermChange = (option, value) => {
@@ -73,69 +88,82 @@ export const SongSearch = () => {
         <label>
           <input
             type="checkbox"
+            className="checkbox"
             checked={options.track}
-            onChange={() => handleOptionChange('track')}
+            onChange={() => handleOptionChange("track")}
           />
           Track
         </label>
         {options.track && (
-          <input
-            type="text"
-            value={searchTerms.track}
-            onChange={(e) => handleSearchTermChange("track", e.target.value)}
-            placeholder="Search for track..."
-          />
+          <div className="search-row">
+            <input
+              type="text"
+              value={searchTerms.track}
+              onChange={(e) => handleSearchTermChange("track", e.target.value)}
+              placeholder="Search for track..."
+            />
+            <button onClick={searchSong}>Search</button>
+          </div>
         )}
         <label>
           <input
             type="checkbox"
             checked={options.artist}
-            onChange={() => handleOptionChange('artist')}
+            onChange={() => handleOptionChange("artist")}
           />
           Artist
         </label>
         {options.artist && (
-          <input
-            type="text"
-            value={searchTerms.artist}
-            onChange={(e) => handleSearchTermChange('artist', e.target.value)}
-            placeholder="Search for artist..."
-          />
+          <div className="search-row">
+            <input
+              type="text"
+              value={searchTerms.artist}
+              onChange={(e) => handleSearchTermChange("artist", e.target.value)}
+              placeholder="Search for artist..."
+            />
+            <button onClick={searchSong}>Search</button>
+          </div>
         )}
         <label>
           <input
             type="checkbox"
             checked={options.album}
-            onChange={() => handleOptionChange('album')}
+            onChange={() => handleOptionChange("album")}
           />
           Album
         </label>
         {options.album && (
-          <input
-            type="text"
-            value={searchTerms.album}
-            onChange={(e) => handleSearchTermChange('album', e.target.value)}
-            placeholder="Search for album..."
-          />
+          <div className="search-row">
+            <input
+              type="text"
+              value={searchTerms.album}
+              onChange={(e) => handleSearchTermChange("album", e.target.value)}
+              placeholder="Search for album..."
+            />
+            <button onClick={searchSong}>Search</button>
+          </div>
         )}
         <label>
           <input
             type="checkbox"
             checked={options.label}
-            onChange={() => handleOptionChange('label')}
+            onChange={() => handleOptionChange("label")}
           />
           Label
         </label>
         {options.label && (
-          <input
-            type="text"
-            value={searchTerms.label}
-            onChange={(e) => handleSearchTermChange('label', e.target.value)}
-            placeholder="Search for label..."
-          />
+          <div className="search-row">
+            <input
+              type="text"
+              value={searchTerms.label}
+              onChange={(e) => handleSearchTermChange("label", e.target.value)}
+              placeholder="Search for label..."
+            />
+            <button onClick={searchSong}>Search</button>
+          </div>
         )}
       </div>
-      <button onClick={searchSong}>Search</button>
+
       <ul>
         {searchResults.map((song) => (
           <li key={song.id}>
@@ -144,9 +172,7 @@ export const SongSearch = () => {
                 <h3>{song.title}</h3>
                 <p>{song.artist.name}</p>
               </Link>
-              {isLoggedIn.currentUser && (
-                <AddToPlaylistButton id={song.id} />
-              )}
+              {isLoggedIn.currentUser && <AddToPlaylistButton id={song.id} />}
             </div>
           </li>
         ))}
