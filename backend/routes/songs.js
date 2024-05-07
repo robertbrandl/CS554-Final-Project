@@ -75,27 +75,31 @@ const resizeImage = async (imageUrl, width, height) => {
   }
 };
 router.route("/search/:query").get(async (req, res) => {
-  let foundSongs = await client.get("search-".concat(xss(req.params.query)));
-  let songData;
+  try {
+    let foundSongs = await client.get("search-".concat(xss(req.params.query)));
+    let songData;
 
-  if (foundSongs) {
-    console.log("songs", xss(req.params.query), "found in cache, returning it");
-    songData = JSON.parse(foundSongs);
-  } else {
-    const response = await axios.get(
-      `https://api.deezer.com/search?q=${req.params.query}`
-    );
-    songData = response.data;
+    if (foundSongs) {
+      console.log("songs", xss(req.params.query), "found in cache, returning it");
+      songData = JSON.parse(foundSongs);
+    } else {
+      const response = await axios.get(
+        `https://api.deezer.com/search?q=${req.params.query}`
+      );
+      songData = response.data;
 
-    await client.set(
-      "search-".concat(xss(req.params.query)),
-      JSON.stringify(songData)
-    );
-    console.log("Songs", xss(req.params.query), "is set in cache");
+      await client.set(
+        "search-".concat(xss(req.params.query)),
+        JSON.stringify(songData)
+      );
+      console.log("Songs", xss(req.params.query), "is set in cache");
+    }
+
+    console.log(songData);
+    return res.status(200).json(songData);
+  } catch (e) {
+    return res.status(500).json({ error: e });
   }
-
-  console.log(songData);
-  return res.status(200).json(songData);
 });
 
 router.route("/addsong").post(async (req, res) => {

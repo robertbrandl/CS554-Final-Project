@@ -36,15 +36,38 @@ export const SongSearch = () => {
 
       let response;
       let params = "";
-      if (options.track)
+      if (options.track) {
+        if (typeof searchTerms.track !== "string") {
+          throw new Error("Track input must be a string");
+        } else if (searchTerms.track.length > 100) {
+          throw new Error("Track input must be less than or equal to 100 characters");
+        }
         params += `track:"${searchTerms.track.toLowerCase().trim()}"`;
-      if (options.artist)
+      }
+      if (options.artist) {
+        if (typeof searchTerms.artist !== "string") {
+          throw new Error("Artist input must be a string");
+        } else if (searchTerms.artist.length > 100) {
+          throw new Error("Artist input must be less than or equal to 100 characters");
+        }
         params += ` artist:"${searchTerms.artist.toLowerCase().trim()}"`;
-      if (options.album)
+      }
+      if (options.album) {
+        if (typeof searchTerms.album !== "string") {
+          throw new Error("Album input must be a string");
+        } else if (searchTerms.album.length > 100) {
+          throw new Error("Album input must be less than or equal to 100 characters");
+        }
         params += ` album:"${searchTerms.album.toLowerCase().trim()}"`;
-      if (options.label)
+      }
+      if (options.label) {
+        if (typeof searchTerms.label !== "string") {
+          throw new Error("Label input must be a string");
+        } else if (searchTerms.label.length > 100) {
+          throw new Error("Label input must be less than or equal to 100 characters");
+        }
         params += ` label:"${searchTerms.label.toLowerCase().trim()}"`;
-      console.log(params)
+      }
       response = await axios.get(
         `http://localhost:3000/songs/search/${params}`
       );
