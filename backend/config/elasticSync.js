@@ -67,9 +67,11 @@ async function indexArray(array) {
             console.log(_id);
             console.log(body);
             await esClient.index({
-                index: indexName,
+                index: followedIndex,
                 id: obj._id.toString(),
-                body: body
+                body: {
+                    doc: body
+                  }, 
               });
         }));
 
@@ -128,7 +130,7 @@ async function searchFollowed(query) {
         body: {
             query: {
               wildcard: {
-                title: `*${query}*`
+                "doc.title": `*${query}*`
               }
             }
           }

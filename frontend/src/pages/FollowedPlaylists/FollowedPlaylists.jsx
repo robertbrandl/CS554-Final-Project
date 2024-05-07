@@ -67,7 +67,7 @@ export const FollowedPlaylists = () => {
           `/api/playlists/searchfollowedbyname`,
           {
             params: {
-              name: searchTerm,
+              name: searchTerm.toLowerCase(),
             },
           }
         );

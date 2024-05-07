@@ -62,7 +62,7 @@ export const GenPlaylists = () => {
       try {
         const { data } = await axios.get(`/api/playlists/searchbyname`, {
           params: {
-            name: searchTerm
+            name: searchTerm.toLowerCase()
           },
         });
         console.log(data);
