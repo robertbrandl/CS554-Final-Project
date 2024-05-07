@@ -246,6 +246,8 @@ export const GenPlaylists = () => {
                       : "Save Playlist"}
                   </button>
                 )}
+                <br/>
+                <br/>
               </li>
             ))}
           </ul>
