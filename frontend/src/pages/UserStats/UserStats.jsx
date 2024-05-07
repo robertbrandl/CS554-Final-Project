@@ -35,6 +35,7 @@ export const UserStats = () => {
       <p>Followed Users: {stats.followedUsers}</p>
       <p>Followers: {stats.followers}</p>
       <p>Playlists Created: {stats.playlistsCreated}</p>
+      <p>Saved Playlists: {stats.savedPlaylists}</p>
       <div>
         <h3>Songs per Artist:</h3>
         {stats.songsPerArtist && Object.entries(stats.songsPerArtist).map(([artist, count]) => (
