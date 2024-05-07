@@ -30,12 +30,7 @@ export const CreatePlaylist = () => {
 
       const response = await axios.post(
         "http://localhost:3000/playlists/createplaylist",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formDataToSend
       );
 
       if (response.status === 200) {

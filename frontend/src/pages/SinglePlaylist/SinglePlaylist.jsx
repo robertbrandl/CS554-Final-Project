@@ -131,11 +131,10 @@ export const SinglePlaylist = () => {
     <div className="single-playlist">
       {playlistData && (
         <div>
-          {/* <img src={playlistData.albumCover} /> */}
           <img
-            className="album-cover"
-            src={albumImage}
-            alt="Album cover test"
+            className="album-cover" 
+            src={playlistData.albumCover}
+            alt="Album cover" 
           />
 
           <h1 className="album-title">{playlistData.title}</h1>
