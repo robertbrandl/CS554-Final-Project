@@ -24,7 +24,7 @@ router.route("/register").post(async (req, res) => {
     result = await userData.registerUser(
       name,
       email,
-      publicPlaylist,
+      createUserData.public,
       type
     );
   } catch (e) {

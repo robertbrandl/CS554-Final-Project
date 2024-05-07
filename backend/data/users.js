@@ -58,7 +58,7 @@ const getUserById = async (userId) => {
 }
 const followUser = async (email, userToFollowId) => {
     const userCollection = await users();
-    const user = await userCollection.findOne({emailAddress: em});
+    const user = await userCollection.findOne({emailAddress: email});
     if (user === null)  throw { code: 404, error: 'User not found' };
     const updateResult = await userCollection.updateOne(
         { emailAddress: email },
@@ -71,7 +71,7 @@ const followUser = async (email, userToFollowId) => {
 };
 const unfollowUser = async (email, userToUnfollowId) => {
     const userCollection = await users();
-    const user = await userCollection.findOne({emailAddress: em});
+    const user = await userCollection.findOne({emailAddress: email});
     if (user === null)  throw { code: 404, error: 'User not found' };
     const updateResult = await userCollection.updateOne(
         { emailAddress: email },

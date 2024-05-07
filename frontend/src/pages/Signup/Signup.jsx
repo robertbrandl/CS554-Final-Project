@@ -69,6 +69,7 @@ export const Signup = () => {
               name='displayName'
               type='text'
               placeholder='Name'
+              className="text_input"
               autoFocus={true}
             />
         </div>

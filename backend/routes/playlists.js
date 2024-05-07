@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 import { playlistData, songsData } from "../data/index.js";
 import { userData } from "../data/index.js";
-import { searchData, searchFollowed } from "../config/elasticSync.js";
+import { printAllData, searchData, searchFollowed } from "../config/elasticSync.js";
 import { createClient } from "redis";
 import xss from "xss";
 const client = createClient();

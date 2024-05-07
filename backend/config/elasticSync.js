@@ -31,6 +31,8 @@ async function synchronizeData() {
       // Transform and index data into Elasticsearch
       await Promise.all(documents.map(async (doc) => {
         const { _id, ...body } = doc;
+        delete body.albumCover;
+        console.log(body)
         console.log(doc._id.toString())
         await esClient.index({
             index: indexName,
@@ -100,7 +102,7 @@ async function searchData(query) {
         body: {
             query: {
               wildcard: {
-                title: `*${query}*`
+                "doc.title": `*${query}*`
               }
             }
           }
