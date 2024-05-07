@@ -181,9 +181,12 @@ const updatePlaylist = async (playlistId, updates, userId) => {
   console.log("playlist found");
 
   if (String(playlistFound.userId) !== userId) {
-    throw { code: 403, error: `Unauthorized to edit this playlist` };
+    throw { code: 403, error: `User is unauthorized to edit this playlist` };
   }
   console.log("User Authorized to edit this playlist");
+  if (playlistFound.genre === updates.genre.trim() && playlistFound.albumCover === updates.albumCover.trim() && playlistFound.title === updates.title.trim()){
+    throw { code: 400, error: `Error: must change at least one field!` };
+  }
 
   //data validation
   try {

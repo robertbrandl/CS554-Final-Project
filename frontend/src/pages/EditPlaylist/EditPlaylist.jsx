@@ -54,7 +54,6 @@ export const EditPlaylist = () => {
       console.log("in handlesubmit");
       const formDataToSend = new FormData();
       formDataToSend.append("email", currentUser.email);
-      formDataToSend.append("userName", currentUser.displayName)
       Object.entries(formData).forEach(([key, value]) => {
         console.log(key)
         console.log(value);
