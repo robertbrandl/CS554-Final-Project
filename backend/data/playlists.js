@@ -48,13 +48,16 @@ const getFollowingPlaylists = async (userEmail) => {
   const user = await userCollection.findOne({ emailAddress: em });
   if (user === null) throw "No user account with that email";
   let allPlaylists = [];
+  console.log(user);
 
   try {
-    if (user.followedUser && user.followedUser.length > 0) {
+    if (user.followedUsers && user.followedUsers.length > 0) {
       //get users that are followed by user
-      const followedUsers = await db.users.find({
-        _id: { $in: user.followedUser },
-      });
+      user.followedUsers = user.followedUsers.map((e) => new ObjectId(e));
+      const followedUsers = await userCollection.find({
+        _id: { $in: user.followedUsers },
+      }).toArray();
+      console.log(followedUsers)
       if (followedUsers && followedUsers.length > 0) {
         //get playlists of those followed ids
         const playlistCollection = await playlists();
