@@ -179,11 +179,13 @@ const getUserStats = async (email) => {
     const followers = await countFollowers(user._id.toString(), userCollection);
     const playlistsCreated = user.playlists.length;
     const songsPerArtist = await calculateSongsPerArtist(user.playlists); 
+    const savedPlaylists = user.savedPlaylists.length;
     return {
       followedUsers,
       followers,
       playlistsCreated,
-      songsPerArtist
+      songsPerArtist,
+      savedPlaylists
     };
 }
 
