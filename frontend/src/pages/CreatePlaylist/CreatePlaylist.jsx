@@ -42,7 +42,7 @@ export const CreatePlaylist = () => {
       }
     } catch (error) {
       console.log(error);
-      setError(error.response.data.error);
+      setError(error.response.data.error || error.message);
     }
   };
   const genres = [

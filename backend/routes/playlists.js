@@ -256,7 +256,7 @@ router
         return res.status(500).json({ error: "Failed to update playlist" });
       }
     } catch (e) {
-      return res.status(500).json({ error: e });
+      return res.status(e.code).json({ error: e.error });
     }
   });
 

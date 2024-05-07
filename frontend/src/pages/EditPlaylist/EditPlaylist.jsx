@@ -7,6 +7,7 @@ import { AuthContext } from "../../firebase/Auth";
 export const EditPlaylist = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     title: "",
     userName: "",
@@ -53,6 +54,7 @@ export const EditPlaylist = () => {
       console.log("in handlesubmit");
       const formDataToSend = new FormData();
       formDataToSend.append("email", currentUser.email);
+      formDataToSend.append("userName", currentUser.displayName)
       Object.entries(formData).forEach(([key, value]) => {
         console.log(key)
         console.log(value);
@@ -78,7 +80,8 @@ export const EditPlaylist = () => {
         console.error("Form submission failed:", response.statusText);
       }
     } catch (error) {
-      console.error("Error submitting form data:", error);
+      console.log(error);
+      setError(error.response.data.error || error.message);
     }
   };
   const genres = ["Rock", "Pop", "Hip Hop", "R&B", "Country", "Electronic", "Latin", "K-POP", "Classical", "Metal", "Alternative", "Folk", "Rap", "Gospel"];
@@ -86,19 +89,10 @@ export const EditPlaylist = () => {
     <div className="create-playlist">
       <h1>Edit Playlist</h1>
       <form className="create-playlist-form" onSubmit={handleSubmit}>
+      {error && <div className="error">{error}</div>}
         <div className="form-row">
           <label htmlFor="title">Title:</label>{" "}
           <input type="text" name="title" id="title" onChange={handleChange} value={formData.title}  />
-        </div>
-        <div className="form-row">
-          <label htmlFor="userName">User Name:</label>{" "}
-          <input
-            type="text"
-            name="userName"
-            id="userName"
-            value={formData.userName}
-            onChange={handleChange}
-          />
         </div>
         <div className="form-row">
           <label htmlFor="albumCover" className="album-cover-label">

@@ -167,8 +167,9 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
 };
 
 const updatePlaylist = async (playlistId, updates, userId) => {
-  console.log("in create playlist DF");
+  console.log("in edit playlist DF");
   const playlistCollection = await playlists();
+  console.log(updates);
 
   const playlistFound = await playlistCollection.findOne({
     _id: new ObjectId(playlistId),
@@ -185,21 +186,35 @@ const updatePlaylist = async (playlistId, updates, userId) => {
   console.log("User Authorized to edit this playlist");
 
   //data validation
-  if (updates.title) {
+  try {
     validation.stringValidation(updates.title);
+    }
+    catch(e){throw {code: 400, error: e}}
+  if (updates.title) {
     playlistFound.title = updates.title.trim();
   }
+  try{
+    validation.stringValidation(updates.userName);
+    }catch(e){
+        throw {code: 400, error: e}
+    }
+    try{
+        validation.checkString(updates.genre);
+    }catch(e){
+        throw {code: 400, error: "Error: must provide a genre or select No Genre!"}
+    }
 
   if (updates.userName) {
-    validation.stringValidation(updates.userName);
     playlistFound.userName = updates.userName.trim();
   }
+  if (!updates.albumCover){
+    throw {code: 400, error: "Error: must provide a cover picture for the playlist"}
+    }
   if (updates.albumCover) {
     playlistFound.albumCover = updates.albumCover;
   }
 
   if (updates.genre) {
-    validation.stringValidation(updates.genre);
     playlistFound.genre = updates.genre;
   }
   console.log("playlist after updates =", playlistFound);
