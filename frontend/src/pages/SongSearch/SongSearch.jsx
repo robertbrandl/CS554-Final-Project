@@ -41,10 +41,10 @@ export const SongSearch = () => {
       if (options.artist)
         params += ` artist:"${searchTerms.artist.toLowerCase().trim()}"`;
       if (options.album)
-        params += ` album:${searchTerms.album.toLowerCase().trim()}`;
+        params += ` album:"${searchTerms.album.toLowerCase().trim()}"`;
       if (options.label)
-        params += ` label:${searchTerms.label.toLowerCase().trim()}`;
-
+        params += ` label:"${searchTerms.label.toLowerCase().trim()}"`;
+      console.log(params)
       response = await axios.get(
         `http://localhost:3000/songs/search/${params}`
       );
@@ -102,7 +102,6 @@ export const SongSearch = () => {
               onChange={(e) => handleSearchTermChange("track", e.target.value)}
               placeholder="Search for track..."
             />
-            <button onClick={searchSong}>Search</button>
           </div>
         )}
         <label>
@@ -121,7 +120,6 @@ export const SongSearch = () => {
               onChange={(e) => handleSearchTermChange("artist", e.target.value)}
               placeholder="Search for artist..."
             />
-            <button onClick={searchSong}>Search</button>
           </div>
         )}
         <label>
@@ -140,7 +138,6 @@ export const SongSearch = () => {
               onChange={(e) => handleSearchTermChange("album", e.target.value)}
               placeholder="Search for album..."
             />
-            <button onClick={searchSong}>Search</button>
           </div>
         )}
         <label>
@@ -159,11 +156,10 @@ export const SongSearch = () => {
               onChange={(e) => handleSearchTermChange("label", e.target.value)}
               placeholder="Search for label..."
             />
-            <button onClick={searchSong}>Search</button>
           </div>
         )}
       </div>
-
+      <button onClick={searchSong}>Search</button>
       <ul>
         {searchResults.map((song) => (
           <li key={song.id}>
