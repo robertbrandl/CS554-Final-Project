@@ -73,7 +73,7 @@ export const EditPlaylist = () => {
 
       if (response.status === 200) {
         window.alert("playlist updated submitted successfully!");
-        navigate(`/myplaylists`);
+        navigate(-1);
       } else {
         window.alert("Form submission failed");
         console.error("Form submission failed:", response.statusText);

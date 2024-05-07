@@ -57,7 +57,7 @@ export const AccountPlaylists = ({ user }) => {
     if (response.status === 200) {
       console.log("users playlist have been deleted");
       window.alert("Playlist deleted successfully");
-      window.location.reload();
+      setPlaylists(prevPlaylistData => prevPlaylistData.filter(playlist => playlist._id !== playlistId));
     } else {
       console.error("Failed to deleted user playlists:", response.data.error);
     }
