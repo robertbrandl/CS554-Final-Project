@@ -108,9 +108,9 @@ async function searchData(query) {
         index: indexName,
         body: {
             query: {
-              wildcard: {
-                "doc.title": `*${query}*`
-              }
+                match_phrase_prefix: {
+                    "doc.title": query
+                }
             }
           }
       });
@@ -129,9 +129,9 @@ async function searchFollowed(query) {
         index: followedIndex,
         body: {
             query: {
-              wildcard: {
-                "doc.title": `*${query}*`
-              }
+                match_phrase_prefix: {
+                    "doc.title": query
+                }
             }
           }
       });
