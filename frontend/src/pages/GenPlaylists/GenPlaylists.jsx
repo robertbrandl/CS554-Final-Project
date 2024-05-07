@@ -96,7 +96,8 @@ export const GenPlaylists = () => {
       }
       //setLoading(false);
     }
-    getUser();
+    if (currentUser){
+      getUser();}
     if (searchTerm) {
       fetchData();
     } else {
