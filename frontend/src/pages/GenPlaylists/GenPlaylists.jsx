@@ -96,14 +96,8 @@ export const GenPlaylists = () => {
       }
       //setLoading(false);
     }
-<<<<<<< Updated upstream
-    if (currentUser){
-      getUser();}
-    if (searchTerm || sortItem || sortOrder) {
-=======
     getUser();
     if (searchTerm) {
->>>>>>> Stashed changes
       fetchData();
     } else {
       fetchAllData();
