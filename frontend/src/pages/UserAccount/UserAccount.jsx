@@ -110,7 +110,7 @@ export const UserAccount = () => {
     return <div>{errorMessage}</div>
   }
   if (!currentUser){
-    return <div>You must be logged in to access this page!</div>
+    return <div className="not-current-user"><br />You must be logged in to access this page!</div>
   }
   return (
     <div>
