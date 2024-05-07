@@ -199,7 +199,7 @@ const calculateSongsPerArtist = async (playlistsarr) => {
         const playlistFound = await playlistCollection.findOne({
             _id: playlist,
         });
-        if (playlistFound && playlistFound.songIds && playlistFound.songIds > 0){
+        if (playlistFound && playlistFound.songIds && playlistFound.songIds.length > 0){
             for (const song of playlistFound.songIds) {
                 const response = await axios.get(
                     `https://api.deezer.com/track/${song}`
