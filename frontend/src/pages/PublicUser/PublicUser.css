@@ -25,3 +25,14 @@
     border-radius: 22px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.not-current-user{
+    display: inline-block;
+    color: red;
+    background: #FFFFFF;
+    width: 400px;
+    height: 70px;
+    margin-top: 5%;
+    font-size: larger;
+    font-weight: bold;
+}
