@@ -1,6 +1,17 @@
+.single-playlist {
+  font-family: Arial, sans-serif;
+}
 .album-cover {
   width: 250px;
   float: left;
+  padding: 20px;
+}
+.album-genre {
+  width: 250px;
+  color: white;
+  font-size: 20px;
+  float: right;
+
   padding: 20px;
 }
 
@@ -59,15 +70,15 @@ a {
   flex: 1;
 }
 
-.save-button{
+.save-button {
   padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
-.save-button:hover{
+.save-button:hover {
   background-color: #0056b3;
 }

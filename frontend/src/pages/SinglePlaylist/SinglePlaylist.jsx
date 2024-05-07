@@ -13,6 +13,15 @@ export const SinglePlaylist = () => {
     return `${month}/${day}/${year}`;
   }
 
+  function totalTime(songData) {
+    let totalTime = 0;
+    for (let song of songData) {
+      totalTime += song.duration;
+    }
+    totalTime = formatTime(totalTime);
+    return totalTime;
+  }
+
   function formatTime(duration) {
     const minutes = Math.floor(duration / 60);
     const seconds = duration % 60;
@@ -61,25 +70,25 @@ export const SinglePlaylist = () => {
           `http://localhost:3000/playlists/playlist/${id}`
         );
         console.log(response.data);
-        if (currentUser){
-        const { data: loggedInUser } = await axios.get("/api/users/account", {
-          params: {
-            email: currentUser.email,
-          },
-        });
-        console.log(loggedInUser);
-        console.log(id);
-        if (loggedInUser && loggedInUser._id) {
-          setUserId(loggedInUser._id);
+        if (currentUser) {
+          const { data: loggedInUser } = await axios.get("/api/users/account", {
+            params: {
+              email: currentUser.email,
+            },
+          });
+          console.log(loggedInUser);
+          console.log(id);
+          if (loggedInUser && loggedInUser._id) {
+            setUserId(loggedInUser._id);
+          }
+          if (
+            loggedInUser &&
+            loggedInUser.savedPlaylists &&
+            loggedInUser.savedPlaylists.includes(id.toString())
+          ) {
+            setIsSaved(true);
+          }
         }
-        if (
-          loggedInUser &&
-          loggedInUser.savedPlaylists &&
-          loggedInUser.savedPlaylists.includes(id.toString())
-        ) {
-          setIsSaved(true);
-        }
-      }
 
         setPlaylistData(response.data.playlist);
         setSongsData(response.data.songs.songsArray);
@@ -105,11 +114,17 @@ export const SinglePlaylist = () => {
             src={albumImage}
             alt="Album cover test"
           />
+
           <h1 className="album-title">{playlistData.title}</h1>
-          <h2 className="album-userName">{playlistData.userName} . </h2>
+          <h3 className="album-genre">{playlistData.genre}</h3>
+          <h2 className="album-userName">
+            {playlistData.userName} . {totalTime(songsData)}
+          </h2>
+
           <h3 className="album-userName">
             Date Created: {formatDate(playlistData.dateCreated)}
           </h3>
+
           {currentUser && playlistData.userId !== userId && (
             <button onClick={handleSave} className="save-button">
               {isSaved ? "Unsave Playlist" : "Save Playlist"}
