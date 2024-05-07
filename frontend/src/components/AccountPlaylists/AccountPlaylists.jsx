@@ -6,6 +6,7 @@ import { AuthContext } from "../../firebase/Auth";
 export const AccountPlaylists = ({ user }) => {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
+  const [error, setError] = useState('');
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const month = date.getMonth() + 1;
@@ -16,26 +17,34 @@ export const AccountPlaylists = ({ user }) => {
 
   const [playlists, setPlaylists] = useState([]);
   useEffect(() => {
+    setError('');
     const fetchData = async () => {
       console.log("user = ", user);
       const email = user.email;
       console.log("user.email = ", user.email);
-      const response = await axios.put(
+      let response = null;
+      try{
+        response = await axios.put(
         "http://localhost:3000/playlists/myplaylists",
         { email }
       );
-      if (response.status === 200) {
+      }catch(e){
+        response = e;
+      }
+      if (response && response.status && response.status === 200) {
         // Update the playlists state with the received playlists
         setPlaylists(response.data.playlists);
         console.log("users playlist have been found");
       } else {
-        console.error("Failed to fetch user playlists:", response.data.error);
+        setError("Failed to fetch user playlists");
       }
     };
 
     fetchData();
   }, []);
-
+  if (error){
+    return <div>{error}</div>
+  }
   async function deletePlaylist(playlistId, userEmail) {
     console.log("delete clicked");
     console.log(userEmail)

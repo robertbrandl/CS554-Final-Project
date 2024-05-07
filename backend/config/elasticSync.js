@@ -69,9 +69,7 @@ async function indexArray(array) {
             await esClient.index({
                 index: indexName,
                 id: obj._id.toString(),
-                body: {
-                  doc: body
-                }, 
+                body: body
               });
         }));
 
