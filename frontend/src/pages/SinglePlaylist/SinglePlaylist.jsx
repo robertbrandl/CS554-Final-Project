@@ -162,7 +162,10 @@ export const SinglePlaylist = () => {
           <h3 className="album-genre">{playlistData.genre}</h3>
 
           <h2 className="album-userName">
-            {playlistData.userName} . {totalTime(songsData)}
+            <Link to={`/user/${playlistData.userId}`} className="user-link">
+              {playlistData.userName}{" "}
+            </Link>
+            . {totalTime(songsData)}
           </h2>
 
           <h3 className="album-userName">
