@@ -1,10 +1,11 @@
 import "./SinglePlaylist.css";
 import albumImage from "../../assets/album.png";
 import { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../firebase/Auth";
 export const SinglePlaylist = () => {
+  const navigate = useNavigate();
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const month = date.getMonth() + 1;
@@ -26,6 +27,28 @@ export const SinglePlaylist = () => {
     const minutes = Math.floor(duration / 60);
     const seconds = duration % 60;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  }
+
+  async function deletePlaylist(playlistId, userEmail) {
+    console.log("delete clicked");
+    console.log(userEmail);
+    const response = await axios.delete(
+      "http://localhost:3000/playlists/myplaylists",
+      {
+        data: { playlistId, userEmail },
+      }
+    );
+    if (response.status === 200) {
+      console.log("users playlist have been deleted");
+      window.alert("Playlist deleted successfully");
+      navigate(`/myplaylists`);
+    } else {
+      console.error("Failed to deleted user playlists:", response.data.error);
+    }
+  }
+
+  async function editPlaylist(playlistId, userEmail) {
+    navigate(`/playlist/editplaylist/${playlistId}`);
   }
   const [playlistData, setPlaylistData] = useState(null);
   const [songsData, setSongsData] = useState(null);
@@ -117,6 +140,7 @@ export const SinglePlaylist = () => {
 
           <h1 className="album-title">{playlistData.title}</h1>
           <h3 className="album-genre">{playlistData.genre}</h3>
+
           <h2 className="album-userName">
             {playlistData.userName} . {totalTime(songsData)}
           </h2>
@@ -159,6 +183,24 @@ export const SinglePlaylist = () => {
               </div>
             </Link>
           ))}
+        {currentUser && playlistData.userId == userId && (
+          <div>
+            <button
+              className="delete-playlist-button"
+              onClick={() =>
+                deletePlaylist(playlistData._id, currentUser.email)
+              }
+            >
+              Delete Playlist
+            </button>
+            <button
+              className="edit-playlist-button"
+              onClick={() => editPlaylist(playlistData._id, currentUser.email)}
+            >
+              Edit Playlist
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
