@@ -29,7 +29,7 @@ export const EditPlaylist = () => {
           userName: response.data.playlist.userName,
           genre: response.data.playlist.genre,
           // Ensure albumCover is set to null or a file object
-          albumCover: null,
+          albumCover: response.data.playlist.albumCover,
         });
       } catch (e) {
         //setError(e.message);
@@ -54,8 +54,11 @@ export const EditPlaylist = () => {
       const formDataToSend = new FormData();
       formDataToSend.append("email", currentUser.email);
       Object.entries(formData).forEach(([key, value]) => {
+        console.log(key)
+        console.log(value);
         formDataToSend.append(key, value);
       });
+      console.log(formData)
 
       const response = await axios.patch(
         `http://localhost:3000/playlists/editplaylist/${id}`,
@@ -99,7 +102,7 @@ export const EditPlaylist = () => {
         </div>
         <div className="form-row">
           <label htmlFor="albumCover" className="album-cover-label">
-            Album Cover:
+            Playlist Cover Image:
           </label>
           <input
             type="file"

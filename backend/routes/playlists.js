@@ -223,7 +223,10 @@ router
         let cloudinaryImage = await cloudinary.uploader.upload(albumCover);
         albumCover = cloudinaryImage.secure_url;
       }
-
+      else{
+        albumCover = req.body.albumCover
+      }
+      console.log(albumCover)
       //data validation
 
       let userRef = await userData.getAccount(xss(email));

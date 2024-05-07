@@ -78,7 +78,7 @@ export const CreatePlaylist = () => {
         </div>
         <div className="form-row">
           <label htmlFor="albumCover" className="album-cover-label">
-            Album Cover:
+            Add a Playlist Cover Image:
           </label>
           <input
             type="file"
