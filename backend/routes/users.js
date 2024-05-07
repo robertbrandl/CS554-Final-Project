@@ -98,6 +98,7 @@ router.route("/follow").patch(async (req, res) => {
     return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
+  await client.del(`followedplaylists/${email}`)
   return res.status(200).json(result);
 })
 
@@ -119,6 +120,7 @@ router.route("/unfollow").patch(async (req, res) => {
     return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
+  await client.exists(`followedplaylists/${email}`)
   return res.status(200).json(result);
 })
 router.route("/save").patch(async (req, res) => {
