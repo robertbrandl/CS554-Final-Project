@@ -2,7 +2,9 @@ import React, { useState, useContext } from "react";
 import axios from "axios"; // Import Axios
 import "./CreatePlaylist.css";
 import { AuthContext } from "../../firebase/Auth";
+import { useNavigate } from "react-router-dom";
 export const CreatePlaylist = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
     albumCover: null,
@@ -36,6 +38,7 @@ export const CreatePlaylist = () => {
 
       if (response.status === 200) {
         window.alert("Form data submitted successfully!");
+        navigate(-1);
       } else {
         window.alert("Form submission failed");
         console.error("Form submission failed:", response.statusText);
