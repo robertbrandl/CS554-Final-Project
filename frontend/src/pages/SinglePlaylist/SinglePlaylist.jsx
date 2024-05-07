@@ -153,9 +153,9 @@ export const SinglePlaylist = () => {
       {playlistData && (
         <div>
           <img
-            className="album-cover" 
+            className="album-cover"
             src={playlistData.albumCover}
-            alt="Album cover" 
+            alt="Album cover"
           />
 
           <h1 className="album-title">{playlistData.title}</h1>
@@ -205,14 +205,16 @@ export const SinglePlaylist = () => {
                   <div className="song-info">{formatTime(song.duration)}</div>
                 </div>
               </Link>
-              <button
-                className="delete-song-button"
-                onClick={() =>
-                  deleteSong(song.id, playlistData._id, currentUser.email)
-                }
-              >
-                Delete Song
-              </button>
+              {currentUser && playlistData.userId == userId && (
+                <button
+                  className="delete-song-button"
+                  onClick={() =>
+                    deleteSong(song.id, playlistData._id, currentUser.email)
+                  }
+                >
+                  Delete Song
+                </button>
+              )}
             </div>
           ))}
         <div className="space-below"></div>
