@@ -104,6 +104,22 @@ const getSavedPlaylists = async (playlistIds) => {
   }
   return ret;
 };
+const genres = [
+    "Rock",
+    "Pop",
+    "Hip Hop",
+    "R&B",
+    "Country",
+    "Electronic",
+    "Latin",
+    "K-POP",
+    "Classical",
+    "Metal",
+    "Alternative",
+    "Folk",
+    "Rap",
+    "Gospel",
+  ];
 const createPlaylist = async (title, userId, userName, albumCover, genre) => {
   const playlistCollection = await playlists();
   const userCollection = await users();
@@ -145,6 +161,11 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
         validation.checkString(newPlaylist.genre);
     }catch(e){
         throw {code: 400, error: "Error: must provide a genre or select No Genre!"}
+    }
+    console.log(newPlaylist.genre)
+    console.log(genres.includes(newPlaylist.genre))
+    if (!genres.includes(newPlaylist.genre) && newPlaylist.genre !== "No Genre"){
+        throw {code: 400, error: "Error: must select a valid genre from the dropdown"}
     }
     if (!albumCover){
         throw {code: 400, error: "Error: must provide a cover picture for the playlist"}
@@ -193,6 +214,7 @@ const updatePlaylist = async (playlistId, updates, userId) => {
     validation.stringValidation(updates.title);
     }
     catch(e){throw {code: 400, error: e}}
+    if (updates.title.trim())
   if (updates.title) {
     playlistFound.title = updates.title.trim();
   }
@@ -206,6 +228,9 @@ const updatePlaylist = async (playlistId, updates, userId) => {
     }catch(e){
         throw {code: 400, error: "Error: must provide a genre or select No Genre!"}
     }
+    if (!genres.includes(updates.genre.trim()) && updates.genre.trim() !== "No Genre"){
+        throw {code: 400, error: "Error: must select a valid genre from the dropdown"}
+    }
 
   if (updates.userName) {
     playlistFound.userName = updates.userName.trim();
@@ -218,7 +243,7 @@ const updatePlaylist = async (playlistId, updates, userId) => {
   }
 
   if (updates.genre) {
-    playlistFound.genre = updates.genre;
+    playlistFound.genre = updates.genre.trim();
   }
   console.log("playlist after updates =", playlistFound);
 
