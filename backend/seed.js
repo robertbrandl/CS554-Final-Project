@@ -22,16 +22,16 @@ async function seedDatabase() {
     let u5acc = await users.getAccount("areeb@email.com");
     
     //create 2 playlists per user!
-    let playlist1 = await playlists.createPlaylist("Robert's Playlist", u1acc._id.toString(), u1acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Pop");
-    let playlist2 = await playlists.createPlaylist("Playlist 1", u1acc._id.toString(), u1acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Folk");
-    let playlist3 = await playlists.createPlaylist("Krystal's Playlist", u2acc._id.toString(), u2acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "K-POP");
-    let playlist4 = await playlists.createPlaylist("Playlist 2", u2acc._id.toString(), u2acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Electronic");
-    let playlist5 = await playlists.createPlaylist("Rivaldo's Playlist", u3acc._id.toString(), u3acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "No Genre");
-    let playlist6 = await playlists.createPlaylist("Playlist 3", u3acc._id.toString(), u3acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Metal");
-    let playlist7 = await playlists.createPlaylist("Linette's Playlist", u4acc._id.toString(), u4acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Latin");
-    let playlist8 = await playlists.createPlaylist("Playlist 4", u4acc._id.toString(), u4acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Rap");
-    let playlist9 = await playlists.createPlaylist("Areeb's Playlist", u5acc._id.toString(), u5acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Rock");
-    let playlist10 = await playlists.createPlaylist("Playlist 5", u5acc._id.toString(), u5acc.name, "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Pop");
+    let playlist1 = await playlists.createPlaylist("Robert's Playlist", u1acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Pop");
+    let playlist2 = await playlists.createPlaylist("Playlist 1", u1acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Folk");
+    let playlist3 = await playlists.createPlaylist("Krystal's Playlist", u2acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "K-POP");
+    let playlist4 = await playlists.createPlaylist("Playlist 2", u2acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Electronic");
+    let playlist5 = await playlists.createPlaylist("Rivaldo's Playlist", u3acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "No Genre");
+    let playlist6 = await playlists.createPlaylist("Playlist 3", u3acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Metal");
+    let playlist7 = await playlists.createPlaylist("Linette's Playlist", u4acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Latin");
+    let playlist8 = await playlists.createPlaylist("Playlist 4", u4acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Rap");
+    let playlist9 = await playlists.createPlaylist("Areeb's Playlist", u5acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Rock");
+    let playlist10 = await playlists.createPlaylist("Playlist 5", u5acc._id.toString(), "https://res.cloudinary.com/ddnqdbdci/image/upload/v1715037599/cld-sample-2.jpg", "Pop");
     //songs
     await songs.addSongToPlaylist('2757495911', playlist1.insertedId.toString());
     await songs.addSongToPlaylist('135971346', playlist1.insertedId.toString());
