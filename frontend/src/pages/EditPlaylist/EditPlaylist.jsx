@@ -8,6 +8,7 @@ export const EditPlaylist = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [error, setError] = useState('');
+  const [unauth, setUnauth] = useState(false)
   const [formData, setFormData] = useState({
     title: "",
     userName: "",
@@ -18,6 +19,7 @@ export const EditPlaylist = () => {
   const { currentUser } = useContext(AuthContext);
   useEffect(() => {
     //setError("");
+    setUnauth(false);
     async function fetchData() {
       //setLoading(true);
       try {
@@ -33,6 +35,10 @@ export const EditPlaylist = () => {
           albumCover: response.data.playlist.albumCover,
         });
       } catch (e) {
+        console.log(e)
+        if (e && e.response && e.response.status && e.response.status == 403){
+          setUnauth(true)
+        }
         //setError(e.message);
       }
       //setLoading(false);
@@ -84,6 +90,9 @@ export const EditPlaylist = () => {
     }
   };
   const genres = ["Rock", "Pop", "Hip Hop", "R&B", "Country", "Electronic", "Latin", "K-POP", "Classical", "Metal", "Alternative", "Folk", "Rap", "Gospel"];
+  if (unauth){
+    return <div className="error-gen">You are not authorized to edit this playlist.</div>
+  }
   return (
     <div className="create-playlist">
       <h1>Edit Playlist</h1>
