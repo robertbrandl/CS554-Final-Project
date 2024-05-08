@@ -47,7 +47,21 @@ router.route("/allplaylists").get(async (req, res) => {
     return res.status(200).json(JSON.parse(result));
   } else {
     try {
-      const data = await playlistData.getAllPlaylists();
+      let data = await playlistData.getAllPlaylists();
+      for (let x of data){
+        console.log(x);
+        let id = x.userId;
+        console.log(id)
+        let user = await userData.getUserById(id.toString());
+        console.log("user=" + Object.keys(user));
+        console.log(user.publicPlaylist)
+        if (!user.publicPlaylist){
+            console.log("innerid=" + id)
+            data = data.filter(e => e._id !== x._id);
+            console.log("hi")
+        }
+      }
+      console.log(data);
       await client.SETEX(`allplaylists`, 3600, JSON.stringify(data));
       return res.status(200).json(data);
     } catch (e) {
@@ -77,7 +91,21 @@ router.route("/followedplaylists").get(async (req, res) => {
 });
 router.route("/searchbyname").get(async (req, res) => {
   try {
-    const data = await searchData(xss(req.query.name), xss(req.query.genre));
+    let data = await searchData(xss(req.query.name), xss(req.query.genre));
+    console.log(data);
+    for (let x of data){
+        console.log(x._source.doc);
+        let id = x._source.doc.userId;
+        console.log(id)
+        let user = await userData.getUserById(id.toString());
+        console.log("user=" + Object.keys(user));
+        console.log(user.publicPlaylist)
+        if (!user.publicPlaylist){
+            console.log("innerid=" + id)
+            data = data.filter(e => e._id !== x._id);
+            console.log("hi")
+        }
+      }
     return res.status(200).json(data);
   } catch (e) {
     return res.status(500).json({ error: e });
