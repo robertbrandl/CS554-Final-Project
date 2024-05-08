@@ -122,7 +122,8 @@ export const GenPlaylists = () => {
   }, [searchTerm, selectedGenre]);
 
   useEffect(() => { 
-    setPlaylistData(sortedData());
+    if (sortOrder == "asc" || sortOrder == "desc"){
+    setPlaylistData(sortedData());}
   }, [sortItem, sortOrder]); 
 
   const handleChange = (e) => {
@@ -146,8 +147,15 @@ export const GenPlaylists = () => {
   };
 
   const handleSortOrder = (e) => {
-    setSortOrder(e.target.value)
-    sortedData()
+    setErrorMessage('');
+    let trim = e.target.value.trim();
+    if (trim !== "asc" && trim !== "desc"){
+      setErrorMessage("Error: Sorting order must be either ascending or descending.")
+    }
+    else{
+      setSortOrder(e.target.value.trim())
+      sortedData()
+    }
   }
   
 
@@ -193,9 +201,12 @@ export const GenPlaylists = () => {
     let trim = e.target.value.trim();
     if (!genres.includes(trim) || trim === "" || trim === "No Genre") {
       setErrorMessage("Error: Genre selected must be a value from the dropdown")
+      if (!searchTerm){
+        setSelectedGenre("");
+      }
     }
     else{
-      setSelectedGenre(e.target.value);
+      setSelectedGenre(e.target.value.trim());
     }
   };
 

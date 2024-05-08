@@ -126,7 +126,8 @@ export const FollowedPlaylists = () => {
     }
   }, [searchTerm, selectedGenre]);
   useEffect(() => { 
-    setPlaylistData(sortedData());
+    if (sortOrder == "asc" || sortOrder == "desc"){
+    setPlaylistData(sortedData());}
   }, [sortItem, sortOrder]); 
 
   const handleChange = (e) => {
@@ -149,8 +150,15 @@ export const FollowedPlaylists = () => {
   };
 
   const handleSortOrder = (e) => {
-    setSortOrder(e.target.value)
-    sortedData()
+    setErrorMessage('');
+    let trim = e.target.value.trim();
+    if (trim !== "asc" && trim !== "desc"){
+      setErrorMessage("Error: Sorting order must be either ascending or descending.")
+    }
+    else{
+      setSortOrder(e.target.value.trim())
+      sortedData()
+    }
   }
   
   function formatDate(timestamp) {
@@ -195,9 +203,12 @@ export const FollowedPlaylists = () => {
     let trim = e.target.value.trim();
     if (!genres.includes(trim) || trim === "" || trim === "No Genre") {
       setErrorMessage("Error: Genre selected must be a value from the dropdown")
+      if (!searchTerm){
+        setSelectedGenre("");
+      }
     }
     else{
-      setSelectedGenre(e.target.value);
+      setSelectedGenre(e.target.value.trim());
     }
   };
   const genres = [
