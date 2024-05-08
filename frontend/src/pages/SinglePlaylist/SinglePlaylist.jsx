@@ -138,7 +138,8 @@ export const SinglePlaylist = () => {
         setPlaylistData(response.data.playlist);
         setSongsData(response.data.songs.songsArray);
       } catch (e) {
-        setError(e.message);
+        console.log(e)
+        setError(e.response.data.error || e.message);
       }
       setLoading(false);
     }
@@ -147,7 +148,7 @@ export const SinglePlaylist = () => {
   if (loading) {
     return <div>Loading...</div>;
   } else if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error-gen">Error: {error}</div>;
   }
   return (
     <div className="single-playlist">

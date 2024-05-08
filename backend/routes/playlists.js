@@ -31,6 +31,11 @@ let upload = multer({ dest: "uploads/" });
 router.route("/playlist/:id").get(async (req, res) => {
   try {
     let playlistRef = await playlistData.getPlaylist(xss(req.params.id));
+    console.log(playlistRef)
+    let user = await userData.getUserById(playlistRef.userId.toString());
+    if (!user.publicPlaylist){
+        return res.status(403).json({error: "You do not have permission to view this page. This playlist is private"})
+    }
     let songsRef = await songsData.getAllPlaylistSongs(xss(req.params.id));
     let data = { playlist: playlistRef, songs: songsRef };
 
