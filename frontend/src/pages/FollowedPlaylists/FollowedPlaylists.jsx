@@ -190,7 +190,15 @@ export const FollowedPlaylists = () => {
     setLoading(false);
   };
   const handleGenreChange = (e) => {
-    setSelectedGenre(e.target.value);
+    setErrorMessage("");
+    console.log(e.target.value)
+    let trim = e.target.value.trim();
+    if (!genres.includes(trim) || trim === "" || trim === "No Genre") {
+      setErrorMessage("Error: Genre selected must be a value from the dropdown")
+    }
+    else{
+      setSelectedGenre(e.target.value);
+    }
   };
   const genres = [
     "Rock",
