@@ -25,6 +25,7 @@ Discover, create, and share music playlists with friends. Whether you're searchi
   3. For redis, use this link and choose your system to install Redis Stack: https://redis.io/docs/latest/operate/oss_and_stack/install/install-stack/
   4. For GraphicsMagick, follow this link for general install instructions: http://www.graphicsmagick.org/README.html
      - For a quick install using Ubuntu, run `sudo apt install graphicsmagick`
+  5. For authentication, we used Firebase to perform email/password sign in and social sign in. The .env file is included in our project submission in the frontend folder but not the github repository. Similarly, we used Cloudinary for storage of our playlist cover images that users can enter; this .env file is included in our project submission in the backend folder but not in the repo.
 
 # Installation
 To run our code:
