@@ -111,14 +111,26 @@ export const SinglePlaylist = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        const response = await axios.get(
+        let response = null;
+        if (currentUser){
+        response = await axios.get(
           `http://localhost:3000/playlists/playlist/${id}`,
           {
             params: {
                 email: currentUser.email || ""
             }
         }
-        );
+        );}
+        else{
+          response = await axios.get(
+            `http://localhost:3000/playlists/playlist/${id}`,
+            {
+              params: {
+                  email: ""
+              }
+          }
+          );
+        }
         console.log(response.data);
         if (currentUser) {
           const { data: loggedInUser } = await axios.get("/api/users/account", {

@@ -24,6 +24,10 @@ export const EditPlaylist = () => {
     async function fetchData() {
       //setLoading(true);
       try {
+        if (!currentUser){
+          setUnauth(true);
+        }
+        else{
         const response = await axios.get(
           `http://localhost:3000/playlists/playlist/${id}`,{
             params: {
@@ -38,7 +42,7 @@ export const EditPlaylist = () => {
           genre: response.data.playlist.genre,
           // Ensure albumCover is set to null or a file object
           albumCover: response.data.playlist.albumCover,
-        });
+        });}
       } catch (e) {
         console.log(e)
         if (e && e.response && e.response.status && e.response.status == 403){
