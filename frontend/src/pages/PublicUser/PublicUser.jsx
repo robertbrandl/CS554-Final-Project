@@ -95,12 +95,14 @@ export const PublicUser = () => {
           {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
       )}
+      {!data.publicPlaylist && <p>{data.name}'s account is not public, so you cannot follow the user or see their playlists.</p>}
     </div>
     <br />
     <br />
     <br />
+    {data.publicPlaylist && <>
     <h2>Playlists:</h2>
-    <AccountPlaylists user={{email: data.emailAddress}} />
+    <AccountPlaylists user={{email: data.emailAddress}} /></>}
     </>
   );
 }
