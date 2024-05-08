@@ -61,7 +61,7 @@ export const FollowedPlaylists = () => {
         setPlaylistData(data);
         setError("");
       } catch (e) {
-        setError(e.message);
+        setError(e.response.data.message || e.message);
       }
       setLoading(false);
     }
@@ -104,7 +104,7 @@ export const FollowedPlaylists = () => {
         setPlaylistData(pdata);
         setError("");
       } catch (e) {
-        setError(e.message);
+        setError(e.response.data.message || e.message);
       }
     }
     if (currentUser){
@@ -207,7 +207,7 @@ export const FollowedPlaylists = () => {
   if (loading) {
     return <div>Loading...</div>;
   } else if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error-gen">Error: {error}</div>;
   }
   return (
     <div className="card">

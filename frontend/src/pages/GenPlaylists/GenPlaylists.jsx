@@ -57,7 +57,7 @@ export const GenPlaylists = () => {
         setPlaylistData(data);
         setError("");
       } catch (e) {
-        setError(e.message);
+        setError(e.response.data.message || e.message);
       }
       setLoading(false);
     }
@@ -98,7 +98,7 @@ export const GenPlaylists = () => {
         setPlaylistData(pdata);
         setError("");
       } catch (e) {
-        setError(e.message);
+        setError(e.response.data.message || e.message);
       }
       //setLoading(false);
     }
@@ -206,7 +206,7 @@ export const GenPlaylists = () => {
   if (loading) {
     return <div>Loading...</div>;
   } else if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error-gen">Error: {error}</div>;
   }
   return (
     <div className="card">

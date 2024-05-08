@@ -6,15 +6,46 @@ const registerUser = async (
     name,
     emailAddress,
     publicPlaylist,
-    type
+    type,
+    password
 ) => {
     const userCollection = await users();
     const user = await userCollection.findOne({emailAddress: emailAddress});
-    if (user !== null) throw 'User exists already';
+    if (user !== null) throw {code: 409, error:'User exists already'};
+    try{
+        validation.checkString(name);
+    }catch(e){
+        throw {code: 400, error: "Name must be a non-empty string"}
+    }
+    if (/^[a-zA-Z\s]+$/.test(name) == false){
+        throw {code: 400, error: "Name can only contain letters"}
+    }
+    if (name.trim().length < 2 || name.trim().length > 50){
+        throw {code: 400, error: "Name must be between 2 and 50 characters"}
+    }
+    try{
+        validation.checkString(password);
+    }catch(e){
+        throw {code: 400, error: "Password must be a non-empty string"}
+    }
+    if (password.trim().length < 8){
+        throw {code: 400, error: "Password must be at least 8 characters"}
+    }
+    if (password.trim().length > 100){
+        throw {code: 400, error: "Password must be less than 100 characters"}
+    }
+    if (/\s/.test(password.trim())) throw {code: 400, error: "Password cannot contain spaces"}
+    if (/\d/.test(password) == false){
+        throw {code: 400, error: "Password must be contain a number"}
+    }
+    if (/[^a-zA-Z0-9]/.test(password) === false){
+        throw {code: 400, error: "Password must contain a special character"}
+    }
+
 
     let newUser = {
-        name: name,
-        emailAddress: emailAddress,
+        name: name.trim(),
+        emailAddress: emailAddress.trim(),
         publicPlaylist: publicPlaylist,//true if playlists/user is public (can be followed and playlists in main list)
         accountType: type,
         playlists: [],
@@ -23,7 +54,7 @@ const registerUser = async (
     }
     const insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
-        throw 'Could not add user';
+        throw {code: 500, error: 'Could not add user'};
     return insertInfo;
 }
 

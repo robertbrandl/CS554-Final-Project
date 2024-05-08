@@ -19,11 +19,6 @@ export const Signup = () => {
     }
     try {
       setLoading(true);
-      await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        displayName.value
-      );
       console.log(displayName.value)
       console.log(email.value)
       console.log(publicPlaylists.checked)
@@ -32,14 +27,21 @@ export const Signup = () => {
         displayName: displayName.value,
         email: email.value,
         public: publicPlaylists.checked,
-        accountType: "email"
+        accountType: "email",
+        password: passwordOne.value
       });
-      currentUser.id = response._id;
+      
+      await doCreateUserWithEmailAndPassword(
+        email.value,
+        passwordOne.value,
+        displayName.value
+      );
       console.log(currentUser)
       setErrorMessage('');
       setLoading(false);
       }catch(e){
-        setErrorMessage(e.response.data.error);
+        console.log(e)
+        setErrorMessage(e.response.data.message || e.response.data.error || e.message);
         setLoading(false);
       }
     } catch (error) {
@@ -83,6 +85,8 @@ export const Signup = () => {
               placeholder='Email'
             />
         </div>
+        <p>Password must be at least 8 characters with no spaces, contain a number, and contain a special character (such as !, ?, @, #, etc.).</p>
+        <br />
         <div className='text_area'>
             <br />
             <input

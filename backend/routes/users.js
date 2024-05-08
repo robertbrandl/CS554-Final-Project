@@ -19,16 +19,18 @@ router.route("/register").post(async (req, res) => {
   console.log(createUserData);
   let publicPlaylist = xss(createUserData.public);
   let type = xss(createUserData.accountType);
+  let password = xss(createUserData.password);
   let result = undefined;
   try {
     result = await userData.registerUser(
       name,
       email,
       createUserData.public,
-      type
+      type,
+      password
     );
   } catch (e) {
-    return res.status(400).json({ error: "Error: " + e });
+    return res.status(e.code).json({ error: "Error: " + e.error });
   }
   await client.del(`userexist/${email}`);
   return res.status(200).json(result);
