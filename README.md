@@ -42,8 +42,8 @@ enter or cd into the `CS554-Final-Project` directory
 3. run the command `npm i`
 4. run the command `npm run dev` and the application will be running on localhost:5173, navigate there!!!
 ## Sample User Accounts (seeded)
-- User 1 - email: robert@email.com; password: password123
-- User 2 - email: krystal@email.com; password: password123
-- User 3 - email: linette@email.com; password: password123
-- User 4 - email: rivaldo@email.com; password: password123
-- User 5 - email: areeb@email.com; password: password123
+- User 1 - email: robert@email.com; password: password123!
+- User 2 - email: krystal@email.com; password: password123!
+- User 3 - email: linette@email.com; password: password123!
+- User 4 - email: rivaldo@email.com; password: password123!
+- User 5 - email: areeb@email.com; password: password123!
