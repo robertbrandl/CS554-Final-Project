@@ -112,7 +112,12 @@ export const SinglePlaylist = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:3000/playlists/playlist/${id}`
+          `http://localhost:3000/playlists/playlist/${id}`,
+          {
+            params: {
+                email: currentUser.email || ""
+            }
+        }
         );
         console.log(response.data);
         if (currentUser) {
