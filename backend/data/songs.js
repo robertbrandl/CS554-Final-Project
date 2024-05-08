@@ -162,7 +162,7 @@ try {
   //     ["3135556", "3135554"],
   //     "6632cad7465962dac74ff5ca"
   //   );
-  await getAllPlaylistSongs("66342a069a741a742f0ad39f");
+  // await getAllPlaylistSongs("66342a069a741a742f0ad39f");
   //   await addSongToPlaylist("3135554", "6632cad7465962dac74ff5ca");
 } catch (e) {
   console.log(e);
