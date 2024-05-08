@@ -29,7 +29,7 @@ export const CreatePlaylist = () => {
       setLoading(true);
       const formDataToSend = new FormData();
       formDataToSend.append("email", currentUser.email);
-      formDataToSend.append("userName", currentUser.displayName)
+      // formDataToSend.append("userName", currentUser.displayName)
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });

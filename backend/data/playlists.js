@@ -120,15 +120,21 @@ const genres = [
     "Rap",
     "Gospel",
   ];
-const createPlaylist = async (title, userId, userName, albumCover, genre) => {
+const createPlaylist = async (title, userId, albumCover, genre) => {
   const playlistCollection = await playlists();
   const userCollection = await users();
-
+  //check if userId exists in users collection
+  const userFound = await userCollection.findOne({
+    _id: new ObjectId(userId),
+  });
+  if (!userFound) {
+    throw { code: 404, error: `User with ID ${userId} not found` };
+  }
   let createNewPlaylist;
   let newPlaylist = {
     title: title.trim(),
     userId: userId.trim(),
-    userName: userName.trim(),
+    userName: userFound.name,
     albumCover: albumCover,
     dateCreated: new Date(),
     genre: genre.trim(),
@@ -148,13 +154,7 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
     }
     
     
-    //check if userId exists in users collection
-    const userFound = await userCollection.findOne({
-      _id: new ObjectId(userId),
-    });
-    if (!userFound) {
-      throw { code: 404, error: `User with ID ${userId} not found` };
-    }
+    
     try{
         validation.stringValidation(newPlaylist.userName);
     }catch(e){

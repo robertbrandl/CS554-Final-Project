@@ -213,7 +213,7 @@ router
   .route("/createplaylist")
   .post(upload.single("albumCover"), async (req, res) => {
     try {
-      const { title, userName, genre, email } = req.body;
+      const { title, genre, email } = req.body;
       let albumCover = null;
       if (req.file && req.file.path) {
         albumCover = req.file.path;
@@ -227,7 +227,6 @@ router
       let CreatedPlaylist = await playlistData.createPlaylist(
         xss(title),
         userRef._id,
-        xss(userName),
         albumCover,
         xss(genre)
       );
