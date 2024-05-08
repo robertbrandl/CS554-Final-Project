@@ -28,7 +28,6 @@ export const AddToPlaylistButton = ({ id }) => {
 };
 
 export const PlaylistList = ({ user, songId }) => {
-  
   const navigate = useNavigate();
   if (!songId) {
     const params = useParams();
@@ -75,9 +74,12 @@ export const PlaylistList = ({ user, songId }) => {
     <div className="existing-playlist">
       <ul className="playlist-list">
         <li>
-            <button className="single-playlist-add" onClick={()=> navigate("/playlist/createplaylist")}>
-              Create New Playlist +{" "}
-            </button>
+          <button
+            className="single-playlist-add"
+            onClick={() => navigate("/playlist/createplaylist")}
+          >
+            Create New Playlist +{" "}
+          </button>
         </li>
         {playlists.map((playlist, index) => {
           return (

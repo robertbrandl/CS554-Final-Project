@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../firebase/Auth";
 import { AddToPlaylistButton } from "../../components/AddToPlaylistButton/AddToPlaylistButton";
+import { ArtistsSongs } from "../../components/ArtistsSongs/ArtistsSongs";
 export const PlaylistList = ({ user }) => {
   const [playlists, setPlaylists] = useState([]);
   useEffect(() => {
@@ -139,8 +140,10 @@ export const SingleSong = () => {
           )}
 
           {/* add to playlist button  */}
-          <AddToPlaylistButton />
+          <AddToPlaylistButton id={songData.id} />
         </div>
+
+        <ArtistsSongs artistId={songData.artist.id} />
       </div>
     </>
   );
