@@ -61,7 +61,8 @@ export const UserStats = () => {
         <div>
           <p>Total Number of Songs Added to Playlists: {stats.songsAdded}</p>
           <br />
-          <h4>Songs per Artist:</h4>
+          {stats.songsAdded > 0 &&
+          <><h4>Songs per Artist:</h4>
           {stats.songsPerArtist && Object.entries(stats.songsPerArtist).map(([artist, count]) => (
             <p key={artist}>{artist}: {count}</p>
           ))}
@@ -69,7 +70,7 @@ export const UserStats = () => {
           <h4>Songs per Album:</h4>
           {stats.songsPerAlbum && Object.entries(stats.songsPerAlbum).map(([album, count]) => (
             <p key={album}>{album}: {count}</p>
-          ))}
+          ))}</>}
         </div>
         <br />
       </section>

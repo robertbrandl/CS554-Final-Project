@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import "./AddToPlaylistButton.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../firebase/Auth";
 import { Link } from "react-router-dom";
@@ -28,6 +28,8 @@ export const AddToPlaylistButton = ({ id }) => {
 };
 
 export const PlaylistList = ({ user, songId }) => {
+  
+  const navigate = useNavigate();
   if (!songId) {
     const params = useParams();
     songId = params.id;
@@ -73,11 +75,9 @@ export const PlaylistList = ({ user, songId }) => {
     <div className="existing-playlist">
       <ul className="playlist-list">
         <li>
-          <Link to="/playlist/createplaylist">
-            <button className="single-playlist-add">
+            <button className="single-playlist-add" onClick={()=> navigate("/playlist/createplaylist")}>
               Create New Playlist +{" "}
             </button>
-          </Link>
         </li>
         {playlists.map((playlist, index) => {
           return (

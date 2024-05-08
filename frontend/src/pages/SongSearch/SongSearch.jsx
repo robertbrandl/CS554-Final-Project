@@ -33,7 +33,6 @@ export const SongSearch = () => {
       ) {
         throw new Error("Must supply at least one parameter");
       }
-
       let response;
       let params = "";
       if (options.track) {
@@ -184,7 +183,7 @@ export const SongSearch = () => {
         )}
       </div>
       <button onClick={searchSong}>Search</button>
-      <ul>
+      {!errorMessage && <ul>
         {searchResults.map((song) => (
           <li key={song.id}>
             <div>
@@ -196,7 +195,7 @@ export const SongSearch = () => {
             </div>
           </li>
         ))}
-      </ul>
+      </ul>}
     </div>
   );
 };

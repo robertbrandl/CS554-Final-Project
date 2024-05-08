@@ -72,7 +72,7 @@ a {
 
 .save-button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #7858b8;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -80,7 +80,7 @@ a {
   margin-bottom: 10px;
 }
 .save-button:hover {
-  background-color: #0056b3;
+  background-color: #624798;
 }
 
 .song-column {
