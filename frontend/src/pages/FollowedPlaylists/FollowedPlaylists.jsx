@@ -9,6 +9,7 @@ export const FollowedPlaylists = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [playlistStates, setPlaylistStates] = useState({});
   const [userId, setUserId] = useState("");
   const [sortItem, setSortItem] = useState("title");
@@ -16,6 +17,7 @@ export const FollowedPlaylists = () => {
   const [selectedGenre, setSelectedGenre] = useState("");
   useEffect(() => {
     setError("");
+    setErrorMessage("");
     let res = null;
     async function getUser() {
       let data = await axios.get("/api/users/account", {
@@ -104,7 +106,10 @@ export const FollowedPlaylists = () => {
         setPlaylistData(pdata);
         setError("");
       } catch (e) {
-        setError(e.response.data.message || e.message);
+        console.log(e)
+        if (e.response.data.error){setErrorMessage(e.response.data.error)}
+        else{
+        setError(e.response.data.message ||e.message);}
       }
     }
     if (currentUser){
@@ -213,6 +218,7 @@ export const FollowedPlaylists = () => {
     <div className="card">
       <h1>View and Search Through Playlists from Your Followed Users</h1>
       <br />
+      {errorMessage && <div className="error-gen">{errorMessage}</div>}
       <form
         method="POST"
         onSubmit={(e) => {

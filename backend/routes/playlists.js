@@ -91,6 +91,9 @@ router.route("/followedplaylists").get(async (req, res) => {
 });
 router.route("/searchbyname").get(async (req, res) => {
   try {
+    if (req.query.name.trim().length > 50){
+        return res.status(400).json({ error: "Search value must be less than or equal to 50 characters!" });
+    }
     let data = await searchData(xss(req.query.name), xss(req.query.genre));
     console.log(data);
     for (let x of data){
@@ -113,6 +116,9 @@ router.route("/searchbyname").get(async (req, res) => {
 });
 router.route("/searchfollowedbyname").get(async (req, res) => {
   try {
+    if (req.query.name.trim().length > 50){
+        return res.status(400).json({ error: "Search value must be less than or equal to 50 characters!" });
+    }
     const data = await searchFollowed(xss(req.query.name), xss(req.query.genre));
     return res.status(200).json(data);
   } catch (e) {

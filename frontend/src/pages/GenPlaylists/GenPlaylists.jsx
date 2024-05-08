@@ -9,6 +9,7 @@ export const GenPlaylists = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [playlistStates, setPlaylistStates] = useState({});
   const [userId, setUserId] = useState("");
   const [sortItem, setSortItem] = useState("title");
@@ -16,6 +17,7 @@ export const GenPlaylists = () => {
   const [selectedGenre, setSelectedGenre] = useState("");
   useEffect(() => {
     setError("");
+    setErrorMessage("");
     let res = null;
     async function getUser() {
       let data = await axios.get("/api/users/account", {
@@ -98,7 +100,10 @@ export const GenPlaylists = () => {
         setPlaylistData(pdata);
         setError("");
       } catch (e) {
-        setError(e.response.data.message || e.message);
+        console.log(e)
+        if (e.response.data.error){setErrorMessage(e.response.data.error)}
+        else{
+        setError(e.response.data.message ||e.message);}
       }
       //setLoading(false);
     }
@@ -212,6 +217,7 @@ export const GenPlaylists = () => {
     <div className="card">
       <h1>View and Search Through All Playlists</h1>
       <br />
+      {errorMessage && <div className="error-gen">{errorMessage}</div>}
       <form
         method="POST"
         onSubmit={(e) => {
