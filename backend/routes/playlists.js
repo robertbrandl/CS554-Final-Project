@@ -148,8 +148,10 @@ router.route("/myplaylists").delete(async (req, res) => {
       playlistId,
       userRef._id
     );
-
-    return res.status(200).json({ message: "Playlist deleted successfully" });
+    if (deletedPlaylist && deletedPlaylist.acknowledged) {
+      await client.del("allplaylists");
+      return res.status(200).json({ message: "Playlist deleted successfully" });
+    }
   } catch (e) {
     return res.status(500).json({ error: e });
   }

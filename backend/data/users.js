@@ -175,7 +175,7 @@ const setUserPrivate = async (email) => {
             { $set: { publicPlaylist: false } }
         );
         if (updateResult.modifiedCount !== 1) {
-            throw { code: 500, error: 'Failed to set user as public' };
+            throw { code: 500, error: 'Failed to set user as private' };
         }
         const res = await userCollection.updateMany(
             { followedUsers: { $in: [user._id.toString()] } },
@@ -183,8 +183,8 @@ const setUserPrivate = async (email) => {
         );
         return updateResult;
     } catch (error) {
-        console.error('Error setting user as public:', error);
-        throw { code: 500, error: 'Error setting user as public' };
+        console.error('Error setting user as private:', error);
+        throw { code: 500, error: 'Error setting user as private' };
     }
 }
 const getFollowedUsers = async (followedIds) =>{

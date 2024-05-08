@@ -173,13 +173,16 @@ router.route("/setpublic").patch(async (req, res) => {
       .status(400)
       .json({ error: "Error: Must press the set public button" });
   }
-  console.log("hi")
   let email = xss(publicData.email);
   let result = undefined;
   try {
     result = await userData.setUserPublic(
       email
     );
+  if (result && result.acknowledged) {
+    await client.del("allplaylists");
+    return res.status(200).json({ message: "Profile set to public" });
+  }
   } catch (e) {
     console.log(e)
     return res.status(e.code || 500).json({ error: "Error: " + e.error });
@@ -200,6 +203,10 @@ router.route("/setprivate").patch(async (req, res) => {
     result = await userData.setUserPrivate(
       email
     );
+    if (result && result.acknowledged) {
+      await client.del("allplaylists");
+      return res.status(200).json({ message: "Profile set to private" });
+    }
   } catch (e) {
     return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
