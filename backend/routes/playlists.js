@@ -17,13 +17,13 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
   secure: true,
 });
-console.log(
-  process.env.CLOUD_NAME +
-    " " +
-    process.env.API_KEY +
-    " " +
-    process.env.API_SECRET
-);
+// console.log(
+//   process.env.CLOUD_NAME +
+//     " " +
+//     process.env.API_KEY +
+//     " " +
+//     process.env.API_SECRET
+// );
 
 let upload = multer({ dest: "uploads/" });
 
