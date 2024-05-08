@@ -1,4 +1,5 @@
 # CS554-Final-Project: PlaylistHub
+### Link to our Repo: [PlaylistHub](https://github.com/robertbrandl/CS554-Final-Project)
 
 # Our Team
 - Robert Brandl
@@ -41,6 +42,16 @@ enter or cd into the `CS554-Final-Project` directory
 2. cd to the `frontend` directory
 3. run the command `npm i`
 4. run the command `npm run dev` and the application will be running on localhost:5173, navigate there!!!
+## How to Use Our Project
+- On the homepage (at localhost:5173), you can choose to browse through songs, using the search bars to find songs you like (by either the track name, artist name, album name, and/or label name) and clicking on songs in the results to find out more about the song, including other songs by the same artist. Or, you can see the list of all public playlists (playlists from users who have a public profile) and find out more information about each playlist. However, to save a playlist or create your own, you must login or create an account, either by email and password, or through social sign in with either Google, Facebook, or Github!
+- Once you are logged in, you will be able to see your account details in your account, which includes your list of followed users and your list of saved playlists, as well as reset your password through an email (through Firebase). You can also set your account to public or private, where public means you can be followed by other users and your playlists will be available in the main sharing list and private means you can't be followed and your playlists remain hidden.
+- You can once again browse songs, but this time you can add a song to a playlist, either an existing playlist or to create your own. When you create a playlist, you must add a title, a playlist cover image, and a genre (or choose "No Genre"). Then, you can add a song to the new playlist!
+- On the all playlists page, you can see all playlists created by users with public profiles. You can search through them using the search bar, sort them in ascending or descending order by title, user name, or date created, or filter them by genre. For all playlists that you did not make, you can save them to your list of saved playlists, or unsave them.
+  - When you click on a playlist, you will get more details about them, such as genre, runtime, and a list of songs with links to view each song page. The save/unsave button can also be used here.
+  - Each playlist also has a link for the user profile where their name is. When you click the link, you can see the user's public profile, their full list of playlists, and the follow/unfollow button. When you follow a user, they will appear in your followed users list in your account, and their playlists will appear on the page with playlists from your followed accounts!
+- When you view the playlists page from followed accounts, you will have all the same options as the all playlists page.
+- On the page to view your playlists, you can see the full list of playlists you created with the option to create a new playlist, or edit a playlist or delete a playlist. When you click on a playlist that you made, you can still edit or delete the playlist, but you can also delete songs from the playlist!
+- Finally, on the user statistics page, you can find information about how many playlists you've made, how many followers you have, how many songs per artist you have added to a playlist, and more! 
 ## Sample User Accounts (seeded)
 - User 1 - email: robert@email.com; password: password123!
 - User 2 - email: krystal@email.com; password: password123!
