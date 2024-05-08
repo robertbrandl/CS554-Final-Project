@@ -123,7 +123,9 @@ export const GenPlaylists = () => {
 
   useEffect(() => { 
     if (sortOrder == "asc" || sortOrder == "desc"){
-    setPlaylistData(sortedData());}
+      if (sortItem == "title" || sortItem == "userName" || sortItem == "dateCreated")
+      setPlaylistData(sortedData());
+    }
   }, [sortItem, sortOrder]); 
 
   const handleChange = (e) => {
@@ -142,8 +144,15 @@ export const GenPlaylists = () => {
   };
 
   const handleSortItem = (e) => {
-    setSortItem(e.target.value);
-    sortedData()
+    setErrorMessage('');
+    let trim = e.target.value.trim();
+    if (trim !== "title" && trim !== "userName" && trim !== "dateCreated"){
+      setErrorMessage("Error: Sorting must be by title, username, or date created.")
+    }
+    else{
+      setSortItem(e.target.value.trim());
+      sortedData()
+    }
   };
 
   const handleSortOrder = (e) => {
