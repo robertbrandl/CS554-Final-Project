@@ -173,6 +173,15 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
     if (!albumCover){
         throw {code: 400, error: "Error: must provide a cover picture for the playlist"}
     }
+    const existingPlaylist = await playlistCollection.findOne({
+        title: newPlaylist.title,
+        userName: newPlaylist.userName,
+        genre: newPlaylist.genre
+      });
+      console.log(existingPlaylist);
+      if (existingPlaylist) {
+        throw { code: 400, error: "Error: You have a playlist with the same title and genre already!" };
+      }
     
 
     createNewPlaylist = await playlistCollection.insertOne(newPlaylist);
@@ -251,6 +260,15 @@ const updatePlaylist = async (playlistId, updates, userId) => {
     playlistFound.genre = updates.genre.trim();
   }
   console.log("playlist after updates =", playlistFound);
+  const existingPlaylist = await playlistCollection.findOne({
+    title: updates.title.trim(),
+    userName: updates.userName.trim(),
+    genre: updates.genre.trim()
+  });
+  console.log(existingPlaylist);
+  if (existingPlaylist) {
+    throw { code: 400, error: "Error: You have a playlist with the same title and genre already!" };
+  }
 
   const updatedPlaylist = await playlistCollection.updateOne(
     { _id: new ObjectId(playlistId) },

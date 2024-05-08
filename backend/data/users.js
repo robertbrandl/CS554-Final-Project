@@ -11,6 +11,7 @@ const registerUser = async (
 ) => {
     const userCollection = await users();
     const user = await userCollection.findOne({emailAddress: emailAddress});
+    if (type == "email"){
     if (user !== null) throw {code: 409, error:'User exists already'};
     try{
         validation.checkString(name);
@@ -40,6 +41,7 @@ const registerUser = async (
     }
     if (/[^a-zA-Z0-9]/.test(password) === false){
         throw {code: 400, error: "Password must contain a special character"}
+    }
     }
 
 
