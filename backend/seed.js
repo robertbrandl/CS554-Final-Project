@@ -66,15 +66,11 @@ async function seedDatabase() {
 
     //saving playlists
     await users.savePlaylist(u1acc.emailAddress, playlist3.insertedId)
-    await users.savePlaylist(u1acc.emailAddress, playlist5.insertedId)
     await users.savePlaylist(u1acc.emailAddress, playlist10.insertedId)
     await users.savePlaylist(u2acc.emailAddress, playlist1.insertedId)
-    await users.savePlaylist(u2acc.emailAddress, playlist7.insertedId)
     await users.savePlaylist(u2acc.emailAddress, playlist9.insertedId)
     await users.savePlaylist(u3acc.emailAddress, playlist2.insertedId)
-    await users.savePlaylist(u3acc.emailAddress, playlist8.insertedId)
     await users.savePlaylist(u4acc.emailAddress, playlist4.insertedId)
-    await users.savePlaylist(u4acc.emailAddress, playlist6.insertedId)
     await users.savePlaylist(u5acc.emailAddress, playlist1.insertedId)
     await users.savePlaylist(u5acc.emailAddress, playlist2.insertedId)
     await users.savePlaylist(u5acc.emailAddress, playlist3.insertedId)
