@@ -89,3 +89,6 @@
   color: #ffffff;
   cursor: pointer;
 }
+.navbar .btn:hover{
+  color: #863dec;
+}
