@@ -143,6 +143,9 @@ const createPlaylist = async (title, userId, userName, albumCover, genre) => {
         await validation.checkId(userId, "userId");
     }
     catch(e){throw {code: 400, error: e}}
+    if (newPlaylist.title.trim().length < 1 || newPlaylist.title.trim().length > 50){
+        throw {code: 400, error: "Playlist title must be between 1 and 50 characters"}
+    }
     
     
     //check if userId exists in users collection
@@ -214,7 +217,9 @@ const updatePlaylist = async (playlistId, updates, userId) => {
     validation.stringValidation(updates.title);
     }
     catch(e){throw {code: 400, error: e}}
-    if (updates.title.trim())
+    if (updates.title.trim().length < 1 || updates.title.trim().length > 50){
+        throw {code: 400, error: "Playlist title must be between 1 and 50 characters"}
+    }
   if (updates.title) {
     playlistFound.title = updates.title.trim();
   }

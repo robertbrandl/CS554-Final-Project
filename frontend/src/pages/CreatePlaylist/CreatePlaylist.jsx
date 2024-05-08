@@ -5,6 +5,7 @@ import { AuthContext } from "../../firebase/Auth";
 import { useNavigate } from "react-router-dom";
 export const CreatePlaylist = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     albumCover: null,
@@ -25,6 +26,7 @@ export const CreatePlaylist = () => {
     event.preventDefault();
 
     try {
+      setLoading(true);
       const formDataToSend = new FormData();
       formDataToSend.append("email", currentUser.email);
       formDataToSend.append("userName", currentUser.displayName)
@@ -43,9 +45,11 @@ export const CreatePlaylist = () => {
         window.alert("Form submission failed");
         console.error("Form submission failed:", response.statusText);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
       setError(error.response.data.error || error.message);
+      setLoading(false);
     }
   };
   const genres = [
@@ -64,11 +68,15 @@ export const CreatePlaylist = () => {
     "Rap",
     "Gospel",
   ];
+  if (loading){
+    return <div>Loading...</div>
+  }
   return (
     <div className="create-playlist">
       <h1>CreatePlaylist</h1>
       <form className="create-playlist-form" onSubmit={handleSubmit}>
       {error && <div className="error">{error}</div>}
+      <div>*Playlist title must be between 1 and 50 characters.*</div>
       <br />
         <div className="form-row">
           <label htmlFor="title">Title:</label>{" "}
