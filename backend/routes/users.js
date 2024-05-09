@@ -177,6 +177,7 @@ router.route("/setpublic").patch(async (req, res) => {
     result = await userData.setUserPublic(
       email
     );
+    console.log(result)
   if (result && result.acknowledged) {
     await client.del("allplaylists");
     return res.status(200).json({ message: "Profile set to public" });
@@ -201,6 +202,7 @@ router.route("/setprivate").patch(async (req, res) => {
     result = await userData.setUserPrivate(
       email
     );
+    console.log(result)
     if (result && result.acknowledged) {
       await client.del("allplaylists");
       return res.status(200).json({ message: "Profile set to private" });
@@ -209,6 +211,7 @@ router.route("/setprivate").patch(async (req, res) => {
     return res.status(e.code || 500).json({ error: "Error: " + e.error });
   }
   await client.del(`account/${email}`);
+  console.log("passed")
   const keys = await client.keys("account*"); 
   !!keys.length && client.unlink(keys); 
   const newKeys = await client.keys("account*");

@@ -46,6 +46,9 @@ export const UserAccount = () => {
         if (data.publicPlaylist){
           setIsPublic(true);
         }
+        else{
+          setIsPublic(false)
+        }
         setData(data);
         console.log(data)
         setErrorMessage('');
@@ -88,9 +91,14 @@ export const UserAccount = () => {
       }
     }
     else{
+      try{
       const response = await axios.patch('/api/users/setprivate', {
         email: currentUser.email
-      });
+      });}catch(e){
+        console.log(e)
+        setErrorMessage(e.message);
+      }
+
     }
     setIsPublic(!isPublic);
     setLoading(false);
@@ -123,7 +131,7 @@ export const UserAccount = () => {
       <button className="btn" onClick={passwordReset}>
         Reset Password
       </button>}
-      {data.publicPlaylist ? <p>Your playlists and account is public and you can be followed by anyone!</p> : <p>Your playlists and account is private. This means you cannot be followed by other users.</p>}
+      {isPublic ? <p>Your playlists and account is public and you can be followed by anyone!</p> : <p>Your playlists and account is private. This means you cannot be followed by other users.</p>}
       <button onClick={handlePublic} className="btn">
           {isPublic ? 'Make Account Private' : 'Make Account Public'}
       </button>
