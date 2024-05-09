@@ -93,14 +93,21 @@ const getUsersPlaylists = async (userId) => {
 const getSavedPlaylists = async (playlistIds) => {
   let ret = [];
   const playlistCollection = await playlists();
+  const userCollection = await users();
   for (let x of playlistIds) {
     console.log(x);
     const playlist = await playlistCollection.findOne({ _id: new ObjectId(x) });
     if (!playlist) {
       throw { code: 404, message: "Playlist not found" };
     }
+    const user = await userCollection.findOne({ _id: playlist.userId });
+    if (!user) {
+      throw { code: 404, message: "User not found for playlist" };
+    }
+    console.log(user)
     console.log(playlist);
-    ret.push(playlist);
+    if (user.publicPlaylist){
+    ret.push(playlist);}
   }
   return ret;
 };
