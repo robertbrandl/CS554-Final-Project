@@ -65,15 +65,15 @@ async function seedDatabase() {
     await users.followUser(u5acc.emailAddress, u2acc._id)
 
     //saving playlists
-    await users.savePlaylist(u1acc.emailAddress, playlist3.insertedId)
-    await users.savePlaylist(u1acc.emailAddress, playlist10.insertedId)
-    await users.savePlaylist(u2acc.emailAddress, playlist1.insertedId)
-    await users.savePlaylist(u2acc.emailAddress, playlist9.insertedId)
-    await users.savePlaylist(u3acc.emailAddress, playlist2.insertedId)
-    await users.savePlaylist(u4acc.emailAddress, playlist4.insertedId)
-    await users.savePlaylist(u5acc.emailAddress, playlist1.insertedId)
-    await users.savePlaylist(u5acc.emailAddress, playlist2.insertedId)
-    await users.savePlaylist(u5acc.emailAddress, playlist3.insertedId)
+    await users.savePlaylist(u1acc.emailAddress, playlist3.insertedId.toString())
+    await users.savePlaylist(u1acc.emailAddress, playlist10.insertedId.toString())
+    await users.savePlaylist(u2acc.emailAddress, playlist1.insertedId.toString())
+    await users.savePlaylist(u2acc.emailAddress, playlist9.insertedId.toString())
+    await users.savePlaylist(u3acc.emailAddress, playlist2.insertedId.toString())
+    await users.savePlaylist(u4acc.emailAddress, playlist4.insertedId.toString())
+    await users.savePlaylist(u5acc.emailAddress, playlist1.insertedId.toString())
+    await users.savePlaylist(u5acc.emailAddress, playlist2.insertedId.toString())
+    await users.savePlaylist(u5acc.emailAddress, playlist3.insertedId.toString())
     
     console.log('Done seeding database');
   } catch (error) {

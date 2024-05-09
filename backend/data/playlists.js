@@ -154,7 +154,7 @@ const createPlaylist = async (title, userId, albumCover, genre) => {
     }
     
     
-    
+    console.log(newPlaylist.userName)
     try{
         validation.stringValidation(newPlaylist.userName);
     }catch(e){
